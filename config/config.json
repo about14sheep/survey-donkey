@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "surveycompanyapp",
+    "password": "greatape",
+    "database": "surveycompanydevelopment",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "seederStorage": "sequelize"
+  },
+  "test": {
+    "username": "surveycompanyapp",
+    "password": "greatape",
+    "database": "surveycompanytest",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "seederStorage": "sequelize"
+  },
+  "production": {
+    "username": "surveycompanyapp",
+    "password": "greatape",
+    "database": "surveycompanyproduction",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "seederStorage": "sequelize"
+  }
+}
