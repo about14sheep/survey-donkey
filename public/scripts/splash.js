@@ -49,6 +49,7 @@ const typingAnim = (array) => {
             if (arr < 1) {
                 clearInterval(decrement);
                 if (index >= array.length) index = 0;
+                animSpan.style.borderRight = 'solid 8px #00BF6F'
                 setTimeout(_ => {
                     incrementAnim(array[index].split(''));
                 }, 350);
