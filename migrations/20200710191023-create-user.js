@@ -10,7 +10,8 @@ module.exports = {
       },
       email: {
         allowNull: false,
-        type: Sequelize.STRING(50)
+        type: Sequelize.STRING(50),
+        unique: true,
       },
       lastLogin: {
         allowNull: true,
@@ -20,15 +21,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING(50)
       },
-      password: {
+      hashedPassword: {
+        allowNull: true,
+        type: Sequelize.STRING.BINARY
+      },
+      firstName: {
         allowNull: true,
         type: Sequelize.STRING(50)
       },
-      firstname: {
-        allowNull: true,
-        type: Sequelize.STRING(50)
-      },
-      lastname: {
+      lastName: {
         allowNull: true,
         type: Sequelize.STRING(50)
       },

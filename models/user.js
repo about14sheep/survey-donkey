@@ -1,12 +1,16 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    email: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      unique: true
+    },
     lastLogin: DataTypes.TIME,
     role: DataTypes.STRING,
-    password: DataTypes.STRING,
-    firstname: DataTypes.STRING,
-    lastname: DataTypes.STRING
+    hashedPassword: DataTypes.STRING.BINARY,
+    firstName: DataTypes.STRING,
+    lastName: DataTypes.STRING
   }, {});
   User.associate = function(models) {
     User.hasMany(models.Survey, {foreingKey: 'userId'})
