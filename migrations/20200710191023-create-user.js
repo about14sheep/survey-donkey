@@ -18,7 +18,7 @@ module.exports = {
         type: Sequelize.TIME
       },
       role: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.STRING(50)
       },
       hashedPassword: {
