@@ -1,5 +1,6 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
 
 const db = require('../models');
 const { csrfProtection, asyncHandler } = require('./utils');
@@ -27,7 +28,7 @@ const userValidators = [
       .withMessage('Please provide a value for Last Name')
       .isLength({ max: 50 })
       .withMessage('Last Name must not be more than 50 characters long'),
-    check('emailAddress')
+    check('email')
       .exists({ checkFalsy: true })
       .withMessage('Please provide a value for Email Address')
       .isLength({ max: 255 })
@@ -41,7 +42,7 @@ const userValidators = [
               return Promise.reject('The provided Email Address is already in use.');
             }
           });
-      }),,
+      }),
     check('password')
       .exists({ checkFalsy: true })
       .withMessage('Please provide a value for Password')
@@ -90,6 +91,9 @@ router.post('/users', csrfProtection, userValidators,
         title: 'Sign Up',
         user,
         errors,
+        email,
+        firstName,
+        lastName,
         csrfToken: req.csrfToken(),
       });
     }
