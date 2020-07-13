@@ -1,6 +1,7 @@
 const express = require("express");
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
+const { loginUser } = require('../auth');
 
 const db = require("../models");
 const { csrfProtection, asyncHandler } = require("./utils");
@@ -41,7 +42,7 @@ router.post(
           user.hashedPassword.toString()
         );
         if (passwordMatch) {
-          //todo log in user
+            loginUser(req, res, user);
           return res.redirect("/dashboard");
         }
       }

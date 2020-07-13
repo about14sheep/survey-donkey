@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title #{title}
+    body
+
+include utils.pug
+
+block content
+    div
+        if locals.authenticated
+            span(class='navbar-text px-4') Welcome #{user.firstName}!
+             form(class='form-inline pr-4' action='/logout' method='post')
+                button(class='btn btn-sm btn-warning' type='submit') Logout
+        else
+            span
+                a(href='/sign-up') Sign up
+                a(href='/login') Log in
