@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', e => {
     let sentences = ["The Great Ape Survery Company presents...", "Are my customers actually satisfied?", "Will my product be a success or a flop?", "Are my employees happy at work?", "Do people like attending my events?"];
-    typingAnim(sentences);
-
+    if (document.querySelector('.typingAnimation_span')) typingAnim(sentences);
 });
 
 const typingAnim = (array) => {
