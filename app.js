@@ -43,5 +43,7 @@ app.get('/', (req, res) => {
     res.render('splash')
 })
 
-const port = 8080;
-app.listen(port, _ => console.log(`Listening on port ${port}...`));
+const port = Number.parseInt(process.env.PORT, 10) || 8081;
+app.listen(port, () => {
+  console.log(`Listening for requests on port ${port}...`);
+});
