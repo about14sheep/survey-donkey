@@ -1,0 +1,32 @@
+html 
+    head
+        link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css")
+        link(rel="stylesheet" type="text/css" href="/styles/create-survey.css")
+        script(src="/scripts/new-question.js" type="application/javascript")
+        title= title
+    body
+        h1= name
+        input(type="hidden" value=surveyId id="surveyId")
+        input(type="hidden" value=token name="_csrf" id="csrfToken")
+        div 
+            button(class="new-question" id="new-question-button") + Question
+        div(id="options-container" class="hidden option-container")
+            div
+                label(for="question-text") Question text:
+                input(name="question-text" id="question-text" type="text" placeholder="Enter the text for the new question")
+            div 
+                label(for="question-type") Type: 
+                select(id="question-type" name="question-type" required)
+                    option(value="multiple-choice") Multiple Choice
+                    option(value="scroll") Scroll
+            div
+                button(id="new-question-options") Continue
+        div(id="multiple-choice-container" class="hidden")
+            div
+                ul(id="option-list")
+            div 
+                label(for="new-option-text") Answer Text
+                input(id="new-option-text" type="text" name="new-option-text" placeholder=" Enter answer text here...")
+            div
+                button(id="add-option") + Add Option
+                button(id="save-question") Save Question

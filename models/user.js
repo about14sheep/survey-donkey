@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     lastName: DataTypes.STRING
   }, {});
   User.associate = function(models) {
-    User.hasMany(models.Survey, {foreingKey: 'userId'})
+    User.hasMany(models.Survey, {foreignKey: 'userId'})
     User.hasMany(models.QuestionResponse, { foreignKey: 'userId' })
   };
   return User;

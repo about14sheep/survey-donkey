@@ -1,0 +1,16 @@
+.hidden {
+    display: none
+}
+
+body {
+    display: grid;
+    justify-content: center;
+    align-content:center;
+}
+.option-container:not(.hidden){
+    display:grid;
+    justify-content: center;
+}
+input{
+    padding:5px
+}

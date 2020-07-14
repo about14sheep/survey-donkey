@@ -41,7 +41,7 @@ const userValidators = [
               return Promise.reject('The provided Email Address is already in use.');
             }
           });
-      }),,
+      }),
     check('password')
       .exists({ checkFalsy: true })
       .withMessage('Please provide a value for Password')
