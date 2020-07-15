@@ -6,7 +6,6 @@ const { Survey, Question, User, QuestionResponse } = require('./models');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const csurf = require('csurf');
-
 const session = require('express-session')
 const { sessionSecret } = require('./config/index.js');
 const surveyRouter = require('./routes/survey-router');
@@ -16,15 +15,12 @@ const dashRouter = require('./routes/dashboard');
 const logoutRouter = require('./routes/logout')
 const { restoreUser } = require('./auth');
 
-const csrfProtection = csurf({ cookie: true })
-const asyncHandler = (handler) => (req, res, next) => handler(req, res, next).catch(next);
 
-
-
-app.use(surveyRouter)
 app.use(express.static('public'))
 app.use(cookieParser(sessionSecret))
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(surveyRouter)
 app.use(morgan('dev'));
 app.set('view engine', 'pug')
 
