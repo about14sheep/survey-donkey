@@ -8,30 +8,87 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const mChoiceOptionContainer = document.getElementById("multiple-choice-container")
     const newOptionInput = document.getElementById('new-option-text')
     const optionList = document.getElementById('option-list')
-    
+    const surveyPreview = document.getElementById('survey-form')
+    const continueButton = document.getElementById("new-question-options")
+    const currentQuestionPrompt = document.getElementById('current-question-prompt')
+    const currentQuestionPromptContainer = document.getElementById('current-question-prompt-container')
+
+    //global variables
+    let specs;
+    //f()s
     const gatherQuestionSpecs = () => {
         const type = typeInput.value
         const prompt = promptInput.value
         return {type: type, prompt: prompt}
     }
-    const surveyOptions= {questionsArray:[]}
-    let specs;
+
+    const createCurrentQuestionTextDisplay=()=>{
+        currentQuestionPromptContainer.classList.remove("is-hidden")
+        currentQuestionPrompt.innerHTML = specs.prompt
+    }
+
+    const createQuestion = async () => {
+        const surveyId = document.getElementById('surveyId').value
+        const token = document.getElementById('csrfToken').value
+        let data = JSON.stringify({
+            prompt: specs.prompt,
+            questionType: specs.type,
+            surveyId: surveyId,
+            opOne: specs.opOne,
+            opTwo: specs.opTwo,
+            opThree: specs.opThree,
+            opFour: specs.opFour,
+            opFive: specs.opFive
+        })
+        const create = await fetch(`/surveys/create/${surveyId})`, {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                "Csrf-Token": token
+            },
+            body: data
+        })
+
+        optionList.innerHTML = "";
+        promptInput.value = "";
+        optionsContainer.classList.add("hidden")
+        mChoiceOptionContainer.classList.add("hidden")
+        newQuestionButton.classList.remove("is-hidden")
+        specs=""
+        renderPreview(surveyId)
+    }
+
+    const renderPreview = async (surveyId) => {
+        const questions = await fetch(`/surveys/preview/${surveyId})`)
+        const gatherQuestions = await questions.json()
+        const surveyQuestions = gatherQuestions.map(el => JSON.parse(el))
+        createSurveyPreviewElements(surveyQuestions)
+        console.log(surveyQuestions)
+    }
+
+    const createSurveyPreviewElements = (questions) => {
+        questions.forEach(question => {
+            let newQuestionContainer = document.createElement("div")
+            newQuestionContainer.innerHTML = question.questionText
+            surveyPreview.appendChild(newQuestionContainer)
+        })
+    }
+
     newQuestionButton.addEventListener("click", (event)=> {
         typeInput.value= '';
         promptInput.value= '';
         optionsContainer.classList.remove("hidden")
-        newQuestionButton.classList.add("hidden")
+        newQuestionButton.classList.add("is-hidden")
     });
 
-    document.getElementById("new-question-options").addEventListener('click', (e) => {
+    continueButton.addEventListener('click', (e) => {
         e.preventDefault();
+        optionsContainer.classList.add("hidden")
         specs = gatherQuestionSpecs()
         if (specs.type === 'multiple-choice'){
             displayMultipleChoiceOptions()
         }
-        // optionsContainer.classList.add("hidden")
-        // newQuestionButton.classList.remove("hidden")
-        
+        createCurrentQuestionTextDisplay()
     })
     
     const displayMultipleChoiceOptions = ()=>{
@@ -50,49 +107,14 @@ document.addEventListener('DOMContentLoaded', ()=> {
         })
 
     document.getElementById('save-question').addEventListener('click',(e)=>{
+        currentQuestionPromptContainer.classList.add("is-hidden")
         let optionKeys = ['opOne','opTwo','opThree','opFour','opFour','opFive']
         optionList.childNodes.forEach(listItem=>{
             let key = optionKeys.shift()
             specs[key] = listItem.innerHTML
         })
-        surveyOptions.questionsArray.push(specs)
-        const surveyId = document.getElementById('surveyId').value
-        const token = document.getElementById('csrfToken').value
         console.log(specs)
-        let data = JSON.stringify({
-            prompt: specs.prompt,
-            questionType: specs.type,
-            surveyId: surveyId,
-            opOne: specs.opOne,
-            opTwo: specs.opTwo,
-            opThree: specs.opThree,
-            opFour: specs.opFour,
-            opFive: specs.opFive
-        })
-
-        fetch(`/surveys/create/${surveyId})`, {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Csrf-Token" : token
-                },
-                body: data
-            })
-                .then(function (res) {
-                    if (!res.status===200) {
-                        throw Error(res.statusText); // handle any potential server errors
-                    }
-                    console.log(res)
-                    optionList.innerHTML = "";
-                    promptInput.value= "";
-                    optionsContainer.classList.add("hidden")
-                    newQuestionButton.classList.remove("hidden")
-                    mChoiceOptionContainer.classList.add("hidden")
-
-                })
-                .catch(function (error) {
-                    console.log(error)
-                });
+        createQuestion();
     })
 
 })
