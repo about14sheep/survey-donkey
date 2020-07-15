@@ -3,12 +3,12 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
       return queryInterface.bulkInsert('Surveys', [
-{id: 1,createdAt: new Date(), updatedAt: new Date(), name: "dafdd", userId: 1,published:true},
-{id: 2,createdAt: new Date(), updatedAt: new Date(), name: "dafdd", userId: 2,published:true},        
-{id: 3,createdAt: new Date(), updatedAt: new Date(), name: "dafdd", userId: 3,published:true},
-{id: 4,createdAt: new Date(), updatedAt: new Date(), name: "dafdd", userId: 4,published:true},
-{id: 5,createdAt: new Date(), updatedAt: new Date(), name: "dafdd", userId: 1,published:true},
-{id: 6,createdAt: new Date(), updatedAt: new Date(), name: "dafdd", userId: 5,published:true},
+{createdAt: new Date(), updatedAt: new Date(), name: "dafdd", userId: 1,published:true},
+{createdAt: new Date(), updatedAt: new Date(), name: "werp", userId: 2,published:true},
+{createdAt: new Date(), updatedAt: new Date(), name: "yoink", userId: 1,published:true},
+{createdAt: new Date(), updatedAt: new Date(), name: "fiddle", userId: 4,published:true},
+{createdAt: new Date(), updatedAt: new Date(), name: "populatiorz", userId: 2,published:true},
+{createdAt: new Date(), updatedAt: new Date(), name: "itsybitsy", userId: 4,published:true},
 
       ], {});
   },

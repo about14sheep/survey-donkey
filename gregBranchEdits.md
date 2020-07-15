@@ -15,7 +15,17 @@ Monday:
 12. set up session cookie storage, made primitive dashboard page, login/logout functionality
 13. made requireAuth middleware in auth.js that we can use to require log in for whatever route's we desire
 
+Tuesday:
+8. learning a lot of bulma
+9. added important elements to dashboard page
+10. specific user owned suveys query and list working
+
 ToDo/ questions for group:
 - I think we need to make a 2nd sign up form for just email for users that just want to anonymously fill out a survey (guest user)
-- fix login/signup pugs to extend layout.pug
+- fix login/signup pugs to extend layout.pug/navbar
 - restrict survey editing only to surveys made by user (checkPermissions section in reading)
+- add requireAuth back in to routes once they are finished
+- titles in layout.pug
+- firstname in seeds, mostRecentSubmission=time or date, add lastlogin to login
+- guest account
+- completion rate bonus objective?
