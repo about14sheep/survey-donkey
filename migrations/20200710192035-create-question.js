@@ -13,7 +13,7 @@ module.exports = {
       },
       surveyId: {
         type: Sequelize.INTEGER,
-        referencese: {model: 'Surveys'}
+        references: { model: 'Surveys' }
       },
       questionType: {
         type: Sequelize.STRING(50)
