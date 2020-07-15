@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const continueButton = document.getElementById("new-question-options")
     const currentQuestionPrompt = document.getElementById('current-question-prompt')
     const currentQuestionPromptContainer = document.getElementById('current-question-prompt-container')
-
+    const questionTextForm = document.getElementById("question-main-prompt-form")
+    const surveyPreviewTitle = document.getElementById("survey-preview-title")
     //global variables
     let specs;
     //f()s
@@ -63,10 +64,11 @@ document.addEventListener('DOMContentLoaded', ()=> {
         const gatherQuestions = await questions.json()
         const surveyQuestions = gatherQuestions.map(el => JSON.parse(el))
         createSurveyPreviewElements(surveyQuestions)
-        console.log(surveyQuestions)
     }
 
     const createSurveyPreviewElements = (questions) => {
+        surveyPreview.innerHTML = ""
+        surveyPreview.appendChild(surveyPreviewTitle)
         questions.forEach(question => {
             let newQuestionContainer = document.createElement("div")
             newQuestionContainer.innerHTML = question.questionText
@@ -81,7 +83,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         newQuestionButton.classList.add("is-hidden")
     });
 
-    continueButton.addEventListener('click', (e) => {
+    questionTextForm.addEventListener('submit', (e) => {
         e.preventDefault();
         optionsContainer.classList.add("hidden")
         specs = gatherQuestionSpecs()
