@@ -49,6 +49,5 @@ app.get('/', (req, res) => {
 })
 
 const port = Number.parseInt(process.env.PORT, 10) || 8081;
-app.listen(port, () => {
-    console.log(`Listening for requests on port ${port}...`);
+app.listen(port, () => {console.log(`Listening for requests on port ${port}...`);
 });

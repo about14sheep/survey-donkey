@@ -16,7 +16,7 @@ html
                         input(name="question-text" id="question-text" type="text" placeholder="Enter the text for the new question" class="question-input")
                         label(for="question-type")
                         select(id="question-type" name="question-type" required)
-                            option(value="multiple-choice") Multiple Choice
+                            option(value="multiple-choice" selected= true) Multiple Choice
                             option(value="scroll") Scroll
                         button(type="submit" id="new-question-options" class="button is-light is-success") Continue
             div 
@@ -32,4 +32,5 @@ html
                 div
                     button(id="add-option" class="button is-light is-success") + Add Option
                     button(id="save-question" class="button is-light is-success") Save Question
+            div(id="bottom-buffer")
         

@@ -12,14 +12,22 @@ body {
 .option-container:not(.hidden){
     display:flex;
     width: 900px;
-    align-items:center;
+    justify-content: center;
+    align-items: center;
 }
+
+#question-type{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 input{
     padding:5px
 }
 
 #survey-form{
     width: 900px;
+    height: auto;
 }
 
 #main-content{
@@ -43,6 +51,23 @@ input{
 #question-main-prompt-form {
     display: flex;
     flex-direction: row;
-    
+    margin-top: 10px
 }
 
+#bottom-buffer {
+    display: block;
+    height: 300px;
+}
+
+/* .newQuestionContainer {
+    display:flex;
+} */
+
+/* .survey-preview-question-container {
+    margin-bottom: 20px;
+}
+
+.survey-preview-question-option {
+    justify-self: center;
+    margin-left: 35px;
+} */

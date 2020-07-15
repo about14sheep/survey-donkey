@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const surveyPreviewTitle = document.getElementById("survey-preview-title")
     //global variables
     let specs;
+    location.href = "#";
+    location.href = "#new-question-button";
     //f()s
     const gatherQuestionSpecs = () => {
         const type = typeInput.value
@@ -70,8 +72,22 @@ document.addEventListener('DOMContentLoaded', ()=> {
         surveyPreview.innerHTML = ""
         surveyPreview.appendChild(surveyPreviewTitle)
         questions.forEach(question => {
-            let newQuestionContainer = document.createElement("div")
-            newQuestionContainer.innerHTML = question.questionText
+            let newQuestionContainer = document.createElement("div");
+            newQuestionContainer.classList.add("survey-preview-question-container")
+            let newQuestionText = document.createElement("div");
+            newQuestionText.classList.add('survey-preview-question-text');
+            newQuestionText.innerHTML = question.questionText;
+            newQuestionContainer.appendChild(newQuestionText)
+            let keys = ['opOne','opTwo','opThree','opFour','opFive']
+            keys.forEach(key=>{
+                console.log("adsfasjhdfkjhadskfasdfasdf",question[key])
+                if (question[key]) {
+                    let newOptionText = document.createElement("div")
+                    newOptionText.innerHTML = question[key]
+                    newOptionText.classList.add('survey-preview-question-option');
+                    newQuestionContainer.appendChild(newOptionText)
+                }
+            })
             surveyPreview.appendChild(newQuestionContainer)
         })
     }
@@ -110,7 +126,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     document.getElementById('save-question').addEventListener('click',(e)=>{
         currentQuestionPromptContainer.classList.add("is-hidden")
-        let optionKeys = ['opOne','opTwo','opThree','opFour','opFour','opFive']
+        let optionKeys = ['opOne','opTwo','opThree','opFour','opFive']
         optionList.childNodes.forEach(listItem=>{
             let key = optionKeys.shift()
             specs[key] = listItem.innerHTML
