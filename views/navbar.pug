@@ -1,0 +1,13 @@
+extends layout_splash.pug 
+  
+block content
+  link(rel="stylesheet" type="text/css" href="/styles/navbar.css")
+  div(class='splash-nav__container')
+    div(class='surveyDonkey_logo_container')
+      img(class='donkeyLogo' src='/icons/donkey-xxl.png')
+      a(class='surveyDonkey_logo' href='/') SurveyDonkey
+    div(class="signUpAndLogIn_container")
+      div(class='surveyDonkey_login_container')
+        a(class='surveyDonkey_login' href='/login') LOG IN
+      div(class='surveyDonkey_signup_container')
+        a(class='surveyDonkey_signup' href='/sign-up') SIGN UP

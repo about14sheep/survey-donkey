@@ -1,5 +1,7 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
+const { loginUser } = require('../auth');
 
 const db = require('../models');
 const { csrfProtection, asyncHandler } = require('./utils');
@@ -27,7 +29,7 @@ const userValidators = [
       .withMessage('Please provide a value for Last Name')
       .isLength({ max: 50 })
       .withMessage('Last Name must not be more than 50 characters long'),
-    check('emailAddress')
+    check('email')
       .exists({ checkFalsy: true })
       .withMessage('Please provide a value for Email Address')
       .isLength({ max: 255 })
@@ -81,15 +83,20 @@ router.post('/users', csrfProtection, userValidators,
 
     if (validatorErrors.isEmpty()) {
       const hashedPassword = await bcrypt.hash(password, 10);
+      user.role = 'fullUser';
       user.hashedPassword = hashedPassword;
       await user.save();
-      res.redirect('/');
+      loginUser(req, res, user);
+      res.redirect('/dashboard');
     } else {
       const errors = validatorErrors.array().map((error) => error.msg);
       res.render('sign-up', {
         title: 'Sign Up',
         user,
         errors,
+        email,
+        firstName,
+        lastName,
         csrfToken: req.csrfToken(),
       });
     }
