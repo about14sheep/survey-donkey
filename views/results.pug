@@ -7,6 +7,7 @@ block content
     each question in survey.Questions
         div(class="question_results")
             div(class="question_container")
+                canvas(id="myChart" width="400" height="400" hidden)
                 h3= question.questionText
                 ul(class="question_list")   
                     li(class="options")= question.opOne
