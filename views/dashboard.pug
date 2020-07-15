@@ -6,7 +6,6 @@ block append head
     link(rel="stylesheet" type="text/css" href="/styles/dashboard.css")
 
 block content
-    include navbar.pug
     div(class='container is-fluid mb-4')
         if locals.authenticated
             span(class='navbar-text px-4') Welcome back, #{user.firstName}!
