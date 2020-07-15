@@ -17,18 +17,21 @@ const getResponses = async (id) => {
     return data
 }
 
+
 const tallyResponses = (parent, responseObjects) => {
     let opOne, opTwo, opThree, opFour, opFive;
     opOne = opTwo = opThree = opFour = opFive = 0;
     responseObjects.forEach(el2 => {
         if (parent.lastChild.value.toLowerCase() === el2.Question.questionText.toLowerCase()) {
-            parent.childNodes[1].childNodes.forEach((el3, i) => {
+            const list = document.querySelector('.question_list')
+            parent.childNodes[Array.from(list.parentNode.children).indexOf(list)].childNodes.forEach((el3, i) => {
                 const option = el3.textContent.toLowerCase()
-                if (option === el2.questionResponseValue && i === 1) opOne++
-                if (option === el2.questionResponseValue && i === 2) opTwo++
-                if (option === el2.questionResponseValue && i === 3) opThree++
-                if (option === el2.questionResponseValue && i === 4) opFour++
-                if (option === el2.questionResponseValue && i === 5) opFive++
+                const value = el2.questionResponseValue.toLowerCase()
+                if (option === value && i === 1) opOne++
+                if (option === value && i === 2) opTwo++
+                if (option === value && i === 3) opThree++
+                if (option === value && i === 4) opFour++
+                if (option === value && i === 5) opFive++
             })
         }
     })
