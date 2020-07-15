@@ -5,13 +5,15 @@ document.addEventListener('DOMContentLoaded', async e => {
             const obj = tallyResponses(question, responseObjects)
             question.addEventListener('click', e => {
                 question.childNodes.forEach((el, i) => {
-                    if (i > 0) { el.toggleAttribute('hidden') }
+                    if (i > 1) { el.toggleAttribute('hidden') }
                 })
                 createChart(question.firstChild, obj)
             });
         });
     }
 });
+
+const randomNumber = max => Math.floor(Math.random() * Math.floor(max));
 
 const getResponses = async (id) => {
     const res = await fetch(`/surveys/${id}/responses`);
@@ -20,6 +22,7 @@ const getResponses = async (id) => {
 }
 
 const createChart = (container, data) => {
+    const charts = ['doughnut', 'pie', 'bar']
     return new Chart(container.getContext('2d'), {
         type: 'pie',
         data: {
