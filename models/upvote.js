@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     upvote: DataTypes.BOOLEAN,
     downvote: DataTypes.BOOLEAN
   }, {});
-  Upvote.associate = function(models) {
-    Upvote.belongsTo(models.Survey,{foreignKey: 'surveyId'})
+  Upvote.associate = function (models) {
+    Upvote.belongsTo(models.Survey, { foreignKey: 'surveyId' })
     Upvote.belongsTo(models.User, { foreignKey: 'userId' })
   };
   return Upvote;

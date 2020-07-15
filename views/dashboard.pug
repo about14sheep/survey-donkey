@@ -2,13 +2,40 @@ extends layout.pug
 
 include utils.pug
 
+block append head
+    link(rel="stylesheet" type="text/css" href="/styles/dashboard.css")
+
 block content
-    div
+    div(class='container is-fluid mb-4')
         if locals.authenticated
-            span(class='navbar-text px-4') Welcome #{user.firstName}!
-             form(class='form-inline pr-4' action='/logout' method='post')
-                button(class='btn btn-sm btn-warning' type='submit') Logout
-        else
-            span
-                a(href='/sign-up') Sign up
-                a(href='/login') Log in
+            span(class='navbar-text px-4') Welcome back, #{user.firstName}!
+        //- span(class='level-left navbar-text px-4') Welcome Greg
+        //-     form(class='form-inline pr-4' action='/logout' method='post')
+        //-         button(class='button is-warning' type='submit') Logout
+
+    div(class="columns container is-fluid has-background-light")
+        div(class="column ")
+        div(class="column is-three-quarters")
+            div(class="columns is-fluid")
+                div(class="box column columns my-2 mx-2")
+                    div(class="column divider has-text-centered") Published
+                        p(class="is-centered") #{ownedSurveys.length}
+                    div(class="column  has-text-centered") Draft
+                        p(class="is-centered") #{drafts.length}
+                div(class="box column has-text-centered my-2 mx-2") Total Responses
+                div(class="box column has-text-centered my-2 mx-2") avg. completion rate?
+            div() Recent Surveys:
+                ul
+                    each survey in ownedSurveys
+                        li(class="box columns my-3")
+                            p(class="column divider") #{survey.name}
+                            p(class="column divider") Created: #{survey.createdAt}
+                            p(class="column divider") Modified: #{survey.updatedAt}
+                            p(class="column divider") Questions:
+                            p(class="column") Options (edit share delete dropdown)
+            div()
+                button(class="button") Survey Feed
+                button(class="button") Create
+
+
+        div(class="column")

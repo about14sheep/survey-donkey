@@ -8,3 +8,25 @@ body {
 .typingAnimation_container {
     margin: 20% 20px auto;
 }
+
+.question_results {
+    opacity: 1;
+    display: block;
+    width: 400px;
+    height: auto;
+    /* transition: .5s ease; */
+    backface-visibility: hidden;
+    cursor: pointer;
+}
+
+.question_results:hover {
+    opacity: 0.5;
+    box-shadow: 1px 1px 2px 1px;
+}
+
+.question_container ul {
+    padding-left: 10%;
+}
+
+
+

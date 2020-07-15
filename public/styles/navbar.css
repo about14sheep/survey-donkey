@@ -34,22 +34,22 @@
 
 .surveyDonkey_logo_container {
     display: flex;
-    width: 8%;
+    width: 20%;
     justify-content: space-between center;
     padding: 0px 0px 0px 100px
 }
 .signUpAndLogIn_container{
     display:  flex;
-    width: 15%;
+    width: 20%;
     justify-content: space-around;
     right: 0;
     padding: 10px 75px 0px 5px
 }
 
 .donkeyLogo{ 
-    height: 40px
+    height: 40px;
 }
-.surveyDonkey_signup{
+.surveyDonkey_signup, .createSurvey, #squareSignup, .logout, #squareLogin{
     color: #333E48;
     padding: 10px 16px;
 border-radius: 2px;
@@ -63,6 +63,7 @@ border-width: 2px;
 border-style: solid;
 border: 2px solid #333E48;
 cursor: pointer;
+background-color: white;
 }
 
 .surveyDonkey_signup_container{
@@ -78,4 +79,46 @@ cursor: pointer;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
+}
+.myName{
+    color: white;
+}
+ #greenNavBar{
+     background: #00bf6f;
+ }  
+ .dashContainer{
+     display: flex;
+     align-items: center;
+     width: 50%;
+ }
+ .dashDash, .dashMySurveys{
+    cursor: pointer;
+    text-decoration: none;
+    color: white; 
+    font-size: 13px;
+    font-weight: 500;
+
+ }
+
+ .dashboardLinksContainer {
+     display: flex;
+     width: 25%;
+     justify-content: space-around;
+
+ }
+
+.meLogout {
+display: flex;
+width: 30%
+}
+
+.ifMySurveys{
+display:flex;
+width: 25%;
+justify-content: space-between;
+align-items: center;
+}
+
+.createSurvey {
+   
 }

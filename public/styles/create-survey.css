@@ -1,0 +1,48 @@
+
+.hidden {
+    display: none
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.option-container:not(.hidden){
+    display:flex;
+    width: 900px;
+    align-items:center;
+}
+input{
+    padding:5px
+}
+
+#survey-form{
+    width: 900px;
+}
+
+#main-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#new-question-button{
+    width: 900px
+}
+.green {
+    color: #00BF6F
+}
+
+.question-input {
+    width:600px;
+}
+
+#question-main-prompt-form {
+    display: flex;
+    flex-direction: row;
+    
+}
+
