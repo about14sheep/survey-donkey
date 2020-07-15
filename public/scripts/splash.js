@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', e => {
     if (document.querySelector('.typingAnimation_span')) typingAnim(sentences);
 });
 
+
 const typingAnim = (array) => {
 
     const animSpan = document.querySelector('.typingAnimation_span');

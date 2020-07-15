@@ -14,16 +14,19 @@ body {
     display: block;
     width: 400px;
     height: auto;
-    transition: .5s ease;
+    /* transition: .5s ease; */
     backface-visibility: hidden;
     cursor: pointer;
 }
 
 .question_results:hover {
-    opacity: 0.3;
+    opacity: 0.5;
     box-shadow: 1px 1px 2px 1px;
 }
 
 .question_container ul {
     padding-left: 10%;
 }
+
+
+

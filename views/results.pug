@@ -1,16 +1,17 @@
-extends layout_splash.pug
+extends layout.pug
 
 
 block content
     h4= survey.name
-        each question in survey.Questions
-            div(class="question_results")
-                div(class="question_container")
-                    h3= question.questionText
-                        ul   
-                            li= question.opOne
-                            li= question.opTwo
-                            li= question.opThree
-                            li= question.opFour
-                            li= question.opFive
-
+    input(class="survey_id" type="hidden" value=survey.id)
+    each question in survey.Questions
+        div(class="question_results")
+            div(class="question_container")
+                h3= question.questionText
+                ul   
+                    li(class="options")= question.opOne
+                    li(class="options")= question.opTwo
+                    li(class="options")= question.opThree
+                    li(class="options")= question.opFour
+                    li(class="options")= question.opFive
+                input(class="question_id" type="hidden" value=question.questionText)
