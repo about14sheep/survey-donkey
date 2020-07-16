@@ -1,35 +1,30 @@
 document.addEventListener('DOMContentLoaded', e => {
     document.querySelector('#survey_banner').backgroundColor = '#00BF6F'
-    document.querySelectorAll('.question_container').forEach(question => {
-        chartQuestions(question)
-        question.style.cursor = 'pointer'
+    document.querySelectorAll('.options').forEach(options => {
+        chartQuestions(options)
     });
 });
 
-const chartQuestions = question => {
-    const options = Array.from(question.lastChild.childNodes).filter(el => el.classList.contains('option'))
-    options.forEach(option => {
+const chartQuestions = options => {
+    options.childNodes.forEach(option => {
+        option.style.cursor = 'pointer'
         option.addEventListener('mouseover', e => {
             option.style.filter = `drop-shadow(0 0 0.75rem #00BF6F)`;
         })
         option.addEventListener('mouseleave', e => {
             option.style.filter = ``;
         })
-
         option.addEventListener('click', async function clickHandler(e) {
             option.style.backgroundColor = '#00BF6F'
-            postQuestionResponse(question.childNodes[0].value, e.target.lastChild.value)
+            postQuestionResponse(option.parentNode.lastChild.value, e.target.lastChild.value)
+            option.removeEventListener('click', clickHandler)
             setTimeout(async _ => {
-                const responseObjects = await getQuestionResponses(question.childNodes[0].value)
-
-                question.lastChild.childNodes.forEach((option, i) => option.style.display = 'none');
+                const responseObjects = await getQuestionResponses(option.parentNode.lastChild.value)
+                options.childNodes.forEach((option, i) => option.style.display = 'none');
                 const chart = document.createElement('canvas')
-                chart.classList.add('is-three-fifths')
-                question.appendChild(chart)
-
+                options.parentNode.appendChild(chart)
                 createChart(chart, __tallyResponses(responseObjects))
-                question.style.cursor = 'default'
-                question.removeEventListener('click', clickHandler)
+                option.style.cursor = 'default'
             }, 1000)
 
         });
@@ -56,7 +51,6 @@ const postQuestionResponse = async (questionId, questionText) => {
         },
         body: data
     })
-    console.log(res)
 }
 
 const createChart = (container, data) => {
