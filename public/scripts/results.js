@@ -9,19 +9,22 @@ const chartQuestions = question => {
     const options = Array.from(question.childNodes).filter(el => el.classList.contains('option'))
     options.forEach(option => {
         option.addEventListener('click', async function clickHandler(e) {
-            console.log(e.target.textContent)
+            option.style.filter = `drop-shadow(0 0 0.75rem #00BF6F)`;
             postQuestionResponse(question.lastChild.value, e.target.textContent)
-            const responseObjects = await getQuestionResponses(question.lastChild.value)
-            question.childNodes.forEach((option, i) => {
-                if (i > 0) option.style.display = 'none'
-            });
-            const chart = document.createElement('canvas')
-            chart.classList.add('is-three-fifths')
-            question.appendChild(chart)
+            setTimeout(async _ => {
+                const responseObjects = await getQuestionResponses(question.lastChild.value)
+                question.childNodes.forEach((option, i) => {
+                    if (i > 0) option.style.display = 'none'
+                });
+                const chart = document.createElement('canvas')
+                chart.classList.add('is-three-fifths')
+                question.appendChild(chart)
 
-            createChart(chart, __tallyResponses(responseObjects))
-            question.style.cursor = 'default'
-            question.removeEventListener('click', clickHandler)
+                createChart(chart, __tallyResponses(responseObjects))
+                question.style.cursor = 'default'
+                question.removeEventListener('click', clickHandler)
+            }, 500)
+
         });
     })
 
