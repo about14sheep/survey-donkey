@@ -20,7 +20,6 @@ app.use(express.static('public'))
 app.use(cookieParser(sessionSecret))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use(surveyRouter)
 app.use(morgan('dev'));
 app.set('view engine', 'pug')
 

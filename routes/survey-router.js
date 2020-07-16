@@ -2,6 +2,7 @@ const express = require('express')
 const { check, validationResult } = require('express-validator')
 const db = require('../models');
 const { csrfProtection, asyncHandler } = require('./utils');
+const {requireAuth} = require('../auth')
 
 const router = express.Router()
 
@@ -59,7 +60,7 @@ router.post('/surveys/questions/:id',csrfProtection, asyncHandler(async(req,res)
     res.send('question-deleted')
 }))
 
-router.get('/surveys/:id', asyncHandler(async (req, res) => {
+router.get('/surveys/:id', csrfProtection, asyncHandler(async (req, res) => {
     const survey = await db.Survey.findByPk(parseInt(req.params.id, 10), { include: { model: db.Question } });
     res.render('results', { title: `Survey #${parseInt(req.params.id, 10)}`, token: req.csrfToken(), survey });
 }));
