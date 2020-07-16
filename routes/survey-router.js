@@ -76,6 +76,8 @@ router.post('/surveys/:id/questions/:qid', csrfProtection, asyncHandler(async (r
         questionId: req.params.qid,
         questionResponseValue: req.body.responseText.toLowerCase()
     });
+    res.status(200)
+    res.send('response updated')
 }));
 
 router.post('/surveys/delete/:id', asyncHandler(async (req, res) => {
