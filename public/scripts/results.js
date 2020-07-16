@@ -1,19 +1,20 @@
 document.addEventListener('DOMContentLoaded', e => {
     document.querySelectorAll('.question_container').forEach(question => {
         chartQuestions(question)
+        question.style.cursor = 'pointer'
     });
 });
 
 const chartQuestions = question => {
     question.addEventListener('click', async function clickHandler(e) {
         const responseObjects = await getQuestionResponses(question.lastChild.value)
-        const chart = document.createElement('canvas')
-        chart.style.width = '400px'
-        chart.style.height = '400px'
-        question.appendChild(chart)
         question.childNodes.forEach((option, i) => {
-            if (i > 0) option.setAttribute('hidden', 'true')
+            if (i > 0) option.style.display = 'none'
         });
+        const chart = document.createElement('canvas')
+        chart.classList.add('is-three-fifths')
+        question.appendChild(chart)
+
         createChart(chart, __tallyResponses(responseObjects))
         question.style.cursor = 'default'
         question.removeEventListener('click', clickHandler)

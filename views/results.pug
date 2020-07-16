@@ -1,22 +1,28 @@
 extends layout.pug
 
 block append head 
-    link(rel="stylesheet" type="text/css" href="/styles/splash.css")
+    //- link(rel="stylesheet" type="text/css" href="/styles/splash.css")
     script(src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js")
     script(src="/scripts/results.js" type="application/javascript")
 block content
-    h4= survey.name
+    section(class="hero is-primary is-bold")
+        div(class="hero-body")
+            div(class="container")
+                h1(class="title")= survey.name
     input(class="survey_id" type="hidden" value=survey.id)
     each question in survey.Questions
-        div(class="question_results")
-            div(class="question_container")
-                h3(id='question_Title noHide')= question.questionText
-                ul(class="question_list")   
-                    li(class="options")= question.opOne
-                    li(class="options")= question.opTwo
-                    li(class="options")= question.opThree
-                    li(class="options")= question.opFour
-                    li(class="options")= question.opFive
-                input(class="question_id" type="hidden" value=question.id)
+        div(class="columns")
+            div(class="column is-one-fifth")
+            div(class="column is-three-fifths")
+                section(class="box question_container")
+                    div(class="media")
+                        h1(class="title")= question.questionText
+                    div(class="box")= question.opOne 
+                    div(class="box")= question.opTwo 
+                    div(class="box")= question.opThree 
+                    div(class="box")= question.opFour 
+                    div(class="box")= question.opFive
+                    input(class="question_id" type="hidden" value=question.id) 
+            div(class="column" is-one-fifth)
                 
                 
