@@ -37,7 +37,11 @@ router.get('/dashboard', requireAuth, asyncHandler(async (req, res) => {
                 winner = el
             }
         })
-        return `"${winner.name}", with ${winner.Upvotes.length} upvotes!`;
+        if (winner) {
+            return `"${winner.name}" with ${winner.Upvotes.length} upvotes!`;
+        } else {
+            return false;
+        }
     }
     let mostPop = mostPopular()
     totalResp = ownedResponses()
