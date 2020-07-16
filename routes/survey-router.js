@@ -49,15 +49,24 @@ router.post('/surveys/create/:id', csrfProtection, asyncHandler(async (req, res)
     res.send('goooood')
 }))
 
-router.get('/surveys/:id', asyncHandler(async (req, res) => {
+router.get('/surveys/:id', csrfProtection, asyncHandler(async (req, res) => {
     const survey = await db.Survey.findByPk(parseInt(req.params.id, 10), { include: { model: db.Question } });
-    res.render('results', { title: `Survey #${parseInt(req.params.id, 10)}`, survey });
+    res.render('results', { title: `Survey #${parseInt(req.params.id, 10)}`, token: req.csrfToken(), survey });
 }));
 
-router.get('/surveys/:id/questions/:qid', asyncHandler(async (req, res) => {
+router.get('/surveys/:id/questions/:qid', csrfProtection, asyncHandler(async (req, res) => {
     const surveyResponses = await db.QuestionResponse.findAll({ where: { surveyId: parseInt(req.params.id, 10), questionId: parseInt(req.params.qid, 10) }, include: { model: db.Question } });
     res.send(surveyResponses)
-}))
+}));
+
+router.post('/surveys/:id/questions/:qid', csrfProtection, asyncHandler(async (req, res) => {
+    const response = await db.QuestionResponse.create({
+        surveyId: req.params.id,
+        userId: 1,
+        questionId: req.params.qid,
+        questionResponseValue: req.body.responseText.toLowerCase()
+    });
+}));
 
 
 module.exports = router;

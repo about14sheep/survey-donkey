@@ -6,25 +6,47 @@ document.addEventListener('DOMContentLoaded', e => {
 });
 
 const chartQuestions = question => {
-    question.addEventListener('click', async function clickHandler(e) {
-        const responseObjects = await getQuestionResponses(question.lastChild.value)
-        question.childNodes.forEach((option, i) => {
-            if (i > 0) option.style.display = 'none'
-        });
-        const chart = document.createElement('canvas')
-        chart.classList.add('is-three-fifths')
-        question.appendChild(chart)
+    const options = Array.from(question.childNodes).filter(el => el.classList.contains('option'))
+    options.forEach(option => {
+        option.addEventListener('click', async function clickHandler(e) {
+            console.log(e.target.textContent)
+            postQuestionResponse(question.lastChild.value, e.target.textContent)
+            const responseObjects = await getQuestionResponses(question.lastChild.value)
+            question.childNodes.forEach((option, i) => {
+                if (i > 0) option.style.display = 'none'
+            });
+            const chart = document.createElement('canvas')
+            chart.classList.add('is-three-fifths')
+            question.appendChild(chart)
 
-        createChart(chart, __tallyResponses(responseObjects))
-        question.style.cursor = 'default'
-        question.removeEventListener('click', clickHandler)
-    });
+            createChart(chart, __tallyResponses(responseObjects))
+            question.style.cursor = 'default'
+            question.removeEventListener('click', clickHandler)
+        });
+    })
+
 }
 
 const getQuestionResponses = async (questionId) => {
     const res = await fetch(`/surveys/${document.querySelector('.survey_id').value}/questions/${questionId}`);
     const data = await res.json();
     return data
+}
+
+const postQuestionResponse = async (questionId, questionText) => {
+    const token = document.getElementById('_csrfToken').value
+    const data = JSON.stringify({
+        responseText: questionText
+    });
+    const res = await fetch(`/surveys/${document.querySelector('.survey_id').value}/questions/${questionId}`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json",
+            "Csrf-Token": token
+        },
+        body: data
+    })
+    console.log(res)
 }
 
 const createChart = (container, data) => {

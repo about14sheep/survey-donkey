@@ -6,10 +6,10 @@ module.exports = (sequelize, DataTypes) => {
     questionId: DataTypes.INTEGER,
     questionResponseValue: DataTypes.STRING
   }, {});
-  QuestionResponse.associate = function(models) {
-    QuestionResponse.belongsTo(models.Question,{foreignKey: 'questionId'})
-    QuestionResponse.belongsTo(models.User, {foreignKey: 'userId' })
-    QuestionResponse.belongsTo(models.Survey, {foreignKey: 'surveyId' })
+  QuestionResponse.associate = function (models) {
+    QuestionResponse.belongsTo(models.Question, { foreignKey: 'questionId' })
+    QuestionResponse.belongsTo(models.User, { foreignKey: 'userId' })
+    QuestionResponse.belongsTo(models.Survey, { foreignKey: 'surveyId' })
   };
   return QuestionResponse;
 };
