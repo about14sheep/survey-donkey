@@ -59,5 +59,13 @@ router.get('/surveys/:id/responses', asyncHandler(async (req, res) => {
     res.send(surveyResponses)
 }))
 
+router.post('/surveys/delete/:id', asyncHandler(async (req, res)=>{
+    const surveyId = parseInt(req.params.id, 10);
+    const survey = await db.Survey.findByPk(surveyId);
+    await survey.destroy();
+
+    res.redirect('back');
+}))
+
 
 module.exports = router;

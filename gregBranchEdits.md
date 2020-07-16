@@ -30,6 +30,7 @@ Thursday:
 12. got total responses/most popular working
 13. made delete survey feature with confirm
 14. css adjustments
+15. completed delete survey route, edited models to accomodate cascade deleting.
 
 ToDo/ questions for group:
 - I think we need to make a 2nd sign up form for just email for users that just want to anonymously fill out a survey (guest user)
@@ -44,3 +45,4 @@ ToDo/ questions for group:
 - bonus: add icons to dropdown menus
 - clipboard share options
 - total responses
+- survey create linked to user?
