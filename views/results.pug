@@ -11,7 +11,7 @@ block content
         div(class="question_results")
             div(class="question_container")
                 canvas(class="chart" width="100px" height="100px" hidden)
-                h3(id='surveyTitle')= question.questionText
+                h3(id='question_Title noHide')= question.questionText
                 ul(class="question_list")   
                     li(class="options")= question.opOne
                     li(class="options")= question.opTwo

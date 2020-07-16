@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', e => {
     document.querySelectorAll('.question_container').forEach(question => {
-        chartQuestion(question)
+        chartQuestions(question)
     });
 });
 
-const chartQuestion = question => {
+const chartQuestions = question => {
     question.addEventListener('click', async function clickHandler(e) {
         const responseObjects = await getQuestionResponses(question.lastChild.value)
         const chart = document.createElement('canvas')
@@ -12,25 +12,12 @@ const chartQuestion = question => {
         chart.style.height = '300px'
         question.appendChild(chart)
         question.childNodes.forEach((option, i) => {
-            if (i > 1 && i < question.childNodes.length) option.setAttribute('hidden', 'true')
+            if (i > 1) option.setAttribute('hidden', 'true')
         });
-        createChart(chart, tallyResponses(responseObjects))
+        createChart(chart, __tallyResponses(responseObjects))
+        question.style.cursor = 'default'
         question.removeEventListener('click', clickHandler)
     });
-}
-
-const tallyResponses = (arr, results = []) => {
-    if (arr.length < 1) return results
-    results.push(buildObj(arr.filter(option => option.questionResponseValue === arr[0].questionResponseValue)))
-    tallyResponses(arr.filter(option => option.questionResponseValue !== arr[0].questionResponseValue), results)
-    return results
-}
-
-const buildObj = arr => {
-    return {
-        title: arr[0].questionResponseValue,
-        count: arr.length
-    }
 }
 
 const getQuestionResponses = async (questionId) => {
@@ -68,8 +55,22 @@ const createChart = (container, data) => {
         },
         options: {
             legend: {
-                position: 'left'
+                position: 'right'
             }
         }
     })
+}
+
+const __tallyResponses = (arr, results = []) => {
+    if (arr.length < 1) return results
+    results.push(__buildObj(arr.filter(option => option.questionResponseValue === arr[0].questionResponseValue)))
+    __tallyResponses(arr.filter(option => option.questionResponseValue !== arr[0].questionResponseValue), results)
+    return results
+}
+
+const __buildObj = arr => {
+    return {
+        title: arr[0].questionResponseValue,
+        count: arr.length
+    }
 }
