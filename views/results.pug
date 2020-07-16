@@ -15,6 +15,7 @@ block content
             div(class="column is-one-fifth")
             div(class="column is-three-fifths")
                 section(class="box question_container")
+<<<<<<< HEAD
                     input(class="question_id" type="hidden" value=question.id)
                     div(class="box")
                         div(class="content is-large")
@@ -30,4 +31,25 @@ block content
                             input(type="hidden" value=question.opFour)
                         div(class="box option")= question.opFive
                             input(type="hidden" value=question.opFive)
+=======
+                    div(class="box")
+                        div(class="content is-large")
+                            h1(class="title")= question.questionText
+                    div(class="columns")
+                        div(class="column is-one-thirds")
+                        div(class="column is-two-thirds")
+                            div(class="options")
+                                div(class="box option")= question.opOne
+                                    input(type="hidden" value=question.opOne) 
+                                div(class="box option")= question.opTwo 
+                                    input(type="hidden" value=question.opTwo) 
+                                div(class="box option")= question.opThree 
+                                    input(type="hidden" value=question.opThree) 
+                                div(class="box option")= question.opFour 
+                                    input(type="hidden" value=question.opFour) 
+                                div(class="box option")= question.opFive
+                                    input(type="hidden" value=question.opFive) 
+                                input(class="question_id" type="hidden" value=question.id) 
+                        div(class="column is-one-thirds")        
+>>>>>>> 8413e24dc35bb10a09d1c02963b289f481a1b614
             div(class="column" is-one-fifth)
