@@ -14,15 +14,15 @@ const loginRouter = require('./routes/login');
 const dashRouter = require('./routes/dashboard');
 const logoutRouter = require('./routes/logout')
 const { restoreUser } = require('./auth');
-
+const feedRouter = require('./routes/feed')
 
 app.use(express.static('public'))
 app.use(cookieParser(sessionSecret))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use(surveyRouter)
 app.use(morgan('dev'));
 app.set('view engine', 'pug')
+app.use(feedRouter)
 
 
 app.use(session({

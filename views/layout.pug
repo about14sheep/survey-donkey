@@ -4,11 +4,44 @@ html(lang="en")
         block head
             meta(charset="UTF-8")
             meta(name="viewport", content="width=device-width, initial-scale=1.0")
-            link(rel="stylesheet" type="text/css" href="/styles/splash.css")
-            link(rel="stylesheet" href="/styles/mystyles.css")
             link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css")
-            script(src="/scripts/splash.js" type="application/javascript")
+            link(rel="stylesheet" type="text/css" href="/styles/navbar.css")
             title #{title}
     body
-        include navbar.pug
+        if !locals.authenticated
+            div(class='splash-nav__container')
+                div(class='surveyDonkey_logo_container')
+                    img(class='donkeyLogo' src='/icons/donkey-xxl.png')
+                    a(class='surveyDonkey_logo' href='/') SurveyDonkey
+                div(class="signUpAndLogIn_container")
+                    if !signUp && !login
+                        div(class='surveyDonkey_login_container')
+                            a(class='surveyDonkey_login' href='/login') LOG IN
+                        div(class='surveyDonkey_signup_container')
+                            a(class='surveyDonkey_signup' href='/sign-up') SIGN UP
+                    if signUp
+                        div(class='surveyDonkey_login_container')
+                            a(class='surveyDonkey_login' href='/login' id='squareLogin') LOG IN
+                    if login
+                        div(class='surveyDonkey_signup_container')
+                            a(class='surveyDonkey_signup' href='/sign-up' id='squareSignup') SIGN UP
+        if locals.authenticated
+            div(class='splash-nav__container' id='greenNavBar')
+                div(class='dashContainer')
+                    div(class='surveyDonkey_logo_container')
+                        img(class='donkeyLogo' src='/icons/donkey-2-xxlwhite.png')
+                    div(class='dashboardLinksContainer' id='dashLinks')
+                        a(class='dashDash' href='/dashboard') Dashboard
+                        a(class="dashMySurveys" href='/my-surveys') My Surveys
+                if !mySurveys
+                    div(class='meLogout')
+                        form(action='/logout' method="post")
+                            button(class='logout' type="submit") Log Out
+                if mySurveys
+                    div(class='ifMySurveys')
+                        div(class='mySurveys')
+                            a(class='createSurvey' href='create-survey') CREATE SURVEY
+                        div(class='meLogout')
+                            form(action='/logout' method="post")
+                                button(class='logout' type="submit") Log Out
         block content

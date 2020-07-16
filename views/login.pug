@@ -13,3 +13,9 @@ block content
       a(href='/' class='btn btn-warning ml-2') Cancel
   div
     p: a(href='/sign-up') Don't have an account
+
+  form(action='/login'  method='post')
+    input(type='hidden' name='_csrf' value=csrfToken)
+    input
+    div(class='py-4')
+      button(type='submit' class='btn btn-primary')

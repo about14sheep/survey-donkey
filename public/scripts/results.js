@@ -1,32 +1,68 @@
-document.addEventListener('DOMContentLoaded', async e => {
-    const responseObjects = await getResponses(document.querySelector('.survey_id').value);
-    if (responseObjects) {
-        document.querySelectorAll('.question_container').forEach(question => {
-            const obj = tallyResponses(question, responseObjects)
-            question.addEventListener('click', e => {
-                question.childNodes.forEach((el, i) => {
-                    if (i > 0) { el.toggleAttribute('hidden') }
-                })
-                createChart(question.firstChild, obj)
-            });
-        });
-    }
+document.addEventListener('DOMContentLoaded', e => {
+    document.querySelectorAll('.options').forEach(options => {
+        chartQuestions(options)
+    });
 });
 
-const getResponses = async (id) => {
-    const res = await fetch(`/surveys/${id}/responses`);
+const mouseLeaveHandler = e => e.target.style.filter = ``;
+const mouseOverHandler = e => e.target.style.filter = `drop-shadow(0 0 0.75rem #00BF6F)`;
+
+const chartQuestions = options => {
+    options.childNodes.forEach(option => {
+        option.style.cursor = 'pointer'
+        option.addEventListener('mouseover', mouseOverHandler)
+        option.addEventListener('mouseleave', mouseLeaveHandler)
+        option.addEventListener('click', async function clickHandler(e) {
+            option.style.backgroundColor = '#00BF6F'
+            postQuestionResponse(option.parentNode.lastChild.value, e.target.lastChild.value)
+            option.parentNode.childNodes.forEach(option => {
+                option.removeEventListener('mouseleave', mouseLeaveHandler)
+                option.removeEventListener('mouseover', mouseOverHandler)
+                option.removeEventListener('click', clickHandler)
+            })
+            setTimeout(async _ => {
+                const responseObjects = await getQuestionResponses(option.parentNode.lastChild.value)
+                options.childNodes.forEach((option, i) => option.style.display = 'none');
+                const chart = document.createElement('canvas')
+                options.parentNode.appendChild(chart)
+                createChart(chart, __tallyResponses(responseObjects))
+                option.style.cursor = 'default'
+            }, 1000)
+        });
+    })
+
+}
+
+const getQuestionResponses = async (questionId) => {
+    const res = await fetch(`/surveys/${document.querySelector('.survey_id').value}/questions/${questionId}`);
     const data = await res.json();
     return data
 }
 
+const postQuestionResponse = async (questionId, questionText) => {
+    const token = document.getElementById('_csrfToken').value
+    const data = JSON.stringify({
+        responseText: questionText
+    });
+    const res = await fetch(`/surveys/${document.querySelector('.survey_id').value}/questions/${questionId}`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json",
+            "Csrf-Token": token
+        },
+        body: data
+    })
+}
+
 const createChart = (container, data) => {
+    const chartTypes = ['pie', 'doughnut'];
     return new Chart(container.getContext('2d'), {
-        type: 'pie',
+        type: chartTypes[randomNumber(chartTypes.length)],
         data: {
-            labels: [data.opOneText, data.opTwoText, data.opThreeText, data.opFourText, data.opFiveText],
+            labels: [...data.map(el => el.title)],
             datasets: [{
                 label: '# of Votes',
-                data: [data.opOneScore, data.opTwoScore, data.opThreeScore, data.opFourScore, data.opFiveScore],
+                data: [...data.map(el => el.count)],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -44,40 +80,30 @@ const createChart = (container, data) => {
                     'rgba(255, 159, 64, 1)'
                 ],
                 borderWidth: 1
-            }]
+            }],
+        },
+        options: {
+            legend: {
+                position: 'right'
+            }
         }
     })
 }
 
-const tallyResponses = (parent, responseObjects) => {
-    const optionTexts = Array.from({ length: 5 }).map(el => el = '');
-    let opOne, opTwo, opThree, opFour, opFive;
-    opOne = opTwo = opThree = opFour = opFive = 0;
-    responseObjects.forEach(el2 => {
-        if (parent.lastChild.value.toLowerCase() === el2.Question.questionText.toLowerCase()) {
-            const list = document.querySelector('.question_list')
-            parent.childNodes[Array.from(list.parentNode.children).indexOf(list)].childNodes.forEach((el3, i) => {
-                const option = el3.textContent.toLowerCase()
-                const value = el2.questionResponseValue.toLowerCase()
-                optionTexts[i] = el3.textContent
-                if (option === value && i === 1) opOne++
-                if (option === value && i === 2) opTwo++
-                if (option === value && i === 3) opThree++
-                if (option === value && i === 4) opFour++
-                if (option === value && i === 5) opFive++
-            })
-        }
-    })
+const randomNumber = max => Math.floor(Math.random() * Math.floor(max));
+
+const __tallyResponses = (arr, results = []) => {
+    const arrToFilter = arr.filter(option => option.questionResponseValue !== arr[0].questionResponseValue);
+    const tally = __buildTally(arr.filter(option => option.questionResponseValue === arr[0].questionResponseValue));
+    if (arrToFilter.length < 1) return results.push(tally);
+    __tallyResponses(arrToFilter, results);
+    results.push(tally);
+    return results;
+}
+
+const __buildTally = arr => {
     return {
-        opOneText: optionTexts[1],
-        opTwoText: optionTexts[2],
-        opThreeText: optionTexts[3],
-        opFourText: optionTexts[4],
-        opFiveText: optionTexts[5],
-        opOneScore: opOne,
-        opTwoScore: opTwo,
-        opThreeScore: opThree,
-        opFourScore: opFour,
-        opFiveScore: opFive
+        title: arr[0].questionResponseValue,
+        count: arr.length
     }
 }
