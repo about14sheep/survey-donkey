@@ -23,7 +23,7 @@ const chartQuestions = question => {
                 createChart(chart, __tallyResponses(responseObjects))
                 question.style.cursor = 'default'
                 question.removeEventListener('click', clickHandler)
-            }, 500)
+            }, 1000)
 
         });
     })
