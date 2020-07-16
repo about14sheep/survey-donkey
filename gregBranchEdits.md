@@ -31,6 +31,8 @@ Thursday:
 13. made delete survey feature with confirm
 14. css adjustments
 15. completed delete survey route, edited models to accomodate cascade deleting.
+16. finally fix pugs
+17. created demo user functionality
 
 ToDo/ questions for group:
 - I think we need to make a 2nd sign up form for just email for users that just want to anonymously fill out a survey (guest user)
@@ -46,3 +48,4 @@ ToDo/ questions for group:
 - clipboard share options
 - total responses
 - survey create linked to user?
+- in navbar, where is create button?
