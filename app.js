@@ -6,7 +6,6 @@ const { Survey, Question, User, QuestionResponse } = require('./models');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const csurf = require('csurf');
-
 const session = require('express-session')
 const { sessionSecret } = require('./config/index.js');
 const surveyRouter = require('./routes/survey-router');
@@ -15,9 +14,6 @@ const loginRouter = require('./routes/login');
 const dashRouter = require('./routes/dashboard');
 const logoutRouter = require('./routes/logout')
 const { restoreUser } = require('./auth');
-
-const csrfProtection = csurf({ cookie: true })
-const asyncHandler = (handler) => (req, res, next) => handler(req, res, next).catch(next);
 
 
 app.use(express.static('public'))
@@ -49,5 +45,6 @@ app.get('/', (req, res) => {
 })
 
 const port = Number.parseInt(process.env.PORT, 10) || 8081;
-app.listen(port, () => {console.log(`Listening for requests on port ${port}...`);
+app.listen(port, () => {
+    console.log(`Listening for requests on port ${port}...`);
 });

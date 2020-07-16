@@ -3,13 +3,13 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Questions', [
-      {questionText: 'what is that', surveyId: 3, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
-      {questionText: 'what is this', surveyId: 1, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
-      {questionText: 'what are those', surveyId: 2, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
-      {questionText: 'who is that', surveyId: 1, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
-      {questionText: 'who is this', surveyId: 2, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
-      {questionText: 'yadda yadda', surveyId: 2, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
-      {questionText: 'blah blah', surveyId: 3, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() }
+      { questionText: 'what is that', surveyId: 3, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
+      { questionText: 'what is this', surveyId: 1, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
+      { questionText: 'what are those', surveyId: 2, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
+      { questionText: 'who is that', surveyId: 1, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
+      { questionText: 'who is this', surveyId: 2, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
+      { questionText: 'yadda yadda', surveyId: 2, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
+      { questionText: 'blah blah', surveyId: 3, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() }
       ])
   },
 

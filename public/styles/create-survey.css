@@ -1,12 +1,17 @@
-
 .hidden {
     display: none
+}
+
+.survey-preview-question-container:hover{
+    background-color: 	#F5F5F5
 }
 
 body {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color:	#F0F0F0;
+    margin: 1em
 }
 
 .option-container:not(.hidden){
@@ -14,6 +19,7 @@ body {
     width: 900px;
     justify-content: center;
     align-items: center;
+    flex-direction: column
 }
 
 #question-type{
@@ -30,6 +36,14 @@ input{
     height: auto;
 }
 
+html{
+    background-color:	#F0F0F0;
+}
+
+#clear-question{
+    margin-left: 11px;
+}
+
 #main-content{
     display: flex;
     justify-content: center;
@@ -37,12 +51,22 @@ input{
     flex-direction: column;
 }
 
+.new-option-text{
+    width: 500px;
+}
+
 #new-question-button{
     width: 900px
 }
-.green {
+#survey-preview-title {
     color: #00BF6F
 }
+
+.edit-button-holder {
+    display: flex;
+    flex-direction: row;
+}
+
 
 .question-input {
     width:600px;
@@ -57,17 +81,49 @@ input{
 #bottom-buffer {
     display: block;
     height: 300px;
+    background:#F0F0F0;
 }
 
-/* .newQuestionContainer {
+.newQuestionContainer {
     display:flex;
-} */
+} 
 
-/* .survey-preview-question-container {
-    margin-bottom: 20px;
+.question-text-and-button-container{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:860px
 }
+
+.survey-preview-question-container {
+    margin-bottom: 20px;
+} 
 
 .survey-preview-question-option {
     justify-self: center;
     margin-left: 35px;
-} */
+}
+
+#multiple-choice-container {
+    margin-top: 10px;
+}
+
+.new-option-text {
+    margin: 10px;
+    margin-top: 0px;
+}
+
+#button-holder{
+    display: flex;
+    margin-top: 10px;
+    flex-direction: row;
+}
+
+#save-question{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#delete-survey{
+    margin-left: 10px;
+}

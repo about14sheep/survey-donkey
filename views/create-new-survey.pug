@@ -1,36 +1,42 @@
-html 
-    head
-        link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css")
-        link(rel="stylesheet" type="text/css" href="/styles/create-survey.css")
-        script(src="/scripts/new-question.js" type="application/javascript")
-        title= title
-    body
-        input(type="hidden" value=surveyId id="surveyId")
-        input(type="hidden" value=token name="_csrf" id="csrfToken")
-        div(id="main-content")
-            h1(id="survey-preview-header" class="title-4") survey preview:
-            div(id="survey-form" class="box")
-                h1(id="survey-preview-title" class="title green")= name
-            div(id="options-container" class="hidden option-container box")
-                form(id="question-main-prompt-form")
-                        input(name="question-text" id="question-text" type="text" placeholder="Enter the text for the new question" class="question-input")
-                        label(for="question-type")
-                        select(id="question-type" name="question-type" required)
-                            option(value="multiple-choice" selected= true) Multiple Choice
-                            option(value="scroll") Scroll
-                        button(type="submit" id="new-question-options" class="button is-light is-success") Continue
-            div 
-                button(class="new-question" id="new-question-button" class="button is-light is-success") + Question
-            div(id="current-question-prompt-container" class="is-hidden box")
-                p(id="current-question-prompt" class="title-4")
-            div(id="multiple-choice-container" class="hidden")
-                div
-                    ul(id="option-list")
-                div 
-                    label(for="new-option-text") Answer Text
-                    input(id="new-option-text" type="text" name="new-option-text" placeholder=" Enter answer text here...")
-                div
-                    button(id="add-option" class="button is-light is-success") + Add Option
-                    button(id="save-question" class="button is-light is-success") Save Question
-            div(id="bottom-buffer")
+
+extends layout.pug
+block append head
+    link(rel="stylesheet" type="text/css" href="/styles/create-survey.css")
+    script(src="/scripts/survey-editor.js" type="application/javascript")
+block content
+    input(type="hidden" value=surveyId id="surveyId")
+    input(type="hidden" value=token name="_csrf" id="csrfToken")
+    div(id="main-content")
+        div(id="survey-form" class="box")
+            h1(id="survey-preview-title" class="title green")= name
+        div(id="options-container" class="option-container box")
+            form(id="question-main-prompt-form")
+                    input(name="question-text" id="question-text" type="text" placeholder="Enter the text for the new question" class="question-input")
+                    label(for="question-type")
+                    select(id="question-type" name="question-type" required)
+                        option(value="multiple-choice" selected= true id="multiple-choice") Multiple Choice
+                        option(value="scroll") Scroll
+                    button(type="submit" id="new-question-options" class="button is-dark is-success") Continue
+            div(id="multiple-choice-container" class="is-hidden")
+                form(class="multiple-choice-option" id="multiple-choice-form")
+                    input(id="option-one" class="new-option-text" type="text" placeholder=" Enter answer text here...")
+                    input(id="option-two" class="new-option-text" type="text" placeholder=" Enter answer text here...")
+                    input(id="option-three" class="new-option-text add-more-options" type="text" placeholder=" Enter answer text here...")
+                    input(id="option-four" class="new-option-text is-hidden" type="text" placeholder=" Enter answer text here...")
+                    input(id="option-five" class="new-option-text is-hidden" type="text" placeholder=" Enter answer text here...")
+                div(id="button-holder")
+                    button(id="save-question" class="button is-dark is-success question-button") qdd question
+                    button(id="save-survey" class="button is-dark is-warning question-button") save survey
+                    button(id="clear-question" class="button is-dark is-info question-button") clear question
+                    button(id="delete-survey" class="button is-dark is-danger question-button") delete survey
+        div 
+            button(class="new-question" id="new-question-button" class="is-hidden button is-light is-success") + Question
+        div(id="multiple-choice-container" class="is-hidden")
+            form(id="multiple-choice-form" class="is-hidden")
+                form(class="multiple-choice-option")
+                    input(class="new-option-text" type="text" placeholder=" Enter answer text here...")
+                    button(type="submit" class="option-row-submit button is-light") next
+            button(id="add-option" class="button is-light is-success") + Add
+            button(id="save-question" class="button is-light is-success") Save Question
+        div(id="bottom-buffer")
         
