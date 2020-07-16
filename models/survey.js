@@ -8,8 +8,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Survey.associate = function(models) {
     Survey.belongsTo(models.User, {foreignKey:'userId'})
-    Survey.hasMany(models.Question, {foreignKey: 'surveyId'})
-    Survey.hasMany(models.QuestionResponse, {foreignKey: 'surveyId'})
+    Survey.hasMany(models.Question, {foreignKey: 'surveyId', onDelete: 'CASCADE', hooks: true})
+    Survey.hasMany(models.QuestionResponse, {foreignKey: 'surveyId', onDelete: 'CASCADE', hooks: true})
+    Survey.hasMany(models.Upvote, { foreignKey: 'surveyId', onDelete: 'CASCADE', hooks: true})
   };
   return Survey;
 };

@@ -20,12 +20,32 @@ Tuesday:
 9. added important elements to dashboard page
 10. specific user owned suveys query and list working
 
+Wednesday:
+11. more work with dashboard, have proper queries set up
+12. merge with group, polished minor code issues
+13. added cool tags, refined created/modified sections, accurate question counter,options drop down
+14. create survey button/survey feed button
+
+Thursday:
+12. got total responses/most popular working
+13. made delete survey feature with confirm
+14. css adjustments
+15. completed delete survey route, edited models to accomodate cascade deleting.
+16. finally fix pugs
+17. created demo user functionality
+
 ToDo/ questions for group:
 - I think we need to make a 2nd sign up form for just email for users that just want to anonymously fill out a survey (guest user)
-- fix login/signup pugs to extend layout.pug/navbar
 - restrict survey editing only to surveys made by user (checkPermissions section in reading)
 - add requireAuth back in to routes once they are finished
 - titles in layout.pug
 - firstname in seeds, mostRecentSubmission=time or date, add lastlogin to login
 - guest account
 - completion rate bonus objective?
+- figure out layout.pug
+- final heroku db seeds
+- bonus: add icons to dropdown menus
+- clipboard share options
+- total responses
+- survey create linked to user?
+- in navbar, where is create button?
