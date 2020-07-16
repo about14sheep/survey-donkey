@@ -31,7 +31,7 @@ const chartQuestions = options => {
 
 }
 
-const mouseLeaveHandler = (e) => {
+const mouseLeaveHandler = e => {
     e.target.style.filter = ``;
 }
 
