@@ -1,14 +1,23 @@
 document.addEventListener('DOMContentLoaded', e => {
     document.querySelectorAll('.question_container').forEach(question => {
-        question.addEventListener('click', async function clickHandler(e) {
-            const list = document.querySelector('.question_id')
-            const chart = document.querySelector('.chart')
-            const responseObjects = await getQuestionResponses(question.childNodes[Array.from(list.parentNode.children).indexOf(list)].value)
-            console.log(tallyResponses(responseObjects))
-            //createChart(question.childNodes[Array.from(chart.parentNode.children).indexOf(chart)], tallyResponses(responseObjects))
-        });
+        chartQuestion(question)
     });
 });
+
+const chartQuestion = question => {
+    question.addEventListener('click', async function clickHandler(e) {
+        const responseObjects = await getQuestionResponses(question.lastChild.value)
+        const chart = document.createElement('canvas')
+        chart.style.width = '300px'
+        chart.style.height = '300px'
+        question.appendChild(chart)
+        question.childNodes.forEach((option, i) => {
+            if (i > 1 && i < question.childNodes.length) option.setAttribute('hidden', 'true')
+        });
+        createChart(chart, tallyResponses(responseObjects))
+        question.removeEventListener('click', clickHandler)
+    });
+}
 
 const tallyResponses = (arr, results = []) => {
     if (arr.length < 1) return results

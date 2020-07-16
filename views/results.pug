@@ -10,7 +10,6 @@ block content
     each question in survey.Questions
         div(class="question_results")
             div(class="question_container")
-                input(class="question_id" type="hidden" value=question.id)
                 canvas(class="chart" width="100px" height="100px" hidden)
                 h3(id='surveyTitle')= question.questionText
                 ul(class="question_list")   
@@ -19,5 +18,6 @@ block content
                     li(class="options")= question.opThree
                     li(class="options")= question.opFour
                     li(class="options")= question.opFive
+                input(class="question_id" type="hidden" value=question.id)
                 
                 
