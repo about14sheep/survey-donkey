@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', e => {
+    document.querySelector('#survey_banner').backgroundColor = '#00BF6F'
     document.querySelectorAll('.question_container').forEach(question => {
         chartQuestions(question)
         question.style.cursor = 'pointer'
@@ -8,9 +9,16 @@ document.addEventListener('DOMContentLoaded', e => {
 const chartQuestions = question => {
     const options = Array.from(question.childNodes).filter(el => el.classList.contains('option'))
     options.forEach(option => {
-        option.addEventListener('click', async function clickHandler(e) {
+        option.addEventListener('mouseover', e => {
             option.style.filter = `drop-shadow(0 0 0.75rem #00BF6F)`;
-            postQuestionResponse(question.lastChild.value, e.target.textContent)
+        })
+        option.addEventListener('mouseleave', e => {
+            option.style.filter = ``;
+        })
+
+        option.addEventListener('click', async function clickHandler(e) {
+            option.style.backgroundColor = '#00BF6F'
+            postQuestionResponse(question.lastChild.value, e.target.lastChild.value)
             setTimeout(async _ => {
                 const responseObjects = await getQuestionResponses(question.lastChild.value)
                 question.childNodes.forEach((option, i) => {
@@ -53,8 +61,9 @@ const postQuestionResponse = async (questionId, questionText) => {
 }
 
 const createChart = (container, data) => {
+    const chartTypes = ['pie', 'doughnut', 'bar'];
     return new Chart(container.getContext('2d'), {
-        type: 'pie',
+        type: chartTypes[randomNumber(chartTypes.length)],
         data: {
             labels: [...data.map(el => el.title)],
             datasets: [{
@@ -86,6 +95,8 @@ const createChart = (container, data) => {
         }
     })
 }
+
+const randomNumber = max => Math.floor(Math.random() * Math.floor(max));
 
 const __tallyResponses = (arr, results = []) => {
     const arrToFilter = arr.filter(option => option.questionResponseValue !== arr[0].questionResponseValue);

@@ -4,7 +4,7 @@ block append head
     script(src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js")
     script(src="/scripts/results.js" type="application/javascript")
 block content
-    section(class="hero is-primary is-bold")
+    section(class="box" id="survey_banner")
         div(class="hero-body")
             div(class="container")
                 h1(class="title")= survey.name
@@ -15,13 +15,19 @@ block content
             div(class="column is-one-fifth")
             div(class="column is-three-fifths")
                 section(class="box question_container")
-                    div(class="media")
-                        h1(class="title")= question.questionText
+                    div(class="box")
+                        div(class="content is-large")
+                            h1(class="title")= question.questionText
                     div(class="box option")= question.opOne
-                    div(class="box option")= question.opTwo  
+                        input(type="hidden" value=question.opOne) 
+                    div(class="box option")= question.opTwo 
+                        input(type="hidden" value=question.opTwo) 
                     div(class="box option")= question.opThree 
+                        input(type="hidden" value=question.opThree) 
                     div(class="box option")= question.opFour 
+                        input(type="hidden" value=question.opFour) 
                     div(class="box option")= question.opFive
+                        input(type="hidden" value=question.opFive) 
                     input(class="question_id" type="hidden" value=question.id) 
             div(class="column" is-one-fifth)
                 
