@@ -12,13 +12,43 @@ router.get('/dashboard', requireAuth, asyncHandler(async (req, res) => {
             userId: {
                 [Op.eq]: res.locals.user.id
             }
-        }
+        },
+        include: [db.Question, db.QuestionResponse, db.Upvote]
     });
+
+    const ownedResponses = () => {
+        let userArray = [];
+        ownedSurveys.forEach(el =>{
+            if (!userArray.includes(el.QuestionResponses)) {
+                userArray.push(el.QuestionResponses)
+            }
+        })
+        count= 0;
+        userArray.forEach(el => {
+            count+= el.length;
+        })
+        return count;
+    }
+
+    const mostPopular= () => {
+        let winner = ownedSurveys[0];
+        ownedSurveys.forEach(el => {
+            if (el.Upvotes.length > winner.Upvotes.length) {
+                winner = el
+            }
+        })
+        return `"${winner.name}", with ${winner.Upvotes.length} upvotes!`;
+    }
+    let mostPop = mostPopular()
+    totalResp = ownedResponses()
+
     const drafts= ownedSurveys.filter(el => el.published === false)
     res.render('dashboard', {
         title: "SurveyDonkey Dashboard",
         ownedSurveys,
-        drafts
+        drafts,
+        totalResp,
+        mostPop
     });
 }));
 

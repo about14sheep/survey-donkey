@@ -1,5 +1,8 @@
 extends layout.pug
 
+block append head
+    script(src="/scripts/results.js" type="application/javascript")
+    script(src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js")
 
 block content
     h4= survey.name
@@ -9,7 +12,7 @@ block content
             div(class="question_container")
                 canvas(id="myChart" width="400" height="400" hidden)
                 h3= question.questionText
-                ul(class="question_list")   
+                ul(class="question_list")
                     li(class="options")= question.opOne
                     li(class="options")= question.opTwo
                     li(class="options")= question.opThree

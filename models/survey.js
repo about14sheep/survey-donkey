@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     Survey.belongsTo(models.User, {foreignKey:'userId'})
     Survey.hasMany(models.Question, {foreignKey: 'surveyId'})
     Survey.hasMany(models.QuestionResponse, {foreignKey: 'surveyId'})
+    Survey.hasMany(models.Upvote, { foreignKey: 'surveyId'})
   };
   return Survey;
 };
