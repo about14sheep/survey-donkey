@@ -1,23 +1,25 @@
 document.addEventListener('DOMContentLoaded', e => {
-    document.querySelector('#survey_banner').backgroundColor = '#00BF6F'
     document.querySelectorAll('.options').forEach(options => {
         chartQuestions(options)
     });
 });
 
+const mouseLeaveHandler = e => e.target.style.filter = ``;
+const mouseOverHandler = e => e.target.style.filter = `drop-shadow(0 0 0.75rem #00BF6F)`;
+
 const chartQuestions = options => {
     options.childNodes.forEach(option => {
         option.style.cursor = 'pointer'
-        option.addEventListener('mouseover', e => {
-            option.style.filter = `drop-shadow(0 0 0.75rem #00BF6F)`;
-        })
-        option.addEventListener('mouseleave', e => {
-            option.style.filter = ``;
-        })
+        option.addEventListener('mouseover', mouseOverHandler)
+        option.addEventListener('mouseleave', mouseLeaveHandler)
         option.addEventListener('click', async function clickHandler(e) {
             option.style.backgroundColor = '#00BF6F'
             postQuestionResponse(option.parentNode.lastChild.value, e.target.lastChild.value)
-            option.removeEventListener('click', clickHandler)
+            option.parentNode.childNodes.forEach(option => {
+                option.removeEventListener('mouseleave', mouseLeaveHandler)
+                option.removeEventListener('mouseover', mouseOverHandler)
+                option.removeEventListener('click', clickHandler)
+            })
             setTimeout(async _ => {
                 const responseObjects = await getQuestionResponses(option.parentNode.lastChild.value)
                 options.childNodes.forEach((option, i) => option.style.display = 'none');
@@ -26,7 +28,6 @@ const chartQuestions = options => {
                 createChart(chart, __tallyResponses(responseObjects))
                 option.style.cursor = 'default'
             }, 1000)
-
         });
     })
 

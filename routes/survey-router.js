@@ -51,11 +51,11 @@ router.post('/surveys/create/:id', csrfProtection, asyncHandler(async (req, res)
     res.send('goooood')
 }))
 
-router.post('/surveys/questions/:id',csrfProtection, asyncHandler(async(req,res)=>{
+router.post('/surveys/questions/:id', csrfProtection, asyncHandler(async (req, res) => {
     console.log("hello")
     console.log(req.body)
     console.log(req.body.questionId)
-    db.Question.destroy({where: {id: req.body.questionId}})
+    db.Question.destroy({ where: { id: req.body.questionId } })
     res.status(200)
     res.send('question-deleted')
 }))
@@ -77,9 +77,11 @@ router.post('/surveys/:id/questions/:qid', csrfProtection, asyncHandler(async (r
         questionId: req.params.qid,
         questionResponseValue: req.body.responseText.toLowerCase()
     });
+    res.status(200)
+    res.send('response updated')
 }));
 
-router.post('/surveys/delete/:id', asyncHandler(async (req, res)=>{
+router.post('/surveys/delete/:id', asyncHandler(async (req, res) => {
     const surveyId = parseInt(req.params.id, 10);
     const survey = await db.Survey.findByPk(surveyId);
     await survey.destroy();
