@@ -8,11 +8,11 @@ const chartQuestions = question => {
     question.addEventListener('click', async function clickHandler(e) {
         const responseObjects = await getQuestionResponses(question.lastChild.value)
         const chart = document.createElement('canvas')
-        chart.style.width = '300px'
-        chart.style.height = '300px'
+        chart.style.width = '400px'
+        chart.style.height = '400px'
         question.appendChild(chart)
         question.childNodes.forEach((option, i) => {
-            if (i > 1) option.setAttribute('hidden', 'true')
+            if (i > 0) option.setAttribute('hidden', 'true')
         });
         createChart(chart, __tallyResponses(responseObjects))
         question.style.cursor = 'default'
@@ -62,13 +62,15 @@ const createChart = (container, data) => {
 }
 
 const __tallyResponses = (arr, results = []) => {
-    if (arr.length < 1) return results
-    results.push(__buildObj(arr.filter(option => option.questionResponseValue === arr[0].questionResponseValue)))
-    __tallyResponses(arr.filter(option => option.questionResponseValue !== arr[0].questionResponseValue), results)
-    return results
+    const arrToFilter = arr.filter(option => option.questionResponseValue !== arr[0].questionResponseValue);
+    const tally = __buildTally(arr.filter(option => option.questionResponseValue === arr[0].questionResponseValue));
+    if (arrToFilter.length < 1) return results.push(tally);
+    __tallyResponses(arrToFilter, results);
+    results.push(tally);
+    return results;
 }
 
-const __buildObj = arr => {
+const __buildTally = arr => {
     return {
         title: arr[0].questionResponseValue,
         count: arr.length
