@@ -1,0 +1,58 @@
+.divider {
+  border-right: 1px solid rgb(223, 223, 223);
+}
+
+.tableRows{
+  display: flex;
+  justify-content: space-between;
+}
+.sOwnerDiv,
+.sNameDiv,
+.sCreatedDiv,
+.sModifiedDiv,
+.sQuestionDiv,
+.sOptionsDiv {
+  display: flex;
+  width: 30%;
+  justify-content: center;
+  color: white;
+  background-color: #6B787F;
+  border: none;
+  border-right: 1px solid #fff;
+  
+}
+.sNameDiv, .sCreatedDiv, .sModifiedDiv {
+  cursor: pointer;
+}
+
+.sOwnerDiv:hover,
+.sNameDiv:hover,
+.sCreatedDiv:hover,
+.sModifiedDiv:hover,
+.sQuestionDiv:hover,
+.sOptionsDiv:hover {
+  background-color: black;
+}
+
+#createButton {
+  color: white;
+  padding: 10px 16px;
+border-radius: 2px;
+line-height: 16px;
+text-decoration: none;
+font-family: National2,"Helvetica Neue",Helvetica,Arial,sans-serif;
+font-size: 13px;
+font-weight: 500;
+border-width: 2px;
+cursor: pointer;
+background-color: #00bf6f;
+}
+
+
+.sOwnerDiv,
+.sNameDiv,
+.sCreatedDiv,
+.sModifiedDiv,
+.sQuestiongDiv,
+.sOptionsDiv {}
+
