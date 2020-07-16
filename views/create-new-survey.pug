@@ -1,4 +1,4 @@
-html 
+html
     head
         link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css")
         link(rel="stylesheet" type="text/css" href="/styles/create-survey.css")
@@ -19,17 +19,16 @@ html
                             option(value="multiple-choice") Multiple Choice
                             option(value="scroll") Scroll
                         button(type="submit" id="new-question-options" class="button is-light is-success") Continue
-            div 
+            div
                 button(class="new-question" id="new-question-button" class="button is-light is-success") + Question
             div(id="current-question-prompt-container" class="is-hidden box")
                 p(id="current-question-prompt" class="title-4")
             div(id="multiple-choice-container" class="hidden")
                 div
                     ul(id="option-list")
-                div 
+                div
                     label(for="new-option-text") Answer Text
                     input(id="new-option-text" type="text" name="new-option-text" placeholder=" Enter answer text here...")
                 div
                     button(id="add-option" class="button is-light is-success") + Add Option
                     button(id="save-question" class="button is-light is-success") Save Question
-        
