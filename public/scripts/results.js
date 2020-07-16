@@ -1,35 +1,43 @@
-document.addEventListener('DOMContentLoaded', async e => {
-    const responseObjects = await getResponses(document.querySelector('.survey_id').value);
-    if (responseObjects) {
-        document.querySelectorAll('.question_container').forEach(question => {
-            const obj = tallyResponses(question, responseObjects)
-            question.addEventListener('click', e => {
-                question.childNodes.forEach((el, i) => {
-                    if (i > 1) { el.toggleAttribute('hidden') }
-                })
-                createChart(question.firstChild, obj)
-            });
+document.addEventListener('DOMContentLoaded', e => {
+    document.querySelectorAll('.question_container').forEach(question => {
+        question.addEventListener('click', async function clickHandler(e) {
+            const list = document.querySelector('.question_id')
+            const chart = document.querySelector('.chart')
+            const responseObjects = await getQuestionResponses(question.childNodes[Array.from(list.parentNode.children).indexOf(list)].value)
+            console.log(tallyResponses(responseObjects))
+            //createChart(question.childNodes[Array.from(chart.parentNode.children).indexOf(chart)], tallyResponses(responseObjects))
         });
-    }
+    });
 });
 
-const randomNumber = max => Math.floor(Math.random() * Math.floor(max));
+const tallyResponses = (arr, results = []) => {
+    if (arr.length < 1) return results
+    results.push(buildObj(arr.filter(option => option.questionResponseValue === arr[0].questionResponseValue)))
+    tallyResponses(arr.filter(option => option.questionResponseValue !== arr[0].questionResponseValue), results)
+    return results
+}
 
-const getResponses = async (id) => {
-    const res = await fetch(`/surveys/${id}/responses`);
+const buildObj = arr => {
+    return {
+        title: arr[0].questionResponseValue,
+        count: arr.length
+    }
+}
+
+const getQuestionResponses = async (questionId) => {
+    const res = await fetch(`/surveys/${document.querySelector('.survey_id').value}/questions/${questionId}`);
     const data = await res.json();
     return data
 }
 
 const createChart = (container, data) => {
-    const charts = ['doughnut', 'pie', 'bar']
     return new Chart(container.getContext('2d'), {
         type: 'pie',
         data: {
-            labels: [data.opOneText, data.opTwoText, data.opThreeText, data.opFourText, data.opFiveText],
+            labels: [...data.map(el => el.title)],
             datasets: [{
                 label: '# of Votes',
-                data: [data.opOneScore, data.opTwoScore, data.opThreeScore, data.opFourScore, data.opFiveScore],
+                data: [...data.map(el => el.count)],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -47,40 +55,12 @@ const createChart = (container, data) => {
                     'rgba(255, 159, 64, 1)'
                 ],
                 borderWidth: 1
-            }]
+            }],
+        },
+        options: {
+            legend: {
+                position: 'left'
+            }
         }
     })
-}
-
-const tallyResponses = (parent, responseObjects) => {
-    const optionTexts = Array.from({ length: 5 }).map(el => el = '');
-    let opOne, opTwo, opThree, opFour, opFive;
-    opOne = opTwo = opThree = opFour = opFive = 0;
-    responseObjects.forEach(el2 => {
-        if (parent.lastChild.value.toLowerCase() === el2.Question.questionText.toLowerCase()) {
-            const list = document.querySelector('.question_list')
-            parent.childNodes[Array.from(list.parentNode.children).indexOf(list)].childNodes.forEach((el3, i) => {
-                const option = el3.textContent.toLowerCase()
-                const value = el2.questionResponseValue.toLowerCase()
-                optionTexts[i] = el3.textContent
-                if (option === value && i === 1) opOne++
-                if (option === value && i === 2) opTwo++
-                if (option === value && i === 3) opThree++
-                if (option === value && i === 4) opFour++
-                if (option === value && i === 5) opFive++
-            })
-        }
-    })
-    return {
-        opOneText: optionTexts[1],
-        opTwoText: optionTexts[2],
-        opThreeText: optionTexts[3],
-        opFourText: optionTexts[4],
-        opFiveText: optionTexts[5],
-        opOneScore: opOne,
-        opTwoScore: opTwo,
-        opThreeScore: opThree,
-        opFourScore: opFour,
-        opFiveScore: opFive
-    }
 }
