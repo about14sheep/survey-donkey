@@ -50,16 +50,16 @@ router.post('/surveys/create/:id', csrfProtection, asyncHandler(async (req, res)
     res.send('goooood')
 }))
 
-router.post('/surveys/questions/:id',csrfProtection, asyncHandler(async(req,res)=>{
+router.post('/surveys/questions/:id', csrfProtection, asyncHandler(async (req, res) => {
     console.log("hello")
     console.log(req.body)
     console.log(req.body.questionId)
-    db.Question.destroy({where: {id: req.body.questionId}})
+    db.Question.destroy({ where: { id: req.body.questionId } })
     res.status(200)
     res.send('question-deleted')
 }))
 
-router.get('/surveys/:id', asyncHandler(async (req, res) => {
+router.get('/surveys/:id', csrfProtection, asyncHandler(async (req, res) => {
     const survey = await db.Survey.findByPk(parseInt(req.params.id, 10), { include: { model: db.Question } });
     res.render('results', { title: `Survey #${parseInt(req.params.id, 10)}`, token: req.csrfToken(), survey });
 }));
@@ -78,7 +78,7 @@ router.post('/surveys/:id/questions/:qid', csrfProtection, asyncHandler(async (r
     });
 }));
 
-router.post('/surveys/delete/:id', asyncHandler(async (req, res)=>{
+router.post('/surveys/delete/:id', asyncHandler(async (req, res) => {
     const surveyId = parseInt(req.params.id, 10);
     const survey = await db.Survey.findByPk(surveyId);
     await survey.destroy();
