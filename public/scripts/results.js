@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', e => {
 });
 
 const chartQuestions = question => {
-    const options = Array.from(question.childNodes).filter(el => el.classList.contains('option'))
+    const options = Array.from(question.lastChild.childNodes).filter(el => el.classList.contains('option'))
     options.forEach(option => {
         option.addEventListener('mouseover', e => {
             option.style.filter = `drop-shadow(0 0 0.75rem #00BF6F)`;
@@ -18,12 +18,11 @@ const chartQuestions = question => {
 
         option.addEventListener('click', async function clickHandler(e) {
             option.style.backgroundColor = '#00BF6F'
-            postQuestionResponse(question.lastChild.value, e.target.lastChild.value)
+            postQuestionResponse(question.childNodes[0].value, e.target.lastChild.value)
             setTimeout(async _ => {
-                const responseObjects = await getQuestionResponses(question.lastChild.value)
-                question.childNodes.forEach((option, i) => {
-                    if (i > 0) option.style.display = 'none'
-                });
+                const responseObjects = await getQuestionResponses(question.childNodes[0].value)
+
+                question.lastChild.childNodes.forEach((option, i) => option.style.display = 'none');
                 const chart = document.createElement('canvas')
                 chart.classList.add('is-three-fifths')
                 question.appendChild(chart)
@@ -61,7 +60,7 @@ const postQuestionResponse = async (questionId, questionText) => {
 }
 
 const createChart = (container, data) => {
-    const chartTypes = ['pie', 'doughnut', 'bar'];
+    const chartTypes = ['pie', 'doughnut'];
     return new Chart(container.getContext('2d'), {
         type: chartTypes[randomNumber(chartTypes.length)],
         data: {
