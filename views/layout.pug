@@ -29,19 +29,23 @@ html(lang="en")
             div(class='splash-nav__container' id='greenNavBar')
                 div(class='dashContainer')
                     div(class='surveyDonkey_logo_container')
-                        img(class='donkeyLogo' src='/icons/donkey-2-xxlwhite.png')
+                        a(href='/')
+                            img(class='donkeyLogo' src='/icons/donkey-2-xxlwhite.png')
                     div(class='dashboardLinksContainer' id='dashLinks')
                         a(class='dashDash' href='/dashboard') Dashboard
-                        a(class="dashMySurveys" href='/my-surveys') My Surveys
+                        a(class="dashMySurveys" href='/feed') Survey Feed
                 if !mySurveys
-                    div(class='meLogout')
-                        form(action='/logout' method="post")
-                            button(class='logout' type="submit") Log Out
-                if mySurveys
                     div(class='ifMySurveys')
                         div(class='mySurveys')
                             a(class='createSurvey' href='create-survey') CREATE SURVEY
                         div(class='meLogout')
                             form(action='/logout' method="post")
                                 button(class='logout' type="submit") Log Out
+                if mySurveys
+                    div(class='ifMySurveys')
+                        div(class='mySurveys')
+                            a(class='createSurvey' href='create-survey') CREATE SURVEY
+                    div(class='meLogout')
+                        form(action='/logout' method="post")
+                            button(class='logout' type="submit") Log Out
         block content
