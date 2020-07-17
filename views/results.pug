@@ -22,7 +22,7 @@ block content
                             div(class="content is-large")
                                 h1(class="title has-text-centered")= question.questionText
                         if question.questionType != 'multiple choice'
-                            div(class="columns")
+                            div(class="columns shortans")
                                 div(class="column is-one-fifth")
                                 div(class="column is-three-fifths")
                                     div(class="container")
@@ -30,6 +30,7 @@ block content
                                             textarea(class="column textarea is-four-fifths input is-primary" type="text" placeholder="Type your response here!")
                                             div(class="column")
                                             button(class="column is-one-fifth button is-success") Submit
+                                            input(type="hidden" value=question.id)
                                 div(class="column is-one-fifth")
                         else
                             div(class="columns is-vcentered")

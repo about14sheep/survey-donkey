@@ -1,4 +1,7 @@
-document.addEventListener('DOMContentLoaded', _ => document.querySelectorAll('.options').forEach(questions => JSON.parse(document.querySelector('.users_arr').value).map(el => el.questionId).map(el => Number(el)).includes(parseInt(questions.lastChild.value, 10)) ? renderChart(questions) : renderQuestion(questions)));
+document.addEventListener('DOMContentLoaded', _ => {
+    document.querySelectorAll('.options').forEach(questions => JSON.parse(document.querySelector('.users_arr').value).map(el => el.questionId).map(el => Number(el)).includes(parseInt(questions.lastChild.value, 10)) ? renderChart(questions) : renderQuestion(questions));
+    document.querySelectorAll('.shortans button').forEach(button => button.addEventListener('click', shortAnsClickHandler))
+});
 
 const renderQuestion = questions => {
     questions.childNodes.forEach(option => {
@@ -21,6 +24,11 @@ const clickHandler = e => {
         option.removeEventListener('click', clickHandler)
         option.style.cursor = 'not-allowed'
     })
+}
+
+const shortAnsClickHandler = e => {
+    e.target.removeEventListener('click', shortAnsClickHandler)
+    postQuestionResponse(e.target.parentNode.lastChild.value, e.target.parentNode.childNodes[0].value)
 }
 
 const mouseOverHandler = e => e.target.style.filter = `drop-shadow(0 0 0.75rem #00BF6F)`;
