@@ -4,16 +4,63 @@ const {requireAuth} = require('../auth')
 const db = require("../models");
 const { Op } = require("sequelize");
 const { csrfProtection, asyncHandler } = require('./utils');
-// const { owner, name, created, modified, question, options } = require('../public/scripts/feed.js')
+
 
 router.get('/feed', requireAuth, asyncHandler(async (req, res) => {
 
+const nameFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+order: [['name', 'ASC']] });
 
-
-let feedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote] });
-  res.render('feed', {
+res.render('feed', {
     title: "SurveyDonkey Feed",
-    feedSurveys,
+    name: true,
+    nameFeedSurveys,
+
+})
+;
+
+}))
+
+router.get('/feed/created', asyncHandler(async (req, res) => {
+
+const createFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+order: [['createdAt', 'ASC']] });
+
+
+res.render('feed', {
+    title: "SurveyDonkey Feed",
+    cre: true,
+    createFeedSurveys
+
+})
+;
+
+}))
+
+
+router.get('/feed/modified', asyncHandler(async (req, res) => {
+
+const  modFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+order: [['updatedAt', 'ASC']] });
+
+res.render('feed', {
+    title: "SurveyDonkey Feed",
+    mod: true,
+    modFeedSurveys
+})
+;
+
+}))
+
+router.get('/feed/name', asyncHandler(async (req, res) => {
+
+const nameFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+order: [['name', 'ASC']] });
+
+res.render('feed', {
+    title: "SurveyDonkey Feed",
+    name: true,
+    nameFeedSurveys,
 
 })
 ;

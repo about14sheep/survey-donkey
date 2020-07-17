@@ -49,10 +49,14 @@ background-color: #00bf6f;
 }
 
 
-.sOwnerDiv,
-.sNameDiv,
-.sCreatedDiv,
-.sModifiedDiv,
-.sQuestiongDiv,
-.sOptionsDiv {}
+
+.sName,
+.created,
+.modified {
+  display: flex;
+  text-decoration: none;
+  color: white; 
+  width: 100%;
+  justify-content: center;
+}
 
