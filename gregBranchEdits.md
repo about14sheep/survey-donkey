@@ -50,6 +50,7 @@ ToDo/ questions for group:
 - footer?
 - bonus: add icons to dropdown menus
 - results only page?
+- create surveys button from results?
 
 
 Need before heroku final:

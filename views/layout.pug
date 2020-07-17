@@ -37,14 +37,14 @@ html(lang="en")
                 if !mySurveys
                     div(class='ifMySurveys')
                         div(class='mySurveys')
-                            a(class='createSurvey' href='create-survey') CREATE SURVEY
+                            a(class='createSurvey' href='/surveys/create') CREATE SURVEY
                         div(class='meLogout')
                             form(action='/logout' method="post")
                                 button(class='logout' type="submit") Log Out
                 if mySurveys
                     div(class='ifMySurveys')
                         div(class='mySurveys')
-                            a(class='createSurvey' href='create-survey') CREATE SURVEY
+                            a(class='createSurvey' href='surveys/create') CREATE SURVEY
                     div(class='meLogout')
                         form(action='/logout' method="post")
                             button(class='logout' type="submit") Log Out

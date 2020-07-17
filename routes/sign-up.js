@@ -14,6 +14,7 @@ router.get('/sign-up', csrfProtection, (req, res) => {
   res.render('sign-up', {
     title: 'Sign Up',
     user,
+    signUp: true,
     csrfToken: req.csrfToken(),
   });
 });
