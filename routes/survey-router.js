@@ -15,14 +15,14 @@ router.get('/surveys/preview/:id', asyncHandler(async (req, res) => {
     res.send(responses);
 }));
 
-router.get('/surveys/create', csrfProtection, asyncHandler(async (req, res) => {
+router.get('/surveys/create', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
     res.render('name-survey', {
         title: 'New Survey',
         token: req.csrfToken()
     })
 }))
 
-router.post('/surveys/create', csrfProtection, asyncHandler(async (req, res) => {
+router.post('/surveys/create', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
     const newSurvey = await db.Survey.create({
         name: req.body.surveyName,
         userId: 1,
@@ -31,12 +31,12 @@ router.post('/surveys/create', csrfProtection, asyncHandler(async (req, res) => 
     res.redirect(`/surveys/create/${newSurvey.id}`)
 }))
 
-router.get('/surveys/create/:id', csrfProtection, asyncHandler(async (req, res) => {
+router.get('/surveys/create/:id', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
     const survey = await db.Survey.findByPk(req.params.id)
     res.render('create-new-survey', { title: 'Create Survey', name: survey.name, token: req.csrfToken(), surveyId: req.params.id })
 }))
 
-router.post('/surveys/create/:id', csrfProtection, asyncHandler(async (req, res) => {
+router.post('/surveys/create/:id', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
     const question = await db.Question.create({
         questionText: req.body.prompt,
         surveyId: req.body.surveyId,

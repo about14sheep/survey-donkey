@@ -3,23 +3,26 @@ extends layout.pug
 include utils.pug
 
 block content
-    +validationErrorSummary(errors)
-    form(action='/users' method='POST')
-        input(type='hidden' name='_csrf' value=csrfToken)
-        +field('First Name: ', 'firstName', user.firstName)
-        +field('Last Name: ', 'lastName', user.lastName)
-        +field('Email Address: ', 'email', user.email)
-        +field('Password: ', 'password', user.password, 'password')
-        +field('Confirm Password: ', 'confirmPassword', '', 'password')
-        div(class='py-4')
-        button(type='submit' class='btn btn-primary') Sign Up
-        a(href='/' class='btn btn-warning ml-2') Cancel
-    div
-        p: a(href='/login') Already have an account?
+    div(class="columns")
+        div(class="column")
+        div(class="column has-background-light")
+            +validationErrorSummary(errors)
+            form(action='/users' method='POST' class="field")
+                input(type='hidden' name='_csrf' value=csrfToken)
+                +field('First Name: ', 'firstName', user.firstName)
+                +field('Last Name: ', 'lastName', user.lastName)
+                +field('Email Address: ', 'email', user.email)
+                +field('Password: ', 'password', user.password, 'password', 'At least one capital, number, special character')
+                +field('Confirm Password: ', 'confirmPassword', '', 'password')
+                div(class='py-4 has-text-centered')
+                    button(type='submit' class='button is-success') Create Account
+                div(class="has-text-centered")
+                    p: a(href='/login') Already have an account?
 
-    form(action='/login' method='post')
-        input(type='hidden' name='_csrf' value=csrfToken)
-        +demofield('Email Address: ', 'email', 'demo@surveydonkey.com')
-        +demofield('Password: ', 'password', 'Y0uThinkYouAreSoSmartFindingThisPasswordDontYou!', 'password')
-        div(class='py-4')
+        div(class="column")
+    div(class='py-4 has-text-centered')
+        form(action='/login' method='post')
+            input(type='hidden' name='_csrf' value=csrfToken)
+            +demofield('Email Address: ', 'email', 'demo@surveydonkey.com')
+            +demofield('Password: ', 'password', 'P4ssword!', 'password')
             button(type='submit' class="button is-success is-light") Demo User Login
