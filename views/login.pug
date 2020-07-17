@@ -12,10 +12,11 @@ block content
       button(type='submit' class='btn btn-primary') Login
       a(href='/' class='btn btn-warning ml-2') Cancel
   div
-    p: a(href='/sign-up') Don't have an account
+    p: a(href='/sign-up') Don't have an account?
 
-  form(action='/login'  method='post')
+  form(action='/login' method='post')
     input(type='hidden' name='_csrf' value=csrfToken)
-    input
+    +demofield('Email Address: ', 'email', 'demo@surveydonkey.com')
+    +demofield('Password: ', 'password', 'Y0uThinkYouAreSoSmartFindingThisPasswordDontYou!', 'password')
     div(class='py-4')
-      button(type='submit' class='btn btn-primary')
+      button(type='submit' class="button is-success is-light") Demo User Login

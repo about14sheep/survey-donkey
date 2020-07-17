@@ -16,3 +16,10 @@ block content
         a(href='/' class='btn btn-warning ml-2') Cancel
     div
         p: a(href='/login') Already have an account?
+
+    form(action='/login' method='post')
+        input(type='hidden' name='_csrf' value=csrfToken)
+        +demofield('Email Address: ', 'email', 'demo@surveydonkey.com')
+        +demofield('Password: ', 'password', 'Y0uThinkYouAreSoSmartFindingThisPasswordDontYou!', 'password')
+        div(class='py-4')
+            button(type='submit' class="button is-success is-light") Demo User Login

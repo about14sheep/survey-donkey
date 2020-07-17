@@ -31,7 +31,7 @@ Thursday:
 13. made delete survey feature with confirm
 14. css adjustments
 15. completed delete survey route, edited models to accomodate cascade deleting.
-16. finally fix pugs
+16. finally fix pugs, requireAuth bug fix
 17. created demo user functionality
 
 ToDo/ questions for group:

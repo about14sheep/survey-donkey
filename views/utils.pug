@@ -10,3 +10,8 @@ mixin field(labelText, fieldName, fieldValue, fieldType = 'text')
   div(class='form-group')
     label(for=fieldName)= labelText
     input(type=fieldType id=fieldName name=fieldName value=fieldValue class='form-control')
+
+mixin demofield(labelText, fieldName, fieldValue, fieldType = 'text')
+  div(class='form-group is-hidden')
+    label(for=fieldName)= labelText
+    input(type=fieldType id=fieldName name=fieldName value=fieldValue class='form-control')
