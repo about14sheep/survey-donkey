@@ -56,7 +56,6 @@ const postQuestionResponse = async (questionId, questionText) => {
 }
 
 const createChart = (container, data) => {
-    console.log(data)
     const chartTypes = ['pie', 'doughnut'];
     return new Chart(container.getContext('2d'), {
         type: chartTypes[randomNumber(chartTypes.length)],
