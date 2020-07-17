@@ -9,6 +9,7 @@ block content
             div(class="container")
                 h1(class="title")= survey.name
     input(class="survey_id" type="hidden" value=survey.id)
+    input(class="users_arr" type="hidden" value=usersArr)
     input(id="_csrfToken" name="_csrf" type="hidden" value=token)
     each question in survey.Questions
         div(class="columns")

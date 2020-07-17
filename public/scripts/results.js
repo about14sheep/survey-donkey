@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', e => {
+    let beenHeardThat = document.querySelector('.users_arr').value
+    beenHeardThat = JSON.parse(beenHeardThat)
     document.querySelectorAll('.options').forEach(options => {
-        chartQuestions(options)
+        if (beenHeardThat.filter(el => el = options.lastChild.value).length > 0) {
+            renderChart(options)
+        } else {
+            chartQuestions(options)
+        }
     });
 });
 
@@ -21,16 +27,20 @@ const chartQuestions = options => {
                 option.removeEventListener('click', clickHandler)
             })
             setTimeout(async _ => {
-                const responseObjects = await getQuestionResponses(option.parentNode.lastChild.value)
-                options.childNodes.forEach((option, i) => option.style.display = 'none');
-                const chart = document.createElement('canvas')
-                options.parentNode.appendChild(chart)
-                createChart(chart, __tallyResponses(responseObjects))
-                option.style.cursor = 'default'
+                renderChart(options);
             }, 1000)
         });
     })
 
+}
+
+const renderChart = async question => {
+    const responseObjects = await getQuestionResponses(question.lastChild.value)
+    question.childNodes.forEach((option, i) => option.style.display = 'none');
+    const chart = document.createElement('canvas')
+    question.parentNode.appendChild(chart)
+    createChart(chart, __tallyResponses(responseObjects))
+    question.style.cursor = 'default'
 }
 
 const getQuestionResponses = async (questionId) => {

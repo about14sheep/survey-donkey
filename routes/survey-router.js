@@ -2,7 +2,7 @@ const express = require('express')
 const { check, validationResult } = require('express-validator')
 const db = require('../models');
 const { csrfProtection, asyncHandler } = require('./utils');
-const {requireAuth} = require('../auth')
+const { requireAuth } = require('../auth')
 
 const router = express.Router()
 
@@ -60,9 +60,11 @@ router.post('/surveys/questions/:id', csrfProtection, asyncHandler(async (req, r
     res.send('question-deleted')
 }))
 
-router.get('/surveys/:id', csrfProtection, asyncHandler(async (req, res) => {
+router.get('/surveys/:id', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
     const survey = await db.Survey.findByPk(parseInt(req.params.id, 10), { include: { model: db.Question } });
-    res.render('results', { title: `Survey #${parseInt(req.params.id, 10)}`, token: req.csrfToken(), survey });
+    const userResponses = await db.QuestionResponse.findAll({ where: { surveyId: parseInt(req.params.id, 10), userId: parseInt(req.session.auth.userId) } });
+    const usersArr = userResponses.map(el => parseInt(el.questionId, 10));
+    res.render('results', { title: `Survey #${parseInt(req.params.id, 10)}`, token: req.csrfToken(), survey, usersArr });
 }));
 
 router.get('/surveys/:id/questions/:qid', csrfProtection, asyncHandler(async (req, res) => {
@@ -73,7 +75,7 @@ router.get('/surveys/:id/questions/:qid', csrfProtection, asyncHandler(async (re
 router.post('/surveys/:id/questions/:qid', csrfProtection, asyncHandler(async (req, res) => {
     const response = await db.QuestionResponse.create({
         surveyId: req.params.id,
-        userId: 1,
+        userId: parseInt(req.session.auth.userId),
         questionId: req.params.qid,
         questionResponseValue: req.body.responseText.toLowerCase()
     });
@@ -86,6 +88,20 @@ router.post('/surveys/delete/:id', asyncHandler(async (req, res) => {
     const survey = await db.Survey.findByPk(surveyId);
     await survey.destroy();
     res.redirect('back');
+}));
+
+router.get('/surveys/:id/votes', asyncHandler(async (req, res) => {
+    const votes = await db.Upvote.findAll({ where: { surveyId: parseInt(req.params.id, 10) } });
+    res.send(votes);
+}));
+
+router.post('surveys/:id/votes', asyncHandler(async (req, res) => {
+    const vote = await db.Upvote.create({
+        suveyId: parseInt(req.params.id, 10),
+        userId: parseInt(req.body.userId, 10),
+        upvote: parseInt(req.body.upvote, 10),
+        downvote: parseInt(req.body.downvote, 10)
+    })
 }))
 
 
