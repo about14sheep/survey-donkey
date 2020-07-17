@@ -19,31 +19,35 @@ block content
             div() Feed:
               div(class='tableRows')
                 thead
-                  tr 
+                  tr
                     div(class='sOwnerDiv')
                       th(scope='col' class='sOwner') Survey Owner
                     div(class='sNameDiv')
                       th(scope='col' class='sName') Survey Name
                     div(class='sCreatedDiv')
-                      th(scope='col' class='created') Created 
+                      th(scope='col' class='created') Created
                     div(class='sModifiedDiv')
                       th(scope='col' class='modified') Modified
                     div(class='sQuestionDiv')
                       th(scope='col' class='questions') Questions
                     div(class='sOptionsDiv')
-                      th(scope='col' class='options') Options
-              tbody               
+                      th(scope='col' class='options') Upvotes
+              tbody
                   each survey in feedSurveys
-                    li(class="box columns my-3")
+                    li(class="box columns is-vcentered has-text-centered my-3")
                       p(class="column divider") #{survey.User.firstName}#{survey.User.lastName}
                       a(class="column divider" href=`/surveys/${survey.id}`) #{survey.name}
-                      p(class="column divider") Created: #{survey.createdAt}
-                      p(class="column divider") Modified: #{survey.updatedAt}
-                      p(class="column divider") Questions:
-                      p(class="column") Options (edit share delete dropdown)
+                      p(class="column divider") Created:
+                        br
+                        span() #{JSON.stringify(survey.createdAt).slice(1,11)}
+                      p(class="column divider") Modified:
+                        br
+                        span() #{JSON.stringify(survey.updatedAt).slice(1,11)}
+                      p(class="column divider") Questions: #{survey.Questions.length}
+                      p(class="column") Upvotes: #{survey.Upvotes.length}
+                        br
+                        a(class="button is-primary is-small" href="/upvote") Upvote!
             div()
                 a(class="button" href='/create-new-survey' id="createButton") + CREATE
 
         div(class="column")
-
-  

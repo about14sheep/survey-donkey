@@ -8,13 +8,13 @@ const { csrfProtection, asyncHandler } = require('./utils');
 
 router.get('/feed', asyncHandler(async (req, res) => {
 
-  
 
-let feedSurveys = await db.Survey.findAll({ include: ['User'] });
+
+let feedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote] });
   res.render('feed', {
     title: "SurveyDonkey Feed",
-    feedSurveys, 
-    
+    feedSurveys,
+
 })
 ;
 
