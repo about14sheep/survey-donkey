@@ -63,10 +63,7 @@ router.post('/surveys/questions/:id', csrfProtection, asyncHandler(async (req, r
 router.get('/surveys/:id', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
     const survey = await db.Survey.findByPk(parseInt(req.params.id, 10), { include: { model: db.Question } });
     const userResponses = await db.QuestionResponse.findAll({ where: { surveyId: parseInt(req.params.id, 10), userId: parseInt(req.session.auth.userId) } });
-    const votes = await db.Upvote.findAll({ where: { surveyId: parseInt(req.params.id, 10) } });
-    const userVote = await db.Upvote.findAll({ where: { surveyId: parseInt(req.params.id, 10), userId: parseInt(req.session.auth.userId) } });
-    const usersArr = userResponses.map(el => parseInt(el.questionId, 10));
-    res.render('results', { title: `Survey #${parseInt(req.params.id, 10)}`, token: req.csrfToken(), survey, usersArr, votes, userVote });
+    res.render('results', { title: `Survey #${parseInt(req.params.id, 10)}`, token: req.csrfToken(), survey, userResponses });
 }));
 
 router.get('/surveys/:id/questions/:qid', csrfProtection, asyncHandler(async (req, res) => {
