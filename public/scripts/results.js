@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', _ => document.querySelectorAll('.options').forEach(questions => JSON.parse(document.querySelector('.users_arr').value).map(el => Number(el)).includes(parseInt(questions.lastChild.value, 10)) ? renderChart(questions) : renderQuestions(questions)));
+document.addEventListener('DOMContentLoaded', _ => document.querySelectorAll('.options').forEach(questions => JSON.parse(document.querySelector('.users_arr').value).map(el => Number(el)).includes(parseInt(questions.lastChild.value, 10)) ? renderChart(questions) : renderQuestion(questions)));
 
-const renderQuestions = questions => {
+const renderQuestion = questions => {
     questions.childNodes.forEach(option => {
         option.style.cursor = 'pointer'
         option.addEventListener('mouseover', mouseOverHandler)
@@ -14,7 +14,7 @@ const clickHandler = e => {
     postQuestionResponse(e.target.parentNode.lastChild.value, e.target.lastChild.value)
     setTimeout(_ => {
         renderChart(e.target.parentNode)
-    }, 1000)
+    }, 1500)
     e.target.parentNode.childNodes.forEach(option => {
         option.removeEventListener('mouseleave', mouseLeaveHandler)
         option.removeEventListener('mouseover', mouseOverHandler)
@@ -22,12 +22,12 @@ const clickHandler = e => {
     })
 }
 
-const mouseLeaveHandler = e => e.target.style.filter = ``;
 const mouseOverHandler = e => e.target.style.filter = `drop-shadow(0 0 0.75rem #00BF6F)`;
+const mouseLeaveHandler = e => e.target.style.filter = ``;
 
 const renderChart = async question => {
     const responseObjects = await getQuestionResponses(question.lastChild.value)
-    question.childNodes.forEach((option, i) => option.style.display = 'none');
+    question.childNodes.forEach(option => option.style.display = 'none')
     const chart = document.createElement('canvas')
     question.parentNode.appendChild(chart)
     createChart(chart, __tallyResponses(responseObjects))
@@ -56,6 +56,7 @@ const postQuestionResponse = async (questionId, questionText) => {
 }
 
 const createChart = (container, data) => {
+    console.log(data)
     const chartTypes = ['pie', 'doughnut'];
     return new Chart(container.getContext('2d'), {
         type: chartTypes[randomNumber(chartTypes.length)],
@@ -96,9 +97,9 @@ const randomNumber = max => Math.floor(Math.random() * Math.floor(max));
 const __tallyResponses = (arr, results = []) => {
     const arrToFilter = arr.filter(option => option.questionResponseValue !== arr[0].questionResponseValue);
     const tally = __buildTally(arr.filter(option => option.questionResponseValue === arr[0].questionResponseValue));
-    if (arrToFilter.length < 1) return results.push(tally);
-    __tallyResponses(arrToFilter, results);
     results.push(tally);
+    if (arrToFilter.length < 1) return results;
+    __tallyResponses(arrToFilter, results);
     return results;
 }
 
