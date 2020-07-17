@@ -1,38 +1,29 @@
-document.addEventListener('DOMContentLoaded', e => {
-    let beenHeardThat = document.querySelector('.users_arr').value
-    beenHeardThat = JSON.parse(beenHeardThat).map(el => Number(el))
-    document.querySelectorAll('.options').forEach(options => {
-        if (beenHeardThat.includes(parseInt(options.lastChild.value, 10))) {
-            renderChart(options)
-        } else {
-            chartQuestions(options)
-        }
-    });
-});
+document.addEventListener('DOMContentLoaded', _ => document.querySelectorAll('.options').forEach(questions => JSON.parse(document.querySelector('.users_arr').value).map(el => Number(el)).includes(parseInt(questions.lastChild.value, 10)) ? renderChart(questions) : renderQuestions(questions)));
 
-const mouseLeaveHandler = e => e.target.style.filter = ``;
-const mouseOverHandler = e => e.target.style.filter = `drop-shadow(0 0 0.75rem #00BF6F)`;
-
-const chartQuestions = options => {
-    options.childNodes.forEach(option => {
+const renderQuestions = questions => {
+    questions.childNodes.forEach(option => {
         option.style.cursor = 'pointer'
         option.addEventListener('mouseover', mouseOverHandler)
         option.addEventListener('mouseleave', mouseLeaveHandler)
-        option.addEventListener('click', async function clickHandler(e) {
-            option.style.backgroundColor = '#00BF6F'
-            postQuestionResponse(option.parentNode.lastChild.value, e.target.lastChild.value)
-            option.parentNode.childNodes.forEach(option => {
-                option.removeEventListener('mouseleave', mouseLeaveHandler)
-                option.removeEventListener('mouseover', mouseOverHandler)
-                option.removeEventListener('click', clickHandler)
-            })
-            setTimeout(async _ => {
-                renderChart(options);
-            }, 1000)
-        });
+        option.addEventListener('click', clickHandler)
     })
-
 }
+
+const clickHandler = e => {
+    e.target.style.backgroundColor = '#00BF6F'
+    postQuestionResponse(e.target.parentNode.lastChild.value, e.target.lastChild.value)
+    setTimeout(_ => {
+        renderChart(e.target.parentNode)
+    }, 1000)
+    e, target.parentNode.childNodes.forEach(option => {
+        option.removeEventListener('mouseleave', mouseLeaveHandler)
+        option.removeEventListener('mouseover', mouseOverHandler)
+        option.removeEventListener('click', clickHandler)
+    })
+}
+
+const mouseLeaveHandler = e => e.target.style.filter = ``;
+const mouseOverHandler = e => e.target.style.filter = `drop-shadow(0 0 0.75rem #00BF6F)`;
 
 const renderChart = async question => {
     const responseObjects = await getQuestionResponses(question.lastChild.value)
