@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const opThree = document.getElementById("option-three")
     const opTwo = document.getElementById("option-two")
     
-
     //global variables
     let specs;
     //f()s
@@ -290,10 +289,16 @@ document.addEventListener('DOMContentLoaded', ()=> {
             surveyPreview.appendChild(container)
         })
     }
+
+    
+
     const renderPreview = async (surveyId) => {
         const questions = await fetch(`/surveys/preview/${surveyId})`)
         const gatherQuestions = await questions.json()
         const surveyQuestions = gatherQuestions.map(el => JSON.parse(el))
         createSurveyPreviewElements(surveyQuestions)
     }
+
+    
 })
+

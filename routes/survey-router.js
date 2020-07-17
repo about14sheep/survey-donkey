@@ -1,3 +1,4 @@
+const {Op} = require('sequelize')
 const express = require('express')
 const { check, validationResult } = require('express-validator')
 const db = require('../models');
@@ -15,53 +16,68 @@ router.get('/surveys/preview/:id', asyncHandler(async (req, res) => {
     res.send(responses);
 }));
 
-router.get('/surveys/create', csrfProtection, asyncHandler(async (req, res) => {
+router.get('/surveys/create',requireAuth, csrfProtection, asyncHandler(async (req, res) => {
     res.render('name-survey', {
         title: 'New Survey',
         token: req.csrfToken()
     })
 }))
 
-router.post('/surveys/create', csrfProtection, asyncHandler(async (req, res) => {
+router.post('/surveys/create', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
+    console.log("ASDFASDFASDFASDFASFASDFSASDFASFASDFASDFASDFASDFADSFASDF",res.locals.user.id)
     const newSurvey = await db.Survey.create({
         name: req.body.surveyName,
-        userId: 1,
+        userId: res.locals.user.id,
         published: false,
     })
     res.redirect(`/surveys/create/${newSurvey.id}`)
 }))
 
 router.get('/surveys/create/:id', csrfProtection, asyncHandler(async (req, res) => {
-    const survey = await db.Survey.findByPk(req.params.id)
-    res.render('create-new-survey', { title: 'Create Survey', name: survey.name, token: req.csrfToken(), surveyId: req.params.id })
+    const survey = await db.Survey.findByPk(req.params.id);
+    if (survey.userId === res.locals.user.id) {
+        res.render('create-new-survey', { title: 'Create Survey', name: survey.name, token: req.csrfToken(), surveyId: req.params.id })
+    } else {
+        res.send("You don\'t own this survey!")
+    }
 }))
 
 router.post('/surveys/create/:id', csrfProtection, asyncHandler(async (req, res) => {
-    const question = await db.Question.create({
-        questionText: req.body.prompt,
-        surveyId: req.body.surveyId,
-        questionType: req.body.questionType,
-        opOne: req.body.opOne,
-        opTwo: req.body.opTwo,
-        opThree: req.body.opThree,
-        opFour: req.body.opFour,
-        opFive: req.body.opFive,
-    })
-    res.status(200)
-    const jsonQuestion = JSON.stringify(question)
-    res.send(jsonQuestion)
+    const survey = await db.Survey.findByPk(req.body.surveyId);
+    if (survey.userId === res.locals.user.id) {
+            const question = await db.Question.create({
+                questionText: req.body.prompt,
+                surveyId: req.body.surveyId,
+                questionType: req.body.questionType,
+                opOne: req.body.opOne,
+                opTwo: req.body.opTwo,
+                opThree: req.body.opThree,
+                opFour: req.body.opFour,
+                opFive: req.body.opFive,
+            })
+            res.status(200)
+            const jsonQuestion = JSON.stringify(question)
+            res.send(jsonQuestion)
+    } else {
+        res.send("You don\'t own this survey!")
+    }
 }))
 
-router.get('/surveys/questions/:id',csrfProtection,asyncHandler(async (req,res) => {
+router.get('/surveys/questions/:id', requireAuth, csrfProtection,asyncHandler(async (req,res) => {
     console.log("req.id ASDFASDFASDFASDFASDF:  ",req.params.id)
     const question = await db.Question.findByPk(req.params.id);
     res.send(question)
 }))
 
-router.post('/surveys/questions/:id',csrfProtection, asyncHandler(async(req,res)=>{
+router.post('/surveys/questions/:id',requireAuth, csrfProtection, asyncHandler(async(req,res)=>{
+    const survey = await db.Survey.findByPk(req.params.id);
+    if (survey.userId === res.locals.user.id) {
     db.Question.destroy({where: {id: req.body.questionId}})
     res.status(200)
     res.send('question-deleted')
+    } else {
+        res.send("You don\'t own this survey!")
+    }
 }))
 
 router.get('/surveys/:id', csrfProtection, asyncHandler(async (req, res) => {
