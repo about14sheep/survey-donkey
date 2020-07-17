@@ -11,18 +11,16 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const surveyPreviewTitle = document.getElementById("survey-preview-title")
     const opThree = document.getElementById("option-three")
     const opTwo = document.getElementById("option-two")
+    const freeResponseOptions = document.getElementById('free-response-text-box')
+    const radioButtonHolder = document.getElementById('radio-button-holder')
+    const scrollResponseBox = document.getElementById('scroll-response-box')
     
     //global variables
     let specs;
     //f()s
 
-    const gatherQuestionSpecs = () => {
-        const type = typeInput.value
-        const prompt = promptInput.value
-        return {type: type, prompt: prompt}
-    }
-
     const createQuestion = async () => {
+        hideAllQuestionTypeOptions()
         const surveyId = document.getElementById('surveyId').value
         const token = document.getElementById('csrfToken').value
         let data = JSON.stringify({
@@ -95,15 +93,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
             })
     }
 
-    const addEventListenerToEditButton = button =>{
-        button.addEventListener("click", async (e)=>{
-            console.log("value: ",e.target.value)
-            const questionInfo = await fetch(`/surveys/questions/${e.target.value}`)
-            const formattedQuestionInfo = await questionInfo.json();
-            console.log(formattedQuestionInfo)
-        })
-    }
-
     const addEventListenerToDeleteConfirmButton = button => {
             button.addEventListener('click', (e) => {
                 e.target.classList.add("is-hidden")
@@ -125,7 +114,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
             })
     }
 
-    deleteQuestion= async (questionId)=>{
+    const deleteQuestion= async (questionId)=>{
         let data = JSON.stringify({
             questionId: questionId
         })
@@ -154,11 +143,59 @@ document.addEventListener('DOMContentLoaded', ()=> {
     questionTextForm.addEventListener('submit', (e) => {
         e.preventDefault();
         specs = gatherQuestionSpecs()
+        console.log("after gathering question specs: ",specs)
         if (specs.type === 'multiple-choice'){
             displayMultipleChoiceOptions()
+        } else if (specs.type === 'free-response') {
+            displayFreeResponseOptions()
+        } else if (specs.type === 'scroll') {
+            displayScrollOptions()
         }
     })
 
+    typeInput.addEventListener('change', (e) => {
+        specs = gatherQuestionSpecs();
+        console.log(typeInput.value)
+        if (typeInput.value === "free-response") {
+            clearInputValues()
+            displayFreeResponseOptions()
+        } else if (typeInput.value === "multiple-choice") {
+            displayMultipleChoiceOptions()
+        } else if (typeInput.value === "scroll") {
+            clearInputValues()
+            displayScrollOptions()
+        }
+    })
+
+    const gatherQuestionSpecs = () => {
+        const type = typeInput.value
+        const prompt = promptInput.value
+        return { type: type, prompt: prompt }
+    }
+
+    const displayMultipleChoiceOptions = () => {
+        hideAllQuestionTypeOptions()
+        mChoiceOptionContainer.classList.remove('is-hidden')
+        document.getElementById("multiple-choice-form").classList.remove("is-hidden")
+    }
+
+    const displayFreeResponseOptions=()=> {
+        hideAllQuestionTypeOptions()
+        mChoiceOptionContainer.classList.remove("is-hidden")
+        freeResponseOptions.classList.remove("is-hidden")
+    }
+
+    const displayScrollOptions = () => {
+        hideAllQuestionTypeOptions()
+        mChoiceOptionContainer.classList.remove('is-hidden')
+        scrollResponseBox.classList.remove("is-hidden")
+    }
+
+    const hideAllQuestionTypeOptions = () => {
+        document.getElementById("multiple-choice-form").classList.add("is-hidden")
+        freeResponseOptions.classList.add("is-hidden")
+        scrollResponseBox.classList.add("is-hidden")
+    }
     promptInput.addEventListener("input", (event) => {
         if (promptInput.value.includes('?')) {
             specs = gatherQuestionSpecs() 
@@ -178,11 +215,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
             }, 7000);
         })
     })
-    
-    const displayMultipleChoiceOptions = ()=>{
-       mChoiceOptionContainer.classList.remove('is-hidden')
-       document.getElementById("multiple-choice-form").classList.remove("is-hidden")
-    }
 
     const clearInputValues = () => {
         opThree.classList.add("add-more-options")
@@ -216,24 +248,26 @@ document.addEventListener('DOMContentLoaded', ()=> {
         }
     })
 
-    document.getElementById('add-option')
-        .addEventListener('click',(e)=>{
-            e.stopPropagation();
-            //TODO validate some text has been entered as a multiple choice option
-            const newOption = newOptionInput.value
-            const newOptionListItem = document.createElement('li')
-            newOptionListItem.innerHTML = newOption
-            optionList.appendChild(newOptionListItem)
-            newOptionInput.value = ''
-        })
-
     document.getElementById('save-question').addEventListener('click',(e)=>{
+        console.log(specs)
+        if(!specs.prompt) {
+            specs.prompt = promptInput.value
+            specs.type = typeInput.value
+        }
         reApplyAutoSelectMultipleChoice()
-        specs.opOne = document.getElementById("option-one").value
-        specs.opTwo = document.getElementById("option-two").value    
-        specs.opThree = document.getElementById("option-three").value
-        specs.opFour = document.getElementById("option-four").value
-        specs.opFive = document.getElementById("option-five").value
+        if (specs.type === "scroll") {
+            specs.opOne = "Strongly Disagree"
+            specs.opTwo = "Disagree"
+            specs.opThree = "No Opinion"
+            specs.opFour = "Agree"
+            specs.opFive = "Strongly Agree"
+        } else if (specs.type === "multiple-choice" || specs.type === "free-response") {
+            specs.opOne = document.getElementById("option-one").value ? document.getElementById("option-one").value : null
+            specs.opTwo = document.getElementById("option-two").value ? document.getElementById("option-two").value : null
+            specs.opThree = document.getElementById("option-three").value ? document.getElementById("option-three").value : null
+            specs.opFour = document.getElementById("option-four").value ? document.getElementById("option-four").value : null
+            specs.opFive = document.getElementById("option-five").value ? document.getElementById("option-five").value : null
+        }
         optionsContainer.classList.add("is-hidden")
         newQuestionButton.classList.remove("is-hidden")
         clearInputValues()
@@ -246,6 +280,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     }
 
     const createPreviewQuestionContainer = question => {
+        console.log(question)
         let newQuestionContainer = document.createElement("div");
         newQuestionContainer.classList.add("survey-preview-question-container")
         newQuestionContainer.setAttribute("id", `container-for-question-${question.id}`)
@@ -268,16 +303,28 @@ document.addEventListener('DOMContentLoaded', ()=> {
         editButtonHolder.appendChild(deleteButton)
         newQuestionTextContainer.appendChild(editButtonHolder)
         newQuestionContainer.appendChild(newQuestionTextContainer)
-        let keys = ['opOne', 'opTwo', 'opThree', 'opFour', 'opFive']
-        keys.forEach(key => {
-            console.log(question[key])
-            if (question[key]) {
-                let newOptionText = document.createElement("div")
-                newOptionText.innerHTML = question[key]
-                newOptionText.classList.add('survey-preview-question-option');
-                newQuestionContainer.appendChild(newOptionText)
-            }
-        })
+        if (question.questionType === "free-response") {
+            let newOptionText = document.createElement("div")
+            newOptionText.innerHTML = "[Free Response Question]"
+            newOptionText.classList.add('survey-preview-question-option');
+            newQuestionContainer.appendChild(newOptionText)
+        } else if (question.questionType === "multiple-choice") {
+            let keys = ['opOne', 'opTwo', 'opThree', 'opFour', 'opFive']
+            keys.forEach(key => {
+                console.log(question[key])
+                if (question[key]) {
+                    let newOptionText = document.createElement("div")
+                    newOptionText.innerHTML = question[key]
+                    newOptionText.classList.add('survey-preview-question-option');
+                    newQuestionContainer.appendChild(newOptionText)
+                }
+                })
+            } else if (question.questionType === "scroll") {
+                radioButtons = radioButtonHolder.cloneNode(true)
+                radioButtons.setAttribute("id","")
+                console.log("asdfasdfasdfasdfasdfasdfasdf: ",radioButtons)
+                newQuestionContainer.appendChild(radioButtons)
+            }  
         return newQuestionContainer
     }
 
@@ -290,7 +337,40 @@ document.addEventListener('DOMContentLoaded', ()=> {
         })
     }
 
-    
+    const addEventListenerToEditButton = button => {
+        button.addEventListener("click", async (e) => {
+            newQuestionButton.classList.add("is-hidden")
+            addQuestionButton = document.getElementById('save-question')
+            addQuestionButton.classList.add("is-hidden")
+            acceptChangesButton = document.getElementById('accept-changes-button')
+            acceptChangesButton.classList.remove("is-hidden")
+            newQuestionOptions = document.getElementById("new-question-options")
+            newQuestionOptions.classList.add("is-hidden")
+            console.log("value: ", e.target.value)
+            const questionInfo = await fetch(`/surveys/questions/${e.target.value}`)
+            const formattedQuestionInfo = await questionInfo.json();
+            console.log("ID: ",formattedQuestionInfo.id)
+            container = document.getElementById(`container-for-question-${formattedQuestionInfo.id}`)
+            containerEditTemporaryStorage = container.innerHTML
+            optionsContainerTemporaryStorage = optionsContainer.innerHTML
+            populateEditWindow(container,formattedQuestionInfo)
+        })
+    }
+
+    const populateEditWindow = (container,question) => {
+        if (question.questionType === "scroll") {
+            displayScrollOptions()
+            container.innerHTML = optionsContainer.innerHTML
+            optionsContainer.innerHTML = ""
+            const prompt = document.getElementById("question-text")
+            const selectType = document.getElementById("question-type")
+            selectType.selectedIndex = 1;
+            prompt.value = question.questionText
+        }
+
+    }
+
+    initializeBottomForm=()=>{}
 
     const renderPreview = async (surveyId) => {
         const questions = await fetch(`/surveys/preview/${surveyId})`)

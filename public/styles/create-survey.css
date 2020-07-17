@@ -21,6 +21,9 @@
     align-items: center;
     flex-direction: column
 }
+.radio-label{
+    margin-left: 10px;
+}
 
 #question-type{
     margin-left: 10px;
@@ -49,6 +52,18 @@ html{
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+.radio-button-holder{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 800px;
+}
+
+.scroll-option{
+    margin-right: 30px
 }
 
 .new-option-text{
