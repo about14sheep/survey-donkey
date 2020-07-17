@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.get('/dashboard', requireAuth, asyncHandler(async (req, res) => {
   const feedSurveys = await db.Survey.findAll();
+}))
 
 
-  module.exports = router;
+module.exports = router;
