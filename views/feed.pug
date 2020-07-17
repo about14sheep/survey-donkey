@@ -43,7 +43,9 @@ block content
                       p(class="column divider") Questions: #{survey.Questions.length}
                       p(class="column") Upvotes: #{survey.Upvotes.length}
                         br
-                        a(class="button is-primary is-small" href="/upvote") Upvote!
+                        form(action=`/surveys/upvote/${survey.id}` method='post')
+                          button(class="button is-primary is-small" type='submit')
+                        //- a(class="button is-primary is-small" href=`/surveys/${survey.id}/votes`) Upvote!
             div()
                 a(class="button" href='/create-new-survey' id="createButton") + CREATE
 

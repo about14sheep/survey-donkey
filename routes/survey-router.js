@@ -114,13 +114,17 @@ router.get('/surveys/:id/votes', asyncHandler(async (req, res) => {
     res.send(votes);
 }));
 
-router.post('surveys/:id/votes', asyncHandler(async (req, res) => {
+router.post('/surveys/upvote/:id', requireAuth, asyncHandler(async (req, res) => {
     const vote = await db.Upvote.create({
-        suveyId: parseInt(req.params.id, 10),
-        userId: parseInt(req.body.userId, 10),
-        upvote: parseInt(req.body.upvote, 10),
-        downvote: parseInt(req.body.downvote, 10)
-    })
+        surveyId: parseInt(req.params.id, 10),
+        userId: res.locals.user.id,
+        upvote: 1,
+        // userId: parseInt(req.body.userId, 10),
+        // upvote: parseInt(req.body.upvote, 10),
+        // downvote: parseInt(req.body.downvote, 10)
+    });
+    res.status(200)
+    res.send('upvoted')
 }))
 
 

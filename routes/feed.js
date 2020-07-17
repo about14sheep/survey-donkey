@@ -6,7 +6,7 @@ const { Op } = require("sequelize");
 const { csrfProtection, asyncHandler } = require('./utils');
 // const { owner, name, created, modified, question, options } = require('../public/scripts/feed.js')
 
-router.get('/feed', asyncHandler(async (req, res) => {
+router.get('/feed', requireAuth, asyncHandler(async (req, res) => {
 
 
 

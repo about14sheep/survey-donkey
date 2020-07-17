@@ -23,7 +23,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(morgan('dev'));
 app.set('view engine', 'pug')
-app.use(feedRouter)
 
 
 app.use(session({
@@ -34,6 +33,7 @@ app.use(session({
 }));
 app.use(restoreUser);
 
+app.use(feedRouter)
 app.use(surveyRouter);
 app.use(signUpRouter);
 app.use(loginRouter);
