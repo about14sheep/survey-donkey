@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const questionTextForm = document.getElementById("question-main-prompt-form")
     const surveyPreviewTitle = document.getElementById("survey-preview-title")
     const opThree = document.getElementById("option-three")
+    const opTwo = document.getElementById("option-two")
     
 
     //global variables
@@ -49,7 +50,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         promptInput.value = "";
         optionsContainer.classList.add("is-hidden")
         mChoiceOptionContainer.classList.add("is-hidden")
-        newQuestionButton.classList.remove("is-hidden")
+        setTimeout(()=>{newQuestionButton.classList.remove("is-hidden")},400)
         specs=""
         const container = createPreviewQuestionContainer(question)
         surveyPreview.appendChild(container)
@@ -184,16 +185,36 @@ document.addEventListener('DOMContentLoaded', ()=> {
        document.getElementById("multiple-choice-form").classList.remove("is-hidden")
     }
 
+    const clearInputValues = () => {
+        opThree.classList.add("add-more-options")
+        opTwo.classList.add("add-more-options")
+        const inputs = document.querySelectorAll(".new-option-text")
+        inputs.forEach(input => {
+            input.value = ""
+        })
+        document.getElementById("option-four").classList.add("is-hidden")
+        document.getElementById("option-five").classList.add("is-hidden")
+    }
 
-    createNewOptionInputs = () => {
+    displayOptionFour = () => {
         document.getElementById("option-four").classList.remove("is-hidden")
-        document.getElementById("option-five").classList.remove("is-hidden")
-        document.getElementById("option-three").classList.remove("add-more-options")
+        document.getElementById("option-two").classList.remove("add-more-options")
     }
 
     opThree.addEventListener("input", (event) => {
         if (opThree.classList.contains("add-more-options")) { 
-            createNewOptionInputs() }
+            displayOptionFive() }
+    })
+
+    displayOptionFive = () => {
+        document.getElementById("option-five").classList.remove("is-hidden")
+        document.getElementById("option-three").classList.remove("add-more-options")
+    }
+
+    opTwo.addEventListener("input", (event) => {
+        if (opTwo.classList.contains("add-more-options")) {
+            displayOptionFour()
+        }
     })
 
     document.getElementById('add-option')
@@ -225,15 +246,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
         questionType.selectedIndex = 0
     }
 
-    const clearInputValues=()=>{
-        opThree.classList.add("add-more-options")
-        const inputs = document.querySelectorAll(".new-option-text")
-        inputs.forEach(input => {
-            input.value = ""
-        })
-        document.getElementById("option-four").classList.add("is-hidden")
-        document.getElementById("option-five").classList.add("is-hidden")
-    }
     const createPreviewQuestionContainer = question => {
         let newQuestionContainer = document.createElement("div");
         newQuestionContainer.classList.add("survey-preview-question-container")

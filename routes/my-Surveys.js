@@ -8,12 +8,8 @@ const { csrfProtection, asyncHandler } = require("./utils");
 
 const router = express.Router();
 
-router.get("/my-Surveys", csrfProtection, (req, res) => {
-  res.render("my-Surveys", {
-    mySurveys: true,
-    title: "Login",
-    csrfToken: req.csrfToken(),
-  });
-});
+router.get('/dashboard', requireAuth, asyncHandler(async (req, res) => {
+  const feedSurveys = await db.Survey.findAll();
 
-module.exports = router;
+
+  module.exports = router;

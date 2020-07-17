@@ -2,6 +2,7 @@ const express = require('express')
 const { check, validationResult } = require('express-validator')
 const db = require('../models');
 const { csrfProtection, asyncHandler } = require('./utils');
+const {requireAuth} = require('../auth')
 
 const router = express.Router()
 
@@ -80,9 +81,11 @@ router.post('/surveys/:id/questions/:qid', csrfProtection, asyncHandler(async (r
         questionId: req.params.qid,
         questionResponseValue: req.body.responseText.toLowerCase()
     });
+    res.status(200)
+    res.send('response updated')
 }));
 
-router.post('/surveys/delete/:id', asyncHandler(async (req, res)=>{
+router.post('/surveys/delete/:id', asyncHandler(async (req, res) => {
     const surveyId = parseInt(req.params.id, 10);
     const survey = await db.Survey.findByPk(surveyId);
     await survey.destroy();

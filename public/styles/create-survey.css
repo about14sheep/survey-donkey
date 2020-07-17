@@ -6,13 +6,13 @@
     background-color: 	#F5F5F5
 }
 
-body {
+/* body {
     display: flex;
     align-items: center;
     justify-content: center;
     background-color:	#F0F0F0;
     margin: 1em
-}
+} */
 
 .option-container:not(.hidden){
     display:flex;
@@ -86,7 +86,7 @@ html{
 
 .newQuestionContainer {
     display:flex;
-} 
+}
 
 .question-text-and-button-container{
     display:flex;
@@ -97,7 +97,7 @@ html{
 
 .survey-preview-question-container {
     margin-bottom: 20px;
-} 
+}
 
 .survey-preview-question-option {
     justify-self: center;
