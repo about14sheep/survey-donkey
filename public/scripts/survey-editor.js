@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
             opFour: specs.opFour,
             opFive: specs.opFive
         })
-        const create = await fetch(`/surveys/create/${surveyId})`, {
+        const response = await fetch(`/surveys/create/${surveyId})`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
@@ -43,69 +43,19 @@ document.addEventListener('DOMContentLoaded', ()=> {
             },
             body: data
         })
-
+        console.log(response)
+        console.log(response.body)
+        const question = await response.json()
         promptInput.value = "";
         optionsContainer.classList.add("is-hidden")
         mChoiceOptionContainer.classList.add("is-hidden")
         newQuestionButton.classList.remove("is-hidden")
         specs=""
-        renderPreview(surveyId)
+        const container = createPreviewQuestionContainer(question)
+        surveyPreview.appendChild(container)
     }
-
-    const renderPreview = async (surveyId) => {
-        const questions = await fetch(`/surveys/preview/${surveyId})`)
-        const gatherQuestions = await questions.json()
-        const surveyQuestions = gatherQuestions.map(el => JSON.parse(el))
-        createSurveyPreviewElements(surveyQuestions)
-    }
-
 
     // popUp.addEventListener('close', ()=>{
-
-    // })
-
-    const createSurveyPreviewElements = (questions) => {
-        surveyPreview.innerHTML = ""
-        surveyPreview.appendChild(surveyPreviewTitle)
-        questions.forEach(question => {
-            let newQuestionContainer = document.createElement("div");
-            newQuestionContainer.classList.add("survey-preview-question-container")
-            newQuestionContainer.setAttribute("id",`container-for-question-${question.id}`)
-            let newQuestionText = document.createElement("div");
-            let newQuestionTextContainer = document.createElement("div");
-            newQuestionTextContainer.appendChild(newQuestionText)
-            newQuestionTextContainer.classList.add("question-text-and-button-container")
-            newQuestionText.classList.add('survey-preview-question-text');
-            newQuestionText.innerHTML = question.questionText;
-            let editButton = document.createElement("button")
-            editButton.classList.add("button","is-dark","is-primary","editButton")
-            editButton.innerHTML = "edit"
-            editButton.value = question.id
-            editButton.style.marginRight = '10px'
-            let deleteButton = createDeleteButton(question.id)
-            let editButtonHolder = document.createElement("div")
-            editButtonHolder.classList.add("edit-button-holder")
-            editButtonHolder.appendChild(editButton)
-            editButtonHolder.appendChild(deleteButton)
-            newQuestionTextContainer.appendChild(editButtonHolder)
-            newQuestionContainer.appendChild(newQuestionTextContainer)
-            let keys = ['opOne','opTwo','opThree','opFour','opFive']
-            keys.forEach(key=>{
-                console.log("adsfasjhdfkjhadskfasdfasdf",question[key])
-                if (question[key]) {
-                    let newOptionText = document.createElement("div")
-                    newOptionText.innerHTML = question[key]
-                    newOptionText.classList.add('survey-preview-question-option');
-                    newQuestionContainer.appendChild(newOptionText)
-                }
-            })
-            surveyPreview.appendChild(newQuestionContainer)
-        })
-        addEventListenersToSurveyPreview();
-        addEventListenersToSurveyDeleteConfirms();
-        addEventListenersToSurveyCancelDeletes();
-        prepEditButtons();
-    }
 
     // form(action = `surveys/${survey.id}` method = "DELETE")
     // button(class= 'button is-danger' type = 'submit' onclick = "return confirm('Are you sure you want to delete this survey?');") Delete
@@ -119,11 +69,14 @@ document.addEventListener('DOMContentLoaded', ()=> {
         confirmDeleteButton.setAttribute('id',`confirm-delete-for-${questionId}`)
         confirmDeleteButton.style.marginRight = '10px'
         cancelDeleteButton.setAttribute('id', `cancel-delete-for-${questionId}`)
+        addEventListenerToCancelDeleteButton(cancelDeleteButton)
         const deleteButton = document.createElement('button')
         deleteButton.classList.add("button", "is-dark", "is-danger", "delete-button")
+        addEventListenerToDeleteButton(deleteButton)
         deleteButton.setAttribute("id",`${questionId}`)
         cancelDeleteButton.classList.add("button","is-dark","is-warning","cancel-delete-button","is-hidden")
         confirmDeleteButton.innerHTML = "confirm remove"
+        addEventListenerToDeleteConfirmButton(confirmDeleteButton)
         deleteButton.innerHTML = "remove"
         cancelDeleteButton.innerHTML = "cancel"
         confirmDeleteDiv.appendChild(confirmDeleteButton)
@@ -132,34 +85,35 @@ document.addEventListener('DOMContentLoaded', ()=> {
         return confirmDeleteDiv
     }
 
-    const addEventListenersToSurveyPreview = () => {
-        document.querySelectorAll(".delete-button").forEach( button => {
+    const addEventListenerToDeleteButton = button => {
             button.addEventListener('click',(e)=>{
                 e.target.classList.add("is-hidden")
                 let confirm = document.getElementById(`confirm-delete-for-${e.target.id}`)
                 let cancel = document.getElementById(`cancel-delete-for-${e.target.id}`)
-                console.log("hello there")
                 confirm.classList.remove("is-hidden")
                 cancel.classList.remove("is-hidden")
             })
-        }
-        )
     }
 
-    const addEventListenersToSurveyDeleteConfirms = () => {
-        document.querySelectorAll(".confirm-delete-button").forEach(button => {
+    const addEventListenerToEditButton = button =>{
+        button.addEventListener("click", async (e)=>{
+            console.log("value: ",e.target.value)
+            const questionInfo = await fetch(`/surveys/questions/${e.target.value}`)
+            const formattedQuestionInfo = await questionInfo.json();
+            console.log(formattedQuestionInfo)
+        })
+    }
+
+    const addEventListenerToDeleteConfirmButton = button => {
             button.addEventListener('click', (e) => {
                 e.target.classList.add("is-hidden")
                 let id = e.target.id
                 id = id.split("-")[3]
                 deleteQuestion(id)
             })
-        }
-        )
     }
 
-    const addEventListenersToSurveyCancelDeletes = () => {
-        document.querySelectorAll(".cancel-delete-button").forEach(button => {
+    const addEventListenerToCancelDeleteButton = button => {
             button.addEventListener('click', (e) => {
                 e.target.classList.add("is-hidden")
                 let id = e.target.id
@@ -169,8 +123,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
                 let dbutton = document.getElementById(`${id}`);
                 dbutton.classList.remove("is-hidden")
             })
-        }
-        )
     }
 
     deleteQuestion= async (questionId)=>{
@@ -268,12 +220,12 @@ document.addEventListener('DOMContentLoaded', ()=> {
         createQuestion();
     })
 
-    reApplyAutoSelectMultipleChoice=()=>{
+    const reApplyAutoSelectMultipleChoice=()=>{
         const questionType = document.getElementById("question-type")
         questionType.selectedIndex = 0
     }
 
-    clearInputValues=()=>{
+    const clearInputValues=()=>{
         opThree.classList.add("add-more-options")
         const inputs = document.querySelectorAll(".new-option-text")
         inputs.forEach(input => {
@@ -282,6 +234,54 @@ document.addEventListener('DOMContentLoaded', ()=> {
         document.getElementById("option-four").classList.add("is-hidden")
         document.getElementById("option-five").classList.add("is-hidden")
     }
+    const createPreviewQuestionContainer = question => {
+        let newQuestionContainer = document.createElement("div");
+        newQuestionContainer.classList.add("survey-preview-question-container")
+        newQuestionContainer.setAttribute("id", `container-for-question-${question.id}`)
+        let newQuestionText = document.createElement("div");
+        let newQuestionTextContainer = document.createElement("div");
+        newQuestionTextContainer.appendChild(newQuestionText)
+        newQuestionTextContainer.classList.add("question-text-and-button-container")
+        newQuestionText.classList.add('survey-preview-question-text');
+        newQuestionText.innerHTML = question.questionText;
+        let editButton = document.createElement("button")
+        editButton.classList.add("button", "is-dark", "is-primary", "editButton")
+        editButton.innerHTML = "edit"
+        editButton.value = question.id;
+        addEventListenerToEditButton(editButton);
+        editButton.style.marginRight = '10px'
+        let deleteButton = createDeleteButton(question.id)
+        let editButtonHolder = document.createElement("div")
+        editButtonHolder.classList.add("edit-button-holder")
+        editButtonHolder.appendChild(editButton)
+        editButtonHolder.appendChild(deleteButton)
+        newQuestionTextContainer.appendChild(editButtonHolder)
+        newQuestionContainer.appendChild(newQuestionTextContainer)
+        let keys = ['opOne', 'opTwo', 'opThree', 'opFour', 'opFive']
+        keys.forEach(key => {
+            console.log(question[key])
+            if (question[key]) {
+                let newOptionText = document.createElement("div")
+                newOptionText.innerHTML = question[key]
+                newOptionText.classList.add('survey-preview-question-option');
+                newQuestionContainer.appendChild(newOptionText)
+            }
+        })
+        return newQuestionContainer
+    }
 
+    const createSurveyPreviewElements = (questions) => {
+        surveyPreview.innerHTML = ""
+        surveyPreview.appendChild(surveyPreviewTitle)
+        questions.forEach(question => {
+            let container = createPreviewQuestionContainer(question)
+            surveyPreview.appendChild(container)
+        })
+    }
+    const renderPreview = async (surveyId) => {
+        const questions = await fetch(`/surveys/preview/${surveyId})`)
+        const gatherQuestions = await questions.json()
+        const surveyQuestions = gatherQuestions.map(el => JSON.parse(el))
+        createSurveyPreviewElements(surveyQuestions)
+    }
 })
-

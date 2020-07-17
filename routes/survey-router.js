@@ -47,19 +47,23 @@ router.post('/surveys/create/:id', csrfProtection, asyncHandler(async (req, res)
         opFive: req.body.opFive,
     })
     res.status(200)
-    res.send('goooood')
+    const jsonQuestion = JSON.stringify(question)
+    res.send(jsonQuestion)
+}))
+
+router.get('/surveys/questions/:id',csrfProtection,asyncHandler(async (req,res) => {
+    console.log("req.id ASDFASDFASDFASDFASDF:  ",req.params.id)
+    const question = await db.Question.findByPk(req.params.id);
+    res.send(question)
 }))
 
 router.post('/surveys/questions/:id',csrfProtection, asyncHandler(async(req,res)=>{
-    console.log("hello")
-    console.log(req.body)
-    console.log(req.body.questionId)
     db.Question.destroy({where: {id: req.body.questionId}})
     res.status(200)
     res.send('question-deleted')
 }))
 
-router.get('/surveys/:id', asyncHandler(async (req, res) => {
+router.get('/surveys/:id', csrfProtection, asyncHandler(async (req, res) => {
     const survey = await db.Survey.findByPk(parseInt(req.params.id, 10), { include: { model: db.Question } });
     res.render('results', { title: `Survey #${parseInt(req.params.id, 10)}`, token: req.csrfToken(), survey });
 }));
