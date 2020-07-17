@@ -41,6 +41,7 @@ Friday:
 20. made css styles more uniform across the site
 21. set up auth for survey creation and editing
 22. minor navbar tweaks
+23. feed optimizations, added upvote button
 
 
 ToDo/ questions for group:

@@ -9,9 +9,6 @@ block content
     div(class='container is-fluid mb-4')
         if locals.authenticated
             span(class='navbar-text px-4') Welcome back, #{user.firstName}!
-        //- span(class='level-left navbar-text px-4') Welcome Greg
-        //-     form(class='form-inline pr-4' action='/logout' method='post')
-        //-         button(class='button is-warning' type='submit') Logout
 
     div(class="columns container is-fluid has-background-light")
         div(class="column ")
