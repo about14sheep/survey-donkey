@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', e => {
     let beenHeardThat = document.querySelector('.users_arr').value
-    beenHeardThat = JSON.parse(beenHeardThat)
+    beenHeardThat = JSON.parse(beenHeardThat).map(el => Number(el))
     document.querySelectorAll('.options').forEach(options => {
-        if (beenHeardThat.filter(el => el = options.lastChild.value).length > 0) {
+        if (beenHeardThat.includes(parseInt(options.lastChild.value, 10))) {
             renderChart(options)
         } else {
             chartQuestions(options)
