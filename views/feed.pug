@@ -22,18 +22,19 @@ block content
                   tr 
                     div(class='sOwnerDiv')
                       th(scope='col' class='sOwner') Survey Owner
-                    div(class='sNameDiv')
-                      th(scope='col' class='sName') Survey Name
-                    div(class='sCreatedDiv')
-                      th(scope='col' class='created') Created 
-                    div(class='sModifiedDiv')
-                      th(scope='col' class='modified') Modified
+                    div(class='sNameDiv' href="/feed/name")
+                      a(scope='col' class='sName' href="/feed/name") Survey Name
+                    div(class='sCreatedDiv' href="/feed/created")
+                      a(scope='col' class='created' href="/feed/created") Created 
+                    div(class='sModifiedDiv' href="/feed/modified")
+                      a(scope='col' class='modified' href="/feed/modified") Modified
                     div(class='sQuestionDiv')
                       th(scope='col' class='questions') Questions
                     div(class='sOptionsDiv')
                       th(scope='col' class='options') Options
+            if name  
               tbody               
-                  each survey in feedSurveys
+                  each survey in nameFeedSurveys
                     li(class="box columns my-3")
                       p(class="column divider") #{survey.User.firstName}#{survey.User.lastName}
                       a(class="column divider" href=`/surveys/${survey.id}`) #{survey.name}
@@ -41,9 +42,27 @@ block content
                       p(class="column divider") Modified: #{survey.updatedAt}
                       p(class="column divider") Questions:
                       p(class="column") Options (edit share delete dropdown)
+            if mod  
+              tbody               
+                  each survey in modFeedSurveys
+                    li(class="box columns my-3")
+                      p(class="column divider") #{survey.User.firstName}#{survey.User.lastName}
+                      a(class="column divider" href=`/surveys/${survey.id}`) #{survey.name}
+                      p(class="column divider") Created: #{survey.createdAt}
+                      p(class="column divider") Modified: #{survey.updatedAt}
+                      p(class="column divider") Questions:
+                      p(class="column") Options (edit share delete dropdown) 
+            if cre  
+              tbody               
+                  each survey in createFeedSurveys
+                    li(class="box columns my-3")
+                      p(class="column divider") #{survey.User.firstName}#{survey.User.lastName}
+                      a(class="column divider" href=`/surveys/${survey.id}`) #{survey.name}
+                      p(class="column divider") Created: #{survey.createdAt}
+                      p(class="column divider") Modified: #{survey.updatedAt}
+                      p(class="column divider") Questions:
+                      p(class="column") Options (edit share delete dropdown)                   
             div()
                 a(class="button" href='/create-new-survey' id="createButton") + CREATE
-
-        div(class="column")
 
   
