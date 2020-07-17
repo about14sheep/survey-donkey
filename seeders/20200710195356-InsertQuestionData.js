@@ -10,6 +10,7 @@ module.exports = {
       { questionText: 'who is this', surveyId: 2, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
       { questionText: 'yadda yadda', surveyId: 2, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
       { questionText: 'blah blah', surveyId: 3, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
+      { questionText: 'how many grapes?', surveyId: 3, questionType: 'scroll', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: 'Option Four', opFive: 'Option Five', createdAt: new Date(), updatedAt: new Date() },
       { questionText: 'the reason you cant take the survey is because there is no survey', surveyId: 3, questionType: 'multiple choice', opOne: 'Option one', opTwo: 'Option two', opThree: 'Option three', opFour: null, opFive: null, createdAt: new Date(), updatedAt: new Date() }
     ])
   },
