@@ -15,7 +15,7 @@ const clickHandler = e => {
     setTimeout(_ => {
         renderChart(e.target.parentNode)
     }, 1000)
-    e, target.parentNode.childNodes.forEach(option => {
+    e.target.parentNode.childNodes.forEach(option => {
         option.removeEventListener('mouseleave', mouseLeaveHandler)
         option.removeEventListener('mouseover', mouseOverHandler)
         option.removeEventListener('click', clickHandler)
