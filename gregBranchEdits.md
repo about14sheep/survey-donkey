@@ -41,12 +41,17 @@ Friday:
 20. made css styles more uniform across the site
 21. set up auth for survey creation and editing
 22. minor navbar tweaks
+23. feed optimizations, added upvote button, made it work!
+
+weekend:
+24. made publish/share feature
 
 
 ToDo/ questions for group:
 - SHARE??
-- I think we need to make a 2nd sign up form for just email for users that just want to anonymously fill out a survey (guest user)
 - login with github?
+- already upvoted alert
+- I think we need to make a 2nd sign up form for just email for users that just want to anonymously fill out a survey (guest user)
 - footer?
 - bonus: add icons to dropdown menus
 - results only page?
@@ -57,3 +62,4 @@ Need before heroku final:
 - add requireAuth back in to routes once they are finished
 - mobile optimization check
 - Readme??
+- make sure shares work

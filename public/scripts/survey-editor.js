@@ -53,12 +53,6 @@ document.addEventListener('DOMContentLoaded', async ()=> {
         surveyPreview.appendChild(container)
     }
 
-    publishSurvey.addEventListener('click', async (e)=>{
-        const surveyId = document.getElementById('surveyId').value
-        const publish = await fetch(`/publish/${surveyId}`,{
-            method: "POST"
-        })
-    })
     // popUp.addEventListener('close', ()=>{
 
     // form(action = `surveys/${survey.id}` method = "DELETE")

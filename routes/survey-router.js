@@ -1,4 +1,4 @@
-const {Op} = require('sequelize')
+const { Op } = require('sequelize')
 const express = require('express')
 const { check, validationResult } = require('express-validator')
 const db = require('../models');
@@ -16,7 +16,7 @@ router.get('/surveys/preview/:id', asyncHandler(async (req, res) => {
     res.send(responses);
 }));
 
-router.get('/surveys/create',requireAuth, csrfProtection, asyncHandler(async (req, res) => {
+router.get('/surveys/create', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
     res.render('name-survey', {
         title: 'New Survey',
         token: req.csrfToken()
@@ -24,7 +24,7 @@ router.get('/surveys/create',requireAuth, csrfProtection, asyncHandler(async (re
 }))
 
 router.post('/surveys/create', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
-    console.log("ASDFASDFASDFASDFASFASDFSASDFASFASDFASDFASDFASDFADSFASDF",res.locals.user.id)
+    console.log("ASDFASDFASDFASDFASFASDFSASDFASFASDFASDFASDFASDFADSFASDF", res.locals.user.id)
     const newSurvey = await db.Survey.create({
         name: req.body.surveyName,
         userId: res.locals.user.id,
@@ -75,19 +75,19 @@ router.get('/surveys/questions/all/:id', csrfProtection, asyncHandler(async (req
 router.post('/surveys/create/:id', csrfProtection, asyncHandler(async (req, res) => {
     const survey = await db.Survey.findByPk(req.body.surveyId);
     if (survey.userId === res.locals.user.id) {
-            const question = await db.Question.create({
-                questionText: req.body.prompt,
-                surveyId: req.body.surveyId,
-                questionType: req.body.questionType,
-                opOne: req.body.opOne,
-                opTwo: req.body.opTwo,
-                opThree: req.body.opThree,
-                opFour: req.body.opFour,
-                opFive: req.body.opFive,
-            })
-            res.status(200)
-            const jsonQuestion = JSON.stringify(question)
-            res.send(jsonQuestion)
+        const question = await db.Question.create({
+            questionText: req.body.prompt,
+            surveyId: req.body.surveyId,
+            questionType: req.body.questionType,
+            opOne: req.body.opOne,
+            opTwo: req.body.opTwo,
+            opThree: req.body.opThree,
+            opFour: req.body.opFour,
+            opFive: req.body.opFive,
+        })
+        res.status(200)
+        const jsonQuestion = JSON.stringify(question)
+        res.send(jsonQuestion)
     } else {
         res.send("You don\'t own this survey!")
     }
@@ -103,9 +103,9 @@ router.post('/surveys/questions/:id',requireAuth, csrfProtection, asyncHandler(a
     const question = await db.Question.findByPk(parseInt(req.params.id,10));
     const survey = await db.Survey.findByPk(question.surveyId)
     if (survey.userId === res.locals.user.id) {
-    db.Question.destroy({where: {id: req.body.questionId}})
-    res.status(200)
-    res.send('question-deleted')
+        db.Question.destroy({ where: { id: req.body.questionId } })
+        res.status(200)
+        res.send('question-deleted')
     } else {
         res.send("You don\'t own this survey!")
     }
@@ -116,6 +116,14 @@ router.get('/surveys/:id', requireAuth, csrfProtection, asyncHandler(async (req,
     const userResponses = await db.QuestionResponse.findAll({ where: { surveyId: parseInt(req.params.id, 10), userId: parseInt(req.session.auth.userId) } });
     res.render('results', { title: `Survey #${parseInt(req.params.id, 10)}`, token: req.csrfToken(), survey, userResponses });
 }));
+
+router.get('/surveys/:id/shortans/:qid', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
+    const resShortans = await db.QuestionResponse.findAll({ where: { surveyId: parseInt(req.params.id, 10), questionId: parseInt(req.params.qid, 10) }, include: { model: db.Question } });
+    const survey = await db.Survey.findByPk(parseInt(req.params.id, 10));
+    const question = resShortans.map(el => el.Question)
+    const questionText = question[0].questionText
+    res.render('shortans', { title: `Survey #${parseInt(req.params.id, 10)}`, token: req.csrfToken(), resShortans, survey, questionText });
+}))
 
 router.get('/surveys/:id/questions/:qid', csrfProtection, asyncHandler(async (req, res) => {
     const surveyResponses = await db.QuestionResponse.findAll({ where: { surveyId: parseInt(req.params.id, 10), questionId: parseInt(req.params.qid, 10) }, include: { model: db.Question } });
@@ -145,13 +153,24 @@ router.get('/surveys/:id/votes', asyncHandler(async (req, res) => {
     res.send(votes);
 }));
 
-router.post('surveys/:id/votes', asyncHandler(async (req, res) => {
-    const vote = await db.Upvote.create({
-        suveyId: parseInt(req.params.id, 10),
-        userId: parseInt(req.body.userId, 10),
-        upvote: parseInt(req.body.upvote, 10),
-        downvote: parseInt(req.body.downvote, 10)
+router.post('/surveys/upvote/:id', asyncHandler(async (req, res) => {
+    const survey = await db.Survey.findByPk(req.params.id, {
+        include: [db.Upvote]
     })
+
+    survey.Upvotes.forEach(el => {
+        if (el.userId===req.session.auth.userId) {
+            res.send('You already upvoted this!')
+        }
+    })
+
+    const vote = await db.Upvote.create({
+        surveyId: req.params.id,
+        userId: parseInt(req.session.auth.userId),
+        upvote: 1
+    });
+    res.status(200)
+    res.redirect('back')
 }))
 
 

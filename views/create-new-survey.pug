@@ -51,7 +51,8 @@ block content
                         button(id="accept-changes-button" class="button is-dark is-primary question-button is-hidden") accept Changes
                         button(id="save-question" class="button is-dark is-success question-button") add question
                         button(id="save-survey" class="button is-dark is-warning question-button") save survey
-                        button(id="publish-survey" class="button is-dark is-primary question-button") publish survey
+                        form(action=`/publish/${surveyId}` method="post" class="")
+                            button(id="publish-survey" type="submit" class="button is-dark is-primary question-button") publish survey
                         button(id="clear-question" class="button is-dark is-info question-button") clear question
                         button(id="delete-survey" class="button is-dark is-danger question-button") delete survey
             div
