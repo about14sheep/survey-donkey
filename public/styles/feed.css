@@ -6,14 +6,28 @@
   display: flex;
   justify-content: space-between;
 }
+.sOwnerDiv{
+  width: 16%;
+}
+.sNameDiv{
+  display: flex;
+  width: 10%;
+  justify-content: start;
+}
+.sCreatedDiv{}
+.sModifiedDiv{}
+.sQuestionDiv{}
+.upVotesDiv{} 
+
+
+
 .sOwnerDiv,
 .sNameDiv,
 .sCreatedDiv,
 .sModifiedDiv,
 .sQuestionDiv,
-.sOptionsDiv {
+.upVotesDiv {
   display: flex;
-  width: 30%;
   justify-content: center;
   color: white;
   background-color: #6B787F;
@@ -21,7 +35,7 @@
   border-right: 1px solid #fff;
   
 }
-.sNameDiv, .sCreatedDiv, .sModifiedDiv {
+.sNameDiv, .sCreatedDiv, .sModifiedDiv{
   cursor: pointer;
 }
 
@@ -30,7 +44,7 @@
 .sCreatedDiv:hover,
 .sModifiedDiv:hover,
 .sQuestionDiv:hover,
-.sOptionsDiv:hover {
+.upVotesDiv:hover {
   background-color: black;
 }
 
@@ -49,10 +63,12 @@ background-color: #00bf6f;
 }
 
 
-
 .sName,
 .created,
-.modified {
+.modified, 
+.sOwner, 
+.questions, 
+.upVotes {
   display: flex;
   text-decoration: none;
   color: white; 
