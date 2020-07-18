@@ -12,7 +12,8 @@ block content
     br
     br
     br
-    a(href='/sign-up' class="button is-success") GET STARTED
+    if !locals.authenticated
+        a(href='/sign-up' class="button is-success") GET STARTED
     +validationErrorSummary(errors)
     form(action='/login' method='post')
         input(type='hidden' name='_csrf' value=csrfToken)
