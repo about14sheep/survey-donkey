@@ -1,13 +1,15 @@
 extends layout.pug
 
-
+block append head
+        script(src="/scripts/shortans.js" type="application/javascript")
 block content
     div(class="has-background-light")
         div(class="notification is-danger is-medium mt-2 box")
-            p(class="has-text-centered") -WARNING- This page contains anonymous responses!!! Browse at your own risk... -WARNING-
+            button(class="delete")
+            p(class="has-text-centered") This page contains anonymous responses!!! Browse at your own risk...
         section(class="section")
             div(class="box has-text-centered")
-                h2(class="title is-grouped-centered") #{questionText}
+                h2(class="title") #{questionText}
                 a(class="button is-primary is-light is-medium" href=`/surveys/${survey.id}`) see survey: #{survey.name}
             input(id="_csrfToken" type="hidden" value=token)
             each shortans in resShortans
