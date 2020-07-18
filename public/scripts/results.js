@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', _ => {
-    document.querySelectorAll('.options').forEach(questions => JSON.parse(document.querySelector('.users_arr').value).map(el => el.questionId).map(el => Number(el)).includes(parseInt(questions.lastChild.value, 10)) ? renderChart(questions) : renderQuestion(questions));
-    document.querySelectorAll('.shortans button').forEach(button => button.addEventListener('click', shortAnsClickHandler))
+    document.querySelectorAll('.options').forEach(questions => JSON.parse(document.querySelector('.users_arr').value).map(el => el.questionId).map(el => Number(el)).includes(parseInt(questions.lastChild.value, 10)) ? renderChart(questions) : renderQuestion(questions))
+    document.querySelectorAll('.shortans a').forEach(button => button.addEventListener('click', shortAnsClickHandler))
 });
 
 const renderQuestion = questions => {
@@ -27,8 +27,12 @@ const clickHandler = e => {
 }
 
 const shortAnsClickHandler = e => {
+    const shortAnsText = e.target.parentNode.childNodes[0].value
+    if (shortAnsText.trim().length < 1) return
+    const questionId = e.target.parentNode.lastChild.value
     e.target.removeEventListener('click', shortAnsClickHandler)
-    postQuestionResponse(e.target.parentNode.lastChild.value, e.target.parentNode.childNodes[0].value)
+    postQuestionResponse(questionId, shortAnsText)
+    renderShortans(e.target, shortAnsText)
 }
 
 const mouseOverHandler = e => e.target.style.filter = `drop-shadow(0 0 0.75rem #00BF6F)`;
@@ -43,8 +47,22 @@ const renderChart = async question => {
         });
     });
     createChart(question.parentNode.lastChild.lastChild, __tallyResponses(responseObjects))
-
 }
+
+const renderShortans = async (button, shortans) => {
+    const question = button.parentNode
+    const textArea = question.childNodes[0]
+    button.remove()
+    textArea.placeholder = `You answered: -- ${shortans} --`;
+    textArea.value = "";
+    textArea.readOnly = true;
+    const seeResponses = document.createElement('a')
+    seeResponses.href = `/surveys/${document.querySelector('.survey_id').value}/shortans/${question.lastChild.value}`
+    seeResponses.classList.add('button', 'is-primary')
+    seeResponses.innerHTML = "See Responses"
+    question.appendChild(seeResponses);
+}
+
 
 const getQuestionResponses = async (questionId) => {
     const res = await fetch(`/surveys/${document.querySelector('.survey_id').value}/questions/${questionId}`);
