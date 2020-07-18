@@ -7,6 +7,7 @@ body {
 
 .typingAnimation_container {
     margin: 20% 20px auto;
+    min-height: 100px;
 }
 
 /* .question_results {
