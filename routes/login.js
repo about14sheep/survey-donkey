@@ -11,6 +11,7 @@ const router = express.Router();
 router.get("/login", csrfProtection, (req, res) => {
   res.render("login", {
     title: "Login",
+    login: true,
     csrfToken: req.csrfToken(),
   });
 });

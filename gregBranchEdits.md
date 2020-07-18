@@ -38,19 +38,22 @@ Thursday:
 Friday:
 18. minor css additions to splash page
 19. made sign-up and login pages look good
+20. made css styles more uniform across the site
+21. set up auth for survey creation and editing
+22. minor navbar tweaks
 
 
 ToDo/ questions for group:
-- survey create linked to user?
 - SHARE??
-- in navbar, where is create button? point of my surveys? link to survey feed?
 - I think we need to make a 2nd sign up form for just email for users that just want to anonymously fill out a survey (guest user)
 - login with github?
 - footer?
-- restrict survey editing only to surveys made by user (checkPermissions section in reading)
 - bonus: add icons to dropdown menus
+- results only page?
+- create surveys button from results?
 
 
 Need before heroku final:
 - add requireAuth back in to routes once they are finished
-- final heroku db seeds
+- mobile optimization check
+- Readme??

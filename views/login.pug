@@ -5,7 +5,7 @@ include utils.pug
 block content
   div(class="columns")
     div(class="column")
-    div(class="column has-background-light")
+    div(class="column has-background-light my-6")
       +validationErrorSummary(errors)
       form(action='/login' method='post' class="")
         input(type='hidden' name='_csrf' value=csrfToken)

@@ -3,7 +3,7 @@
 }
 
 .survey-preview-question-container:hover{
-    background-color: 	#F5F5F5
+    background-color: #f8f8ff
 }
 
 /* body {
@@ -25,6 +25,10 @@
     margin-left: 10px;
 }
 
+#publish-survey{
+    margin-left:10px;
+}
+
 #question-type{
     margin-left: 10px;
     margin-right: 10px;
@@ -39,9 +43,9 @@ input{
     height: auto;
 }
 
-html{
+/* html{
     background-color:#C8C8C8;
-}
+} */
 
 #clear-question{
     margin-left: 11px;
@@ -94,9 +98,9 @@ html{
 }
 
 #bottom-buffer {
-    display: block;
     height: 300px;
-    background:#F0F0F0;
+    display: block;
+    background: hsl(0, 0%, 96%);
 }
 
 .newQuestionContainer {
@@ -132,6 +136,10 @@ html{
     display: flex;
     margin-top: 10px;
     flex-direction: row;
+}
+
+#accept-changes-button{
+    margin-right: 10px;
 }
 
 #save-question{

@@ -11,7 +11,7 @@
 
   .surveyDonkey_logo{
     cursor: pointer;
-  
+
     text-decoration: none;
     font-family: 'PT Sans';
     color: #00bf6f;
@@ -46,7 +46,7 @@
     padding: 10px 75px 0px 5px
 }
 
-.donkeyLogo{ 
+.donkeyLogo{
     height: 40px;
 }
 .surveyDonkey_signup, .createSurvey, #squareSignup, .logout, #squareLogin{
@@ -70,10 +70,10 @@ background-color: white;
     color: #333E48;
     border-color: #fff;
     background-color: #fff;
-    
+
 }
 
-.surveyDonkey_login{ 
+.surveyDonkey_login{
     text-decoration: none;
     color: #333E48;
     font-size: 13px;
@@ -85,7 +85,7 @@ background-color: white;
 }
  #greenNavBar{
      background-color: #00bf6f;
- }  
+ }
  .dashContainer{
      display: flex;
      align-items: center;
@@ -94,7 +94,7 @@ background-color: white;
  .dashDash, .dashMySurveys{
     cursor: pointer;
     text-decoration: none;
-    color: white; 
+    color: white;
     font-size: 13px;
     font-weight: 500;
 
@@ -117,8 +117,4 @@ display:flex;
 width: 25%;
 justify-content: space-between;
 align-items: center;
-}
-
-.createSurvey {
-   
 }

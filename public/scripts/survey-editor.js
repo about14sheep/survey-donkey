@@ -1,5 +1,5 @@
-document.addEventListener('DOMContentLoaded', ()=> {
-    
+document.addEventListener('DOMContentLoaded', async ()=> {
+
     const optionsContainer = document.getElementById('options-container')
     const typeInput = document.getElementById("question-type")
     const promptInput = document.getElementById("question-text")
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const freeResponseOptions = document.getElementById('free-response-text-box')
     const radioButtonHolder = document.getElementById('radio-button-holder')
     const scrollResponseBox = document.getElementById('scroll-response-box')
-    
+    const publishSurvey = document.getElementById('publish-survey')
     //global variables
     let specs;
     //f()s
@@ -53,12 +53,18 @@ document.addEventListener('DOMContentLoaded', ()=> {
         surveyPreview.appendChild(container)
     }
 
+    publishSurvey.addEventListener('click', async (e)=>{
+        const surveyId = document.getElementById('surveyId').value
+        const publish = await fetch(`/publish/${surveyId}`,{
+            method: "POST"
+        })
+    })
     // popUp.addEventListener('close', ()=>{
 
     // form(action = `surveys/${survey.id}` method = "DELETE")
     // button(class= 'button is-danger' type = 'submit' onclick = "return confirm('Are you sure you want to delete this survey?');") Delete
 
-    const createDeleteButton = (questionId) => {
+    const createDeleteButton = (questionId,color="") => {
         const confirmDeleteDiv = document.createElement('div')
         confirmDeleteDiv.classList.add("confirm-delete-div")
         const confirmDeleteButton = document.createElement('button')
@@ -70,6 +76,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
         addEventListenerToCancelDeleteButton(cancelDeleteButton)
         const deleteButton = document.createElement('button')
         deleteButton.classList.add("button", "is-dark", "is-danger", "delete-button")
+        if (color === "yellow") {
+            deleteButton.classList.remove("is-danger")
+            deleteButton.classList.add("is-warning")
+        }
         addEventListenerToDeleteButton(deleteButton)
         deleteButton.setAttribute("id",`${questionId}`)
         cancelDeleteButton.classList.add("button","is-dark","is-warning","cancel-delete-button","is-hidden")
@@ -119,7 +129,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
             questionId: questionId
         })
         const token = document.getElementById('csrfToken').value
-        const create = await fetch(`/surveys/questions/${questionId})`, {
+        const create = await fetch(`/surveys/questions/${questionId}`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
@@ -291,12 +301,12 @@ document.addEventListener('DOMContentLoaded', ()=> {
         newQuestionText.classList.add('survey-preview-question-text');
         newQuestionText.innerHTML = question.questionText;
         let editButton = document.createElement("button")
-        editButton.classList.add("button", "is-dark", "is-primary", "editButton")
+        editButton.classList.add("button", "is-dark", "is-info", "edit-button")
         editButton.innerHTML = "edit"
         editButton.value = question.id;
         addEventListenerToEditButton(editButton);
         editButton.style.marginRight = '10px'
-        let deleteButton = createDeleteButton(question.id)
+        let deleteButton = createDeleteButton(question.id,"yellow")
         let editButtonHolder = document.createElement("div")
         editButtonHolder.classList.add("edit-button-holder")
         editButtonHolder.appendChild(editButton)
@@ -339,38 +349,223 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     const addEventListenerToEditButton = button => {
         button.addEventListener("click", async (e) => {
-            newQuestionButton.classList.add("is-hidden")
-            addQuestionButton = document.getElementById('save-question')
-            addQuestionButton.classList.add("is-hidden")
-            acceptChangesButton = document.getElementById('accept-changes-button')
-            acceptChangesButton.classList.remove("is-hidden")
-            newQuestionOptions = document.getElementById("new-question-options")
-            newQuestionOptions.classList.add("is-hidden")
-            console.log("value: ", e.target.value)
+            specs = ""
             const questionInfo = await fetch(`/surveys/questions/${e.target.value}`)
             const formattedQuestionInfo = await questionInfo.json();
-            console.log("ID: ",formattedQuestionInfo.id)
             container = document.getElementById(`container-for-question-${formattedQuestionInfo.id}`)
-            containerEditTemporaryStorage = container.innerHTML
-            optionsContainerTemporaryStorage = optionsContainer.innerHTML
-            populateEditWindow(container,formattedQuestionInfo)
+            editWindow = createEditWindow(formattedQuestionInfo)
+            populateEditWindow(editWindow,formattedQuestionInfo)
+            container.innerHTML = editWindow.innerHTML
+            let buttons = createEditButtons(formattedQuestionInfo)
+            buttons.style.marginTop = "10px"
+            container.appendChild(buttons)
         })
     }
 
-    const populateEditWindow = (container,question) => {
-        if (question.questionType === "scroll") {
-            displayScrollOptions()
-            container.innerHTML = optionsContainer.innerHTML
-            optionsContainer.innerHTML = ""
-            const prompt = document.getElementById("question-text")
-            const selectType = document.getElementById("question-type")
-            selectType.selectedIndex = 1;
-            prompt.value = question.questionText
+    const populateEditWindow = (editWindow, question) => {
+        let type = question.questionType
+        if (type === "scroll") {
+            let editScrollBox = scrollResponseBox.cloneNode(true)
+            editScrollBox.setAttribute("id","edit-scroll-response-box")
+            editScrollBox.classList.remove("is-hidden")
+            editWindow.appendChild(editScrollBox)
+        } else if (type === "free-response") {
+            let editFreeResponseBox = freeResponseOptions.cloneNode(true)
+            editFreeResponseBox.setAttribute("id", "edit-free-response-text-box")
+            editFreeResponseBox.classList.remove("is-hidden")
+            editWindow.appendChild(editFreeResponseBox)
+        } else if (type === "multiple-choice") {
+            let multipleChoiceChildren = createMultipleChoiceValsForEdit(question)
+            editWindow.appendChild(multipleChoiceChildren)
         }
-
     }
 
-    initializeBottomForm=()=>{}
+    const addEventListenerToAccept =(accept)=>{
+        console.log("hey")
+        accept.addEventListener('click',async (e)=>{
+            console.log("asdfjklajsdfkjasdfkljasdlkfj:    ",e.target.id)
+            console.log("ADSFASDFASDFASD QWOOOOOOOOOOO ME")
+            let questionDetails = {id: e.target.id}
+            console.log("questionId:  ",questionDetails.id)
+            questionDetails.questionText = document.getElementById("edit-prompt-input").value
+            questionDetails.opOne = document.getElementById("option-one-edit") ? document.getElementById("option-one-edit").value : null
+            questionDetails.opTwo = document.getElementById("option-two-edit") ? document.getElementById("option-two-edit").value : null
+            questionDetails.opThree = document.getElementById("option-three-edit") ? document.getElementById("option-three-edit").value : null
+            questionDetails.opFour = document.getElementById("option-four-edit") ? document.getElementById("option-four-edit").value : null
+            questionDetails.opFive = document.getElementById("option-five-edit") ? document.getElementById("option-five-edit").value : null
+            const updatedQuestionInfo = await updateQuestion(questionDetails)
+            updateSurveyPreview(updatedQuestionInfo)
+        })
+    }
+
+    const updateQuestion = async (question) => {
+        const token = document.getElementById('csrfToken').value
+        const response = await fetch(`/surveys/questions/update/${question.id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Csrf-Token": token
+            },
+            body: JSON.stringify({
+                questionText: question.questionText,
+                questionType: question.type,
+                opOne: question.opOne,
+                opTwo: question.opTwo,
+                opThree: question.opThree,
+                opFour: question.opFour,
+                opFive: question.opFive
+            })
+        })
+        const updatedQuestion = await response.json();
+        return updatedQuestion
+    }
+
+    const allEditButtons = (toggle) => {
+        const editButtons = document.querySelectorAll("edit-button")
+        if (toggle === "disable") {
+            editButtons.forEach(button=>{button.disabled = true})
+        } else if (toggle === "enable")
+            editButtons.forEach(button=>{button.disabled = false})
+    }
+
+    const updateSurveyPreview=(question)=>{
+        console.log(question)
+        const container = document.getElementById(`container-for-question-${question.id}`)
+        container.parentNode.replaceChild(createPreviewQuestionContainer(question),container)
+    }
+
+
+    const createEditButtons=(question)=>{
+        const buttonHolder = document.createElement('div')
+        buttonHolder.style.display="flex"
+        buttonHolder.style.flexDirection="row"
+        buttonHolder.style.marginLeft = "10px"
+        const acceptButton = document.createElement('button')
+        acceptButton.classList.add("button","is-dark","is-primary")
+        acceptButton.setAttribute("id",`${question.id}`)
+        buttonHolder.appendChild(acceptButton)
+        acceptButton.innerHTML = "accept";
+        addEventListenerToAccept(acceptButton)
+        const removeButton = createDeleteButton(question.id,"yellow")
+        removeButton.style.marginLeft = "10px"
+        buttonHolder.appendChild(removeButton)
+        if (question.questionType === 'multiple-choice') {
+            const addOptions = createAddOptionButton(question)
+            buttonHolder.appendChild(addOptions)
+        }
+        return buttonHolder
+    }
+
+    const createAddOptionButton=(question)=>{
+        const addOption = document.createElement("button")
+        addOption.classList.add("button","is-dark")
+        addOption.innerHTML = "+ option"
+        addOption.style.marginLeft = "10px"
+        addOption.setAttribute("id",`${question.id}`)
+        addOption.addEventListener('click',(e)=>{
+            const editOptionsContainer = document.getElementById("edit-options-container")
+            const children = editOptionsContainer.childNodes
+            if (children.length < 5) {
+                const newInput = createNewEditInput(editOptionsContainer,question)
+                editOptionsContainer.appendChild(newInput)
+            }
+        })
+        return addOption
+    }
+
+    const createNewEditInput=(container,question)=>{
+        if (container.childNodes.length === 0) {
+            const opOneEdit = document.createElement('input')
+            opOneEdit.setAttribute("id", "option-one-edit")
+            opOneEdit.classList.add("new-option-text")
+            opOneEdit.style.marginTop = "10px"
+            return opOneEdit
+        } else if (container.childNodes.length === 1) {
+            const opTwoEdit = document.createElement('input')
+            opTwoEdit.setAttribute("id", "option-two-edit")
+            opTwoEdit.classList.add("new-option-text")
+            return opTwoEdit
+        } else if (container.childNodes.length === 2) {
+            const opThreeEdit = document.createElement('input')
+            opThreeEdit.setAttribute("id", "option-three-edit")
+            opThreeEdit.classList.add("new-option-text")
+            return opThreeEdit
+        } else if (container.childNodes.length === 3) {
+            const opFourEdit = document.createElement('input')
+            opFourEdit.setAttribute("id", "option-four-edit")
+            opFourEdit.classList.add("new-option-text")
+            return opFourEdit
+        } else if (container.childNodes.length === 4) {
+            const opFiveEdit = document.createElement('input')
+            opFiveEdit.setAttribute("id", "option-five-edit")
+            opFiveEdit.classList.add("new-option-text")
+            return opFiveEdit
+        }
+    }
+
+    const createEditWindow = (question) => {
+        let editWindow = document.createElement("div")
+        let editPromptHolder = document.createElement("div")
+        editPromptHolder.style.display = "flex"
+        editPromptHolder.style.width = "860px"
+        editPromptHolder.style.flexDirection = "row"
+        editPromptHolder.setAttribute("id",`title-for-${question.id}`)
+        let editPrompt = promptInput.cloneNode(true)
+        editPrompt.setAttribute("id","edit-prompt-input")
+        let editType = document.createElement("button")
+        editType.style.marginLeft = "10px"
+        editType.classList.add("button","disabled","is-light")
+        editType.innerHTML = question.questionType
+        editPrompt.setAttribute("value", `${question.questionText}`)
+        editPromptHolder.appendChild(editPrompt)
+        editPromptHolder.appendChild(editType)
+        editWindow.appendChild(editPromptHolder)
+        return editWindow
+    }
+
+    const createMultipleChoiceValsForEdit=(question)=>{
+        let options = document.createElement("div");
+        options.setAttribute("id","edit-options-container")
+        options.style.display = "flex"
+        options.style.flexDirection = "column"
+        if (question.opOne){
+            const opOneEdit = document.createElement('input')
+            opOneEdit.setAttribute("id","option-one-edit")
+            opOneEdit.classList.add("new-option-text")
+            opOneEdit.style.marginTop = "10px"
+            opOneEdit.setAttribute("value", `${question.opOne}`)
+            options.appendChild(opOneEdit)
+        }
+        if (question.opTwo){
+            const opTwoEdit = document.createElement('input')
+            opTwoEdit.setAttribute("id", "option-two-edit")
+            opTwoEdit.classList.add("new-option-text")
+            opTwoEdit.setAttribute("value", `${question.opTwo}`)
+            options.appendChild(opTwoEdit)
+        }
+        if (question.opThree) {
+            const opThreeEdit = document.createElement('input')
+            opThreeEdit.setAttribute("id", "option-three-edit")
+            opThreeEdit.classList.add("new-option-text")
+            opThreeEdit.setAttribute("value", `${question.opThree}`)
+            options.appendChild(opThreeEdit)
+        }
+        if (question.opFour) {
+            const opFourEdit = document.createElement('input')
+            opFourEdit.setAttribute("id", "option-four-edit")
+            opFourEdit.classList.add("new-option-text")
+            opFourEdit.setAttribute("value", `${question.opFour}`)
+            options.appendChild(opFourEdit)
+        }
+        if (question.opFive) {
+            const opFiveEdit = document.createElement('input')
+            opFiveEdit.setAttribute("id", "option-five-edit")
+            opFiveEdit.classList.add("new-option-text")
+            opFiveEdit.setAttribute("value", `${question.opFive}`)
+            options.appendChild(opFiveEdit)
+        }
+        return options
+    }
 
     const renderPreview = async (surveyId) => {
         const questions = await fetch(`/surveys/preview/${surveyId})`)
@@ -378,6 +573,15 @@ document.addEventListener('DOMContentLoaded', ()=> {
         const surveyQuestions = gatherQuestions.map(el => JSON.parse(el))
         createSurveyPreviewElements(surveyQuestions)
     }
+
+    const surveyId = document.getElementById('surveyId').value
+    const surveyInfo = await fetch(`/surveys/questions/all/${surveyId}`)
+    console.log("surveyinfo: ", surveyInfo)
+    survey = await surveyInfo.json()
+    survey.forEach(question => {
+        let container = createPreviewQuestionContainer(question)
+        surveyPreview.appendChild(container)
+    })
 
     
 })

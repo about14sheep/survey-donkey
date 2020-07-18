@@ -22,12 +22,12 @@ body {
     cursor: pointer;
     grid-template-areas: 'title'
                         'options options chart'
-                        'options options chart'; 
-}                       
+                        'options options chart';
+}
 
 #title {
     grid-area: title;
-    
+
 }
 
 .question_list {
@@ -40,6 +40,3 @@ body {
     grid-area: chart;
     transition: ease 1s;
 }
-
-
-
