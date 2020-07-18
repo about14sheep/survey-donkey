@@ -114,17 +114,26 @@ router.get('/surveys/:id/votes', asyncHandler(async (req, res) => {
     res.send(votes);
 }));
 
-router.post('/surveys/upvote/:id', requireAuth, asyncHandler(async (req, res) => {
+router.post('/surveys/upvote/:id', asyncHandler(async (req, res) => {
+    const survey = await db.Survey.findByPk(req.params.id, {
+        include: [db.Upvote]
+    })
+
+    console.log(survey.Upvotes)
+
+    survey.Upvotes.forEach(el => {
+        if (el.userId===req.session.auth.userId) {
+            res.send('You already upvoted this!')
+        }
+    })
+
     const vote = await db.Upvote.create({
-        surveyId: parseInt(req.params.id, 10),
-        userId: res.locals.user.id,
-        upvote: 1,
-        // userId: parseInt(req.body.userId, 10),
-        // upvote: parseInt(req.body.upvote, 10),
-        // downvote: parseInt(req.body.downvote, 10)
+        surveyId: req.params.id,
+        userId: parseInt(req.session.auth.userId),
+        upvote: 1
     });
     res.status(200)
-    res.send('upvoted')
+    res.redirect('back')
 }))
 
 

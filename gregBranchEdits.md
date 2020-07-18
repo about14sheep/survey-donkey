@@ -41,7 +41,7 @@ Friday:
 20. made css styles more uniform across the site
 21. set up auth for survey creation and editing
 22. minor navbar tweaks
-23. feed optimizations, added upvote button
+23. feed optimizations, added upvote button, made it work!
 
 
 ToDo/ questions for group:
@@ -49,6 +49,8 @@ ToDo/ questions for group:
 - I think we need to make a 2nd sign up form for just email for users that just want to anonymously fill out a survey (guest user)
 - login with github?
 - footer?
+- sort by upvote?
+- already upvoted alert
 - bonus: add icons to dropdown menus
 - results only page?
 - create surveys button from results?

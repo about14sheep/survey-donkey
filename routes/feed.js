@@ -13,7 +13,6 @@ order: [['name', 'ASC']] });
 
 res.render('feed', {
     title: "SurveyDonkey Feed",
-    name: true,
     nameFeedSurveys,
 
 })
@@ -29,7 +28,6 @@ order: [['createdAt', 'ASC']] });
 
 res.render('feed', {
     title: "SurveyDonkey Feed",
-    cre: true,
     createFeedSurveys
 
 })
@@ -45,7 +43,6 @@ order: [['updatedAt', 'ASC']] });
 
 res.render('feed', {
     title: "SurveyDonkey Feed",
-    mod: true,
     modFeedSurveys
 })
 ;
