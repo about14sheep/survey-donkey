@@ -44,8 +44,7 @@ order: [['updatedAt', 'ASC']] });
 res.render('feed', {
     title: "SurveyDonkey Feed",
     modFeedSurveys
-})
-;
+});
 
 }))
 

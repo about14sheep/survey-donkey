@@ -127,8 +127,6 @@ router.post('/surveys/upvote/:id', asyncHandler(async (req, res) => {
         include: [db.Upvote]
     })
 
-    console.log(survey.Upvotes)
-
     survey.Upvotes.forEach(el => {
         if (el.userId===req.session.auth.userId) {
             res.send('You already upvoted this!')

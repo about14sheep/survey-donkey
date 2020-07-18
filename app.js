@@ -16,6 +16,7 @@ const dashRouter = require('./routes/dashboard');
 const logoutRouter = require('./routes/logout')
 const { restoreUser } = require('./auth');
 const feedRouter = require('./routes/feed')
+const shareRouter = require('./routes/sharePublish')
 
 app.use(express.static('public'))
 app.use(cookieParser(sessionSecret))
@@ -39,6 +40,7 @@ app.use(signUpRouter);
 app.use(loginRouter);
 app.use(dashRouter);
 app.use(logoutRouter);
+app.use(shareRouter);
 
 
 app.get('/', csrfProtection, asyncHandler(async (req, res) => {
