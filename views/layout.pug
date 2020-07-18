@@ -7,9 +7,9 @@ html(lang="en")
             link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css")
             link(rel="stylesheet" type="text/css" href="/styles/navbar.css")
             title #{title}
-    body
+    body(class="has-navbar-fixed-top")
         if !locals.authenticated
-            div(class='splash-nav__container')
+            nav(class='splash-nav__container navbar is-fixed-top')
                 div(class='surveyDonkey_logo_container')
                     img(class='donkeyLogo' src='/icons/donkey-xxl.png')
                     a(class='surveyDonkey_logo' href='/') SurveyDonkey
@@ -26,7 +26,7 @@ html(lang="en")
                         div(class='surveyDonkey_signup_container')
                             a(class='surveyDonkey_signup' href='/sign-up' id='squareSignup') SIGN UP
         if locals.authenticated
-            div(class='splash-nav__container' id='greenNavBar')
+            nav(class='splash-nav__container navbar is-fixed-top' id='greenNavBar')
                 div(class='dashContainer')
                     div(class='surveyDonkey_logo_container')
                         a(href='/')
