@@ -80,9 +80,9 @@ block content
                       form(action=`/surveys/upvote/${survey.id}` method='post')
                         button(class="button is-primary is-small" type='submit') Upvote!
 
-          if upvoteFeedSurveys
+          if upvoteSorted
             tbody
-                each survey in createFeedSurveys
+                each survey in upvoteSorted
                   li(class="box columns is-vcentered has-text-centered my-3")
                     p(class="column divider") Made By:  #{survey.User.firstName}#{survey.User.lastName}
                     a(class="column divider" href=`/surveys/${survey.id}`) #{survey.name}

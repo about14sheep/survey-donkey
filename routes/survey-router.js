@@ -160,7 +160,7 @@ router.post('/surveys/upvote/:id', asyncHandler(async (req, res) => {
 
     survey.Upvotes.forEach(el => {
         if (el.userId===req.session.auth.userId) {
-            res.send('You already upvoted this!')
+            res.send('You upvoted that survey already!');
         }
     })
 
