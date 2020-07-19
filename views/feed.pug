@@ -24,8 +24,8 @@ block content
                     a(scope='col' class='modified' href="/feed/modified") Modified
                   div(class='sQuestionDiv')
                     th(scope='col' class='questions') Questions
-                  div(class='sOptionsDiv')
-                    th(scope='col' class='options') Upvotes
+                  div(class='upVotesDiv')
+                    th(scope='col' class='upVotes') Upvotes
           if nameFeedSurveys
             tbody
                 each survey in nameFeedSurveys
@@ -79,8 +79,7 @@ block content
                       br
                       form(action=`/surveys/upvote/${survey.id}` method='post')
                         button(class="button is-primary is-small" type='submit') Upvote!
-
-
+         
           div()
               a(class="button" href='/create-new-survey' id="createButton") + CREATE
 

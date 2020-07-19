@@ -8,59 +8,63 @@ const { csrfProtection, asyncHandler } = require('./utils');
 
 router.get('/feed', requireAuth, asyncHandler(async (req, res) => {
 
-const nameFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
-order: [['name', 'ASC']] });
+    const nameFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+        order: [['name', 'ASC']]
+    });
 
-res.render('feed', {
-    title: "SurveyDonkey Feed",
-    nameFeedSurveys,
+    res.render('feed', {
+        title: "SurveyDonkey Feed",
+        nameFeedSurveys,
+    })
+}))
 
-})
-;
+router.get('/feed/name', requireAuth, asyncHandler(async (req, res) => {
 
+    const nameFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+        order: [['name', 'ASC']]
+    });
+
+    res.render('feed', {
+        title: "SurveyDonkey Feed",
+        nameFeedSurveys,
+    })
 }))
 
 router.get('/feed/created', asyncHandler(async (req, res) => {
 
-const createFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
-order: [['createdAt', 'ASC']] });
+    const createFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+        order: [['createdAt', 'ASC']]
+    });
 
+    res.render('feed', {
+        title: "SurveyDonkey Feed",
+        createFeedSurveys
+    })
+}))
 
-res.render('feed', {
-    title: "SurveyDonkey Feed",
-    createFeedSurveys
+router.get('/feed/upvotes', asyncHandler(async (req, res) => {
 
-})
-;
+    const createFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+        order: [['createdAt', 'ASC']]
+    });
 
+    res.render('feed', {
+        title: "SurveyDonkey Feed",
+        createFeedSurveys
+    })
 }))
 
 
 router.get('/feed/modified', asyncHandler(async (req, res) => {
 
-const  modFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
-order: [['updatedAt', 'ASC']] });
+    const  modFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+        order: [['updatedAt', 'ASC']]
+    });
 
-res.render('feed', {
-    title: "SurveyDonkey Feed",
-    modFeedSurveys
-});
-
+    res.render('feed', {
+        title: "SurveyDonkey Feed",
+        modFeedSurveys
+    })
 }))
 
-router.get('/feed/name', asyncHandler(async (req, res) => {
-
-const nameFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
-order: [['name', 'ASC']] });
-
-res.render('feed', {
-    title: "SurveyDonkey Feed",
-    name: true,
-    nameFeedSurveys,
-
-})
-;
-
-}))
-
-  module.exports = router;
+module.exports = router;
