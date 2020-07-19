@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', _ => {
-    document.querySelectorAll('.options').forEach(questions => JSON.parse(document.querySelector('.users_arr').value).map(el => el.questionId).map(el => Number(el)).includes(parseInt(questions.lastChild.value, 10)) ? renderChart(questions) : renderQuestion(questions))
-    document.querySelectorAll('.shortans a').forEach(button => {
-        JSON.parse(document.querySelector('.users_arr').value).map(el => el.questionId).map(el => Number(el)).includes(parseInt(button.parentNode.lastChild.value, 10)) ? renderShortans(button, '---> check out the anonymous responses for this question! --->') : button.addEventListener('click', shortAnsClickHandler)
-    })
+    document.querySelectorAll('.options').forEach(questions => JSON.parse(document.querySelector('.users_arr').value).map(el => el.questionId).map(el => Number(el)).includes(parseInt(questions.lastChild.value, 10)) ? renderChart(questions) : renderQuestion(questions));
+    document.querySelectorAll('.shortans a').forEach((button, i) => JSON.parse(document.querySelector('.users_arr').value).map(el => el.questionId).map(el => Number(el)).includes(parseInt(button.parentNode.lastChild.value, 10)) ? renderShortans(button, `${JSON.parse(document.querySelector('.users_arr').value).filter(el => el.questionId === parseInt(button.parentNode.lastChild.value, 10))[0].questionResponseValue}`) : button.addEventListener('click', shortAnsClickHandler));
 });
 
 const renderQuestion = questions => {
@@ -55,7 +53,7 @@ const renderShortans = async (button, shortans) => {
     const question = button.parentNode
     const textArea = question.childNodes[0]
     button.remove()
-    textArea.placeholder = `${shortans}`;
+    textArea.placeholder = `Your Response: ${shortans}`;
     textArea.value = "";
     textArea.readOnly = true;
     const seeResponses = document.createElement('a')
