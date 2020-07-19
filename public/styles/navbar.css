@@ -20,6 +20,7 @@
   }
 
 .splash-nav__container {
+
     background-color: #FFFFFF;
     width: 100%;
     padding: 4px;
@@ -35,19 +36,23 @@
 .surveyDonkey_logo_container {
     display: flex;
     width: 20%;
-    justify-content: space-between center;
+    justify-content: center;
     padding: 0px 0px 0px 100px
 }
 .signUpAndLogIn_container{
     display:  flex;
+    justify-content: space-between;
+    position: fixed;
     width: 20%;
-    justify-content: space-around;
     right: 0;
     padding: 10px 75px 0px 5px
 }
 
 .donkeyLogo{
+    display: flex;
+    justify-content: center;
     height: 40px;
+
 }
 .surveyDonkey_signup, .createSurvey, #squareSignup, .logout, #squareLogin{
     color: #333E48;
@@ -114,7 +119,7 @@ width: 30%
 
 .ifMySurveys{
 display:flex;
-width: 25%;
-justify-content: space-between;
+width: 300px;
+justify-content: space-around;
 align-items: center;
 }

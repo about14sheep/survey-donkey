@@ -16,6 +16,7 @@ const dashRouter = require('./routes/dashboard');
 const logoutRouter = require('./routes/logout')
 const { restoreUser } = require('./auth');
 const feedRouter = require('./routes/feed')
+const shareRouter = require('./routes/sharePublish')
 
 app.use(express.static('public'))
 app.use(cookieParser(sessionSecret))
@@ -23,7 +24,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(morgan('dev'));
 app.set('view engine', 'pug')
-app.use(feedRouter)
 
 
 app.use(session({
@@ -34,11 +34,13 @@ app.use(session({
 }));
 app.use(restoreUser);
 
+app.use(feedRouter)
 app.use(surveyRouter);
 app.use(signUpRouter);
 app.use(loginRouter);
 app.use(dashRouter);
 app.use(logoutRouter);
+app.use(shareRouter);
 
 
 app.get('/', csrfProtection, asyncHandler(async (req, res) => {

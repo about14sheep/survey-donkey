@@ -6,6 +6,7 @@
     "host": "127.0.0.1",
     "dialect": "postgres",
     "seederStorage": "sequelize"
+
   },
   "test": {
     "username": "surveycompanyapp",
@@ -13,7 +14,8 @@
     "database": "surveycompanytest",
     "host": "127.0.0.1",
     "dialect": "postgres",
-    "seederStorage": "sequelize"
+    "seederStorage": "sequelize",
+    "use_env_variable": "DATABASE_URL"
   },
   "production": {
     "username": "surveycompanyapp",

@@ -33,13 +33,43 @@ router.post('/surveys/create', requireAuth, csrfProtection, asyncHandler(async (
     res.redirect(`/surveys/create/${newSurvey.id}`)
 }))
 
-router.get('/surveys/create/:id', csrfProtection, asyncHandler(async (req, res) => {
+router.get('/surveys/create/:id', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
     const survey = await db.Survey.findByPk(req.params.id);
     if (survey.userId === res.locals.user.id) {
         res.render('create-new-survey', { title: 'Create Survey', name: survey.name, token: req.csrfToken(), surveyId: req.params.id })
     } else {
         res.send("You don\'t own this survey!")
     }
+}))
+
+router.patch('/surveys/questions/update/:id', csrfProtection, asyncHandler(async (req,res) => {
+    const question = await db.Question.findByPk(parseInt(req.params.id,10))
+    console.log("questionText: ",req.body.questionText)
+    const updatedQuestion = await question.update({
+        questionText: req.body.questionText,
+        opOne: req.body.opOne,
+        opTwo: req.body.opTwo,
+        opThree: req.body.opThree,
+        opFour: req.body.opFour,
+        opFive: req.body.opFive,
+    })
+    console.log(updatedQuestion)
+    questionInfo = JSON.stringify(updatedQuestion)
+    res.status(200)
+    res.send(questionInfo)
+    console.log("questionText: ",req.body.questionText)
+}))
+
+router.get('/surveys/questions/all/:id', csrfProtection, asyncHandler(async (req,res)=>{
+    console.log(req.params.id)
+    const questions = await db.Question.findAll({ where: { surveyId: parseInt(req.params.id, 10) } });
+    console.log(questions)
+    const questionInfo = JSON.stringify(questions)
+    res.status(200)
+    res.send(questionInfo)
+    console.log(req.params.id)
+    console.log(questionInfo)
+    console.log
 }))
 
 router.post('/surveys/create/:id', csrfProtection, asyncHandler(async (req, res) => {
@@ -63,14 +93,15 @@ router.post('/surveys/create/:id', csrfProtection, asyncHandler(async (req, res)
     }
 }))
 
-router.get('/surveys/questions/:id', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
-    console.log("req.id ASDFASDFASDFASDFASDF:  ", req.params.id)
-    const question = await db.Question.findByPk(req.params.id);
+router.get('/surveys/questions/:id', requireAuth, csrfProtection,asyncHandler(async (req,res) => {
+    console.log("req.id ASDFASDFASDFASDFASDF:  ",req.params.id)
+    const question = await db.Question.findByPk(parseInt(req.params.id,10));
     res.send(question)
 }))
 
-router.post('/surveys/questions/:id', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
-    const survey = await db.Survey.findByPk(req.params.id);
+router.post('/surveys/questions/:id',requireAuth, csrfProtection, asyncHandler(async(req,res)=>{
+    const question = await db.Question.findByPk(parseInt(req.params.id,10));
+    const survey = await db.Survey.findByPk(question.surveyId)
     if (survey.userId === res.locals.user.id) {
         db.Question.destroy({ where: { id: req.body.questionId } })
         res.status(200)
@@ -122,13 +153,24 @@ router.get('/surveys/:id/votes', asyncHandler(async (req, res) => {
     res.send(votes);
 }));
 
-router.post('surveys/:id/votes', asyncHandler(async (req, res) => {
-    const vote = await db.Upvote.create({
-        suveyId: parseInt(req.params.id, 10),
-        userId: parseInt(req.body.userId, 10),
-        upvote: parseInt(req.body.upvote, 10),
-        downvote: parseInt(req.body.downvote, 10)
+router.post('/surveys/upvote/:id', asyncHandler(async (req, res) => {
+    const survey = await db.Survey.findByPk(req.params.id, {
+        include: [db.Upvote]
     })
+
+    survey.Upvotes.forEach(el => {
+        if (el.userId===req.session.auth.userId) {
+            res.send('You upvoted that survey already!');
+        }
+    })
+
+    const vote = await db.Upvote.create({
+        surveyId: req.params.id,
+        userId: parseInt(req.session.auth.userId),
+        upvote: 1
+    });
+    res.status(200)
+    res.redirect('back')
 }))
 
 
