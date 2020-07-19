@@ -7,39 +7,6 @@ body {
 
 .typingAnimation_container {
     margin: 20% 20px auto;
+    min-height: 100px;
 }
-
-/* .question_results {
-    backface-visibility: hidden;
-} */
-
-/* .question_results:hover {
-    box-shadow: 1px 1px 2px 1px;
-} */
-
-.question_container {
-    display: grid;
-    cursor: pointer;
-    grid-template-areas: 'title'
-                        'options options chart'
-                        'options options chart'; 
-}                       
-
-#title {
-    grid-area: title;
-    
-}
-
-.question_list {
-    grid-area: options;
-    align-self: center;
-    transition: ease 1s;
-}
-
-#myChart {
-    grid-area: chart;
-    transition: ease 1s;
-}
-
-
 

@@ -4,30 +4,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const shareAlert = document.querySelectorAll(".shareAlert");
   const linkCopy = document.getElementById("linkCopy");
   const test = document.getElementById("test");
+  const copy = document.getElementById('copy');
+  const share= document.getElementById('share');
+  const input= document.querySelector('#input')
+  const goToSurvey= document.getElementById('goToSurvey')
 
-    optionsButton.addEventListener("click", (e) => {
-      dropDownMenu.classList.toggle("is-active");
-      console.log("click");
-    });
+  share.addEventListener('click', e => {
+    let copyText = input;
+    copyText.select();
+    document.execCommand("copy");
+    alert("URL copied to clipboard!");
+  })
 
-  test.addEventListener("click", (e) => {
-    let clipboard= new Clipboard('#test', {
-        text: function() {
-            return document.querySelector('input[type=hidden]').nodeValue;
-        }
-    })
-    clipboard.on('success', function(e) {
-        alert('Copied!');
-    })
-    $("#input-url").val(location.href);
 
-  });
-
-  function onSubmit() {
-    let conf = confirm("REally?");
-    if (conf) {
-      return true
-    }
-    else return false;
-  }
 });

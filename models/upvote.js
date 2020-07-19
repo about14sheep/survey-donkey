@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const Upvote = sequelize.define('Upvote', {
     surveyId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
-    upvote: DataTypes.BOOLEAN,
+    upvote: DataTypes.INTEGER,
     downvote: DataTypes.BOOLEAN
   }, {});
   Upvote.associate = function (models) {

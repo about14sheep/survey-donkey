@@ -1,8 +1,23 @@
 extends layout.pug
 
+include utils.pug
+
 block append head
     link(rel="stylesheet" type="text/css" href="/styles/splash.css")
     script(src="/scripts/splash.js" type="application/javascript")
 block content
     div(class="typingAnimation_container")
         span(class="typingAnimation_span")
+    p(class="has-text-grey is-size-5") A global leader in silly surveys. Over nine-thousand questions answered daily.
+    br
+    br
+    br
+    if !locals.authenticated
+        a(href='/sign-up' class="button is-success") GET STARTED
+        +validationErrorSummary(errors)
+        form(action='/login' method='post')
+            input(type='hidden' name='_csrf' value=csrfToken)
+            +demofield('Email Address: ', 'email', 'demo@surveydonkey.com')
+            +demofield('Password: ', 'password', 'P4ssword!', 'password')
+            div(class='py-4')
+                button(type='submit' class="button is-success is-light") Demo User Login

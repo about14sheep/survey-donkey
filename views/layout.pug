@@ -7,9 +7,9 @@ html(lang="en")
             link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css")
             link(rel="stylesheet" type="text/css" href="/styles/navbar.css")
             title #{title}
-    body
+    body(class="has-navbar-fixed-top")
         if !locals.authenticated
-            div(class='splash-nav__container')
+            nav(class='splash-nav__container navbar is-fixed-top')
                 div(class='surveyDonkey_logo_container')
                     img(class='donkeyLogo' src='/icons/donkey-xxl.png')
                     a(class='surveyDonkey_logo' href='/') SurveyDonkey
@@ -26,22 +26,26 @@ html(lang="en")
                         div(class='surveyDonkey_signup_container')
                             a(class='surveyDonkey_signup' href='/sign-up' id='squareSignup') SIGN UP
         if locals.authenticated
-            div(class='splash-nav__container' id='greenNavBar')
+            nav(class='splash-nav__container navbar is-fixed-top' id='greenNavBar')
                 div(class='dashContainer')
                     div(class='surveyDonkey_logo_container')
-                        img(class='donkeyLogo' src='/icons/donkey-2-xxlwhite.png')
+                        a(href='/')
+                            img(class='donkeyLogo' src='/icons/donkey-2-xxlwhite.png')
                     div(class='dashboardLinksContainer' id='dashLinks')
                         a(class='dashDash' href='/dashboard') Dashboard
-                        a(class="dashMySurveys" href='/my-surveys') My Surveys
+                        a(class="dashMySurveys" href='/feed') Survey Feed
                 if !mySurveys
-                    div(class='meLogout')
-                        form(action='/logout' method="post")
-                            button(class='logout' type="submit") Log Out
-                if mySurveys
                     div(class='ifMySurveys')
                         div(class='mySurveys')
-                            a(class='createSurvey' href='create-survey') CREATE SURVEY
+                            a(class='createSurvey' href='/surveys/create') CREATE SURVEY
                         div(class='meLogout')
                             form(action='/logout' method="post")
                                 button(class='logout' type="submit") Log Out
+                if mySurveys
+                    div(class='ifMySurveys')
+                        div(class='mySurveys')
+                            a(class='createSurvey' href='surveys/create') CREATE SURVEY
+                    div(class='meLogout')
+                        form(action='/logout' method="post")
+                            button(class='logout' type="submit") Log Out
         block content

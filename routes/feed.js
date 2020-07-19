@@ -4,20 +4,67 @@ const {requireAuth} = require('../auth')
 const db = require("../models");
 const { Op } = require("sequelize");
 const { csrfProtection, asyncHandler } = require('./utils');
-// const { owner, name, created, modified, question, options } = require('../public/scripts/feed.js')
 
-router.get('/feed', asyncHandler(async (req, res) => {
 
-  
+router.get('/feed', requireAuth, asyncHandler(async (req, res) => {
 
-let feedSurveys = await db.Survey.findAll({ include: ['User'] });
-  res.render('feed', {
-    title: "SurveyDonkey Feed",
-    feedSurveys, 
-    
-})
-;
+    const nameFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+        order: [['name', 'ASC']]
+    });
 
+    res.render('feed', {
+        title: "SurveyDonkey Feed",
+        nameFeedSurveys,
+    })
 }))
 
-  module.exports = router;
+router.get('/feed/name', requireAuth, asyncHandler(async (req, res) => {
+
+    const nameFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+        order: [['name', 'ASC']]
+    });
+
+    res.render('feed', {
+        title: "SurveyDonkey Feed",
+        nameFeedSurveys,
+    })
+}))
+
+router.get('/feed/created', asyncHandler(async (req, res) => {
+
+    const createFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+        order: [['createdAt', 'ASC']]
+    });
+
+    res.render('feed', {
+        title: "SurveyDonkey Feed",
+        createFeedSurveys
+    })
+}))
+
+// router.get('/feed/upvotes', asyncHandler(async (req, res) => {
+
+//     const upvoteFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+//         order: [[db.Upvote, 'upvotes', 'ASC']]
+//     });
+
+//     res.render('feed', {
+//         title: "SurveyDonkey Feed",
+//         upvoteFeedSurveys
+//     })
+// }))
+
+
+router.get('/feed/modified', asyncHandler(async (req, res) => {
+
+    const  modFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+        order: [['updatedAt', 'ASC']]
+    });
+
+    res.render('feed', {
+        title: "SurveyDonkey Feed",
+        modFeedSurveys
+    })
+}))
+
+module.exports = router;

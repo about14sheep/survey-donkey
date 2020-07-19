@@ -1,37 +1,70 @@
-document.addEventListener('DOMContentLoaded', e => {
-    document.querySelectorAll('.options').forEach(options => {
-        chartQuestions(options)
-    });
+document.addEventListener('DOMContentLoaded', _ => {
+    document.querySelectorAll('.options').forEach(questions => JSON.parse(document.querySelector('.users_arr').value).map(el => el.questionId).map(el => Number(el)).includes(parseInt(questions.lastChild.value, 10)) ? renderChart(questions) : renderQuestion(questions))
+    document.querySelectorAll('.shortans a').forEach(button => {
+        JSON.parse(document.querySelector('.users_arr').value).map(el => el.questionId).map(el => Number(el)).includes(parseInt(button.parentNode.lastChild.value, 10)) ? renderShortans(button, '---> check out the anonymous responses for this question! --->') : button.addEventListener('click', shortAnsClickHandler)
+    })
 });
 
-const mouseLeaveHandler = e => e.target.style.filter = ``;
-const mouseOverHandler = e => e.target.style.filter = `drop-shadow(0 0 0.75rem #00BF6F)`;
-
-const chartQuestions = options => {
-    options.childNodes.forEach(option => {
+const renderQuestion = questions => {
+    questions.childNodes.forEach(option => {
         option.style.cursor = 'pointer'
         option.addEventListener('mouseover', mouseOverHandler)
         option.addEventListener('mouseleave', mouseLeaveHandler)
-        option.addEventListener('click', async function clickHandler(e) {
-            option.style.backgroundColor = '#00BF6F'
-            postQuestionResponse(option.parentNode.lastChild.value, e.target.lastChild.value)
-            option.parentNode.childNodes.forEach(option => {
-                option.removeEventListener('mouseleave', mouseLeaveHandler)
-                option.removeEventListener('mouseover', mouseOverHandler)
-                option.removeEventListener('click', clickHandler)
-            })
-            setTimeout(async _ => {
-                const responseObjects = await getQuestionResponses(option.parentNode.lastChild.value)
-                options.childNodes.forEach((option, i) => option.style.display = 'none');
-                const chart = document.createElement('canvas')
-                options.parentNode.appendChild(chart)
-                createChart(chart, __tallyResponses(responseObjects))
-                option.style.cursor = 'default'
-            }, 1000)
-        });
+        option.addEventListener('click', clickHandler)
     })
-
 }
+
+const clickHandler = e => {
+    e.target.style.backgroundColor = '#00BF6F'
+    postQuestionResponse(e.target.parentNode.lastChild.value, e.target.lastChild.value)
+    setTimeout(_ => {
+        renderChart(e.target.parentNode)
+    }, 1000)
+    e.target.parentNode.childNodes.forEach(option => {
+        option.removeEventListener('mouseleave', mouseLeaveHandler)
+        option.removeEventListener('mouseover', mouseOverHandler)
+        option.removeEventListener('click', clickHandler)
+        option.style.cursor = 'not-allowed'
+    })
+}
+
+const shortAnsClickHandler = e => {
+    const shortAnsText = e.target.parentNode.childNodes[0].value
+    if (shortAnsText.trim().length < 1) return
+    const questionId = e.target.parentNode.lastChild.value
+    e.target.removeEventListener('click', shortAnsClickHandler)
+    postQuestionResponse(questionId, shortAnsText)
+    renderShortans(e.target, shortAnsText)
+}
+
+const mouseOverHandler = e => e.target.style.filter = `drop-shadow(0 0 0.75rem #00BF6F)`;
+const mouseLeaveHandler = e => e.target.style.filter = ``;
+
+const renderChart = async question => {
+    const responseObjects = await getQuestionResponses(question.lastChild.value)
+    question.childNodes.forEach((option, i) => {
+        option.style.cursor = 'not-allowed'
+        JSON.parse(document.querySelector('.users_arr').value).forEach(response => {
+            if (i < question.childNodes.length - 1 && (response.questionResponseValue === option.lastChild.value.toLowerCase() && parseInt(response.questionId, 10) === parseInt(question.lastChild.value, 10))) option.style.filter = 'drop-shadow(0 0 0.75rem #00BF6F)';
+        });
+    });
+    createChart(question.parentNode.lastChild.lastChild, __tallyResponses(responseObjects))
+}
+
+const renderShortans = async (button, shortans) => {
+    const question = button.parentNode
+    const textArea = question.childNodes[0]
+    button.remove()
+    textArea.placeholder = `${shortans}`;
+    textArea.value = "";
+    textArea.readOnly = true;
+    const seeResponses = document.createElement('a')
+    seeResponses.href = `/surveys/${document.querySelector('.survey_id').value}/shortans/${question.lastChild.value}`
+    seeResponses.classList.add('button', 'is-primary')
+    seeResponses.innerHTML = "see responses"
+    question.appendChild(seeResponses);
+}
+
 
 const getQuestionResponses = async (questionId) => {
     const res = await fetch(`/surveys/${document.querySelector('.survey_id').value}/questions/${questionId}`);
@@ -84,7 +117,7 @@ const createChart = (container, data) => {
         },
         options: {
             legend: {
-                position: 'right'
+                position: 'bottom'
             }
         }
     })
@@ -93,11 +126,11 @@ const createChart = (container, data) => {
 const randomNumber = max => Math.floor(Math.random() * Math.floor(max));
 
 const __tallyResponses = (arr, results = []) => {
+    if (arr.length < 1) return results;
     const arrToFilter = arr.filter(option => option.questionResponseValue !== arr[0].questionResponseValue);
     const tally = __buildTally(arr.filter(option => option.questionResponseValue === arr[0].questionResponseValue));
-    if (arrToFilter.length < 1) return results.push(tally);
-    __tallyResponses(arrToFilter, results);
     results.push(tally);
+    __tallyResponses(arrToFilter, results);
     return results;
 }
 
