@@ -20,6 +20,7 @@
   }
 
 .splash-nav__container {
+
     background-color: #FFFFFF;
     width: 100%;
     padding: 4px;
@@ -40,6 +41,8 @@
 }
 .signUpAndLogIn_container{
     display:  flex;
+    justify-content: space-between;
+    position: fixed;
     width: 20%;
     right: 0;
     padding: 10px 75px 0px 5px

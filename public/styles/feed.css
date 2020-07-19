@@ -7,17 +7,29 @@
   justify-content: space-between;
 }
 .sOwnerDiv{
-  width: 16%;
+  display: flex;
+  flex-grow: 1.5;
 }
 .sNameDiv{
   display: flex;
-  width: 10%;
-  justify-content: start;
+  flex-grow: 1.35;
 }
-.sCreatedDiv{}
-.sModifiedDiv{}
-.sQuestionDiv{}
-.upVotesDiv{} 
+.sCreatedDiv{
+  display: flex;
+  flex-grow: 2.0;
+}
+.sModifiedDiv{
+  display: flex;
+  flex-grow: 2;
+}
+.sQuestionDiv{
+  display: flex;
+  flex-grow: 1.7;
+}
+.upVotesDiv{
+  display: flex;
+  flex-grow: 3.2;
+} 
 
 
 
