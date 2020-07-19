@@ -45,6 +45,8 @@ Friday:
 
 weekend:
 24. made publish/share feature
+25. sort by upvotes on feed working
+26. took edit option away from published surveys
 
 
 
