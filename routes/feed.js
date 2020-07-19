@@ -42,17 +42,17 @@ router.get('/feed/created', asyncHandler(async (req, res) => {
     })
 }))
 
-router.get('/feed/upvotes', asyncHandler(async (req, res) => {
+// router.get('/feed/upvotes', asyncHandler(async (req, res) => {
 
-    const createFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
-        order: [['createdAt', 'ASC']]
-    });
+//     const upvoteFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote],
+//         order: [[db.Upvote, 'upvotes', 'ASC']]
+//     });
 
-    res.render('feed', {
-        title: "SurveyDonkey Feed",
-        createFeedSurveys
-    })
-}))
+//     res.render('feed', {
+//         title: "SurveyDonkey Feed",
+//         upvoteFeedSurveys
+//     })
+// }))
 
 
 router.get('/feed/modified', asyncHandler(async (req, res) => {
