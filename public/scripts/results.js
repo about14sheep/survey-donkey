@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', _ => {
     document.querySelectorAll('.options').forEach(questions => JSON.parse(document.querySelector('.users_arr').value).map(el => el.questionId).map(el => Number(el)).includes(parseInt(questions.lastChild.value, 10)) ? renderChart(questions) : renderQuestion(questions));
-    document.querySelectorAll('.shortans a').forEach((button, i) => JSON.parse(document.querySelector('.users_arr').value).map(el => el.questionId).map(el => Number(el)).includes(parseInt(button.parentNode.lastChild.value, 10)) ? renderShortans(button, `${JSON.parse(document.querySelector('.users_arr').value).filter(el => el.questionId === parseInt(button.parentNode.lastChild.value, 10))[0].questionResponseValue}`) : button.addEventListener('click', shortAnsClickHandler));
+    document.querySelectorAll('.shortans a').forEach(button => JSON.parse(document.querySelector('.users_arr').value).map(el => el.questionId).map(el => Number(el)).includes(parseInt(button.parentNode.lastChild.value, 10)) ? renderShortans(button, `${JSON.parse(document.querySelector('.users_arr').value).filter(el => el.questionId === parseInt(button.parentNode.lastChild.value, 10))[0].questionResponseValue}`) : button.addEventListener('click', shortAnsClickHandler));
 });
 
 const renderQuestion = questions => {
