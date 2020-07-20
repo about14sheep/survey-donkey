@@ -23,7 +23,7 @@ block content
                   div(class='sModifiedDiv' href="/feed/modified")
                     a(scope='col' class='modified' href="/feed/modified") Modified
                   div(class='sQuestionDiv')
-                    th(scope='col' class='questions') Questions
+                    a(scope='col' class='questions' href="/feed/questions") Questions
                   div(class='upVotesDiv' href="/feed/upvotes")
                     a(scope='col' class='upVotes' href="/feed/upvotes") Upvotes
           if nameFeedSurveys
@@ -97,6 +97,24 @@ block content
                       br
                       form(action=`/surveys/upvote/${survey.id}` method='post')
                         button(class="button is-primary is-small" type='submit') Upvote!
+
+          if questionsSorted
+            tbody
+                each survey in questionsSorted
+                  li(class="box columns is-vcentered has-text-centered my-3")
+                    p(class="column divider") Made By:  #{survey.User.firstName}#{survey.User.lastName}
+                    a(class="column divider" href=`/surveys/${survey.id}`) #{survey.name}
+                    p(class="column divider") Created:
+                      br
+                      span() #{JSON.stringify(survey.createdAt).slice(1,11)}
+                    p(class="column divider") Modified:
+                      br
+                      span() #{JSON.stringify(survey.updatedAt).slice(1,11)}
+                    p(class="column divider") Questions: #{survey.Questions.length}
+                    p(class="column") Upvotes: #{survey.Upvotes.length}
+                      br
+                      form(action=`/surveys/upvote/${survey.id}` method='post')
+                        button(class="button is-primary is-small" type='submit') Upvote!                        
 
           div()
               a(class="button" href='/create-new-survey' id="createButton") + CREATE
