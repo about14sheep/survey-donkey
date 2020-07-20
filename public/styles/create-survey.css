@@ -3,16 +3,22 @@
 }
 
 .survey-preview-question-container:hover{
-    background-color: #f8f8ff
+    background-color:		#CCCCFF
 }
 
 .option-container:not(.hidden){
-    display:flex;
+    display: flex;
     width: 900px;
     justify-content: center;
     align-items: center;
-    flex-direction: column
+    flex-direction: column;
 }
+
+.draggable.dragging{
+    opacity: .99;
+}
+
+
 .radio-label{
     margin-left: 10px;
 }
@@ -25,7 +31,28 @@
 
 #back-to-top{
     position: sticky;
-    top:4em;
+    top:16em;
+    width: 170px;
+    margin-left: 10px;
+}
+
+#publish-survey-form{
+    position: sticky;
+    top:13em;
+}
+
+#save-survey{
+    width: 170px;
+    position: sticky;
+    margin-left: 10px;
+    top:10em;
+}
+
+#side-buttons{
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 4em
 }
 
 #title-and-button-box{
@@ -48,10 +75,6 @@
     margin-left:10px;
 }
 
-#publish-survey{
-    margin-left:10px;
-}
-
 #question-type{
     margin-left: 10px;
     margin-right: 10px;
@@ -64,15 +87,14 @@ input{
 #survey-form{
     width: 900px;
     height: auto;
+    transition-delay: .1s;
+    transition-duration: .1s;
+    transition-property: height;
 }
 
 /* html{
     background-color:#C8C8C8;
 } */
-
-#clear-question{
-    margin-left: 11px;
-}
 
 #main-content{
     display: flex;
@@ -139,6 +161,10 @@ input{
 
 .survey-preview-question-container {
     margin-bottom: 20px;
+    transition-delay: 0s;
+    transition-duration: .1s;
+    transition-property: background-color;
+    cursor: move;
 }
 
 .survey-preview-question-option {
