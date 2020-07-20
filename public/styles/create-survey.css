@@ -12,6 +12,9 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-size: contain;
+    background-size: cover;
+    background-image: url("https://www.christies.com/img/LotImages/2018/CKS/2018_CKS_15484_0442_000(honore_daumier_don_quichotte_et_sancho_panza).jpg");
 }
 
 .draggable.dragging{
@@ -164,7 +167,11 @@ input{
     transition-delay: 0s;
     transition-duration: .1s;
     transition-property: background-color;
-    cursor: move;
+    cursor: grab;
+}
+
+.dragging{
+    cursor: grabbing;
 }
 
 .survey-preview-question-option {
