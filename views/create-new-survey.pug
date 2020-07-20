@@ -39,7 +39,7 @@ block content
                     div(id="free-response-text-box" class="is-hidden")
                         p(id="free-response-p") Users will enter their responses for this question into a free response box.
                     div(id="scroll-response-box" class="is-hidden scroll-response-box")
-                        p(class="scroll-p") Users will indicate choose their response from the following options:
+                        p(class="scroll-p") Users will choose their response from the following options:
                         div(id="radio-button-holder" class="radio-button-holder")
                             div(class="scroll-option")
                                 input(type="radio" name="scroll" value=1)
@@ -77,7 +77,10 @@ block content
                                     i(class="fas fa-trash")
                                 span delete survey
             div
-                button(class="new-question" id="new-question-button" class="is-hidden button is-dark is-success") + question
+                button(class="new-question" id="new-question-button" class="is-hidden button is-dark is-success")
+                    span(class="icon is-small")
+                        i(class="fas fa-plus")
+                    span question
             div(id="bottom-buffer")
         div(id="side-buttons")
             a(id="save-survey" class="button is-light question-button" href="/dashboard")

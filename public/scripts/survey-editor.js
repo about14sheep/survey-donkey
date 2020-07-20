@@ -659,7 +659,7 @@ document.addEventListener('DOMContentLoaded', async ()=> {
     const backToTop = document.getElementById("back-to-top")
     window.onscroll = function () { detectScroll() };
     const detectScroll=()=>{
-        if (document.body.scrollTop > 80|| document.documentElement.scrollTop > 80) {
+        if (document.body.scrollTop > 600|| document.documentElement.scrollTop > 600) {
             backToTop.style.display = "block";
         } else {
             backToTop.style.display = "none";

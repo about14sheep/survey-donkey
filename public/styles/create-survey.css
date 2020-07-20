@@ -14,13 +14,24 @@
     flex-direction: column;
     background-size: contain;
     background-size: cover;
-    background-image: url("https://www.christies.com/img/LotImages/2018/CKS/2018_CKS_15484_0442_000(honore_daumier_don_quichotte_et_sancho_panza).jpg");
 }
-
+    /* background-image: url("https://cdn.dnaindia.com/sites/default/files/styles/full/public/2018/09/08/728883-donkey-thinkstock.jpg"); */
+/* https://resources.stuff.co.nz/content/dam/images/1/d/j/n/y/n/image.related.StuffLandscapeSixteenByNine.710x400.1dv0jr.png/1472616897810.jpg */
+/* https://miro.medium.com/max/3200/1*bghxE43xMrnkqmaD2dK77A.jpeg */
+/* https://smartwatermagazine.com/sites/default/files/styles/thumbnail-1180x647/public/margaret-kenya-brooke-donkeys.jpg?itok=TGh199YB */
 .draggable.dragging{
     opacity: .99;
 }
 
+#free-response-text-box{
+    color: white;
+    font-size: 16pt;
+    font-weight: 400;
+}
+
+#scroll-response-box{
+    color:white;
+}
 
 .radio-label{
     margin-left: 10px;
