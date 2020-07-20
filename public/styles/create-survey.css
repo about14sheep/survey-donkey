@@ -3,16 +3,36 @@
 }
 
 .survey-preview-question-container:hover{
-    background-color: #f8f8ff
+    background-color:		#CCCCFF
 }
 
 .option-container:not(.hidden){
-    display:flex;
+    display: flex;
     width: 900px;
     justify-content: center;
     align-items: center;
-    flex-direction: column
+    flex-direction: column;
+    background-size: contain;
+    background-size: cover;
 }
+    /* background-image: url("https://cdn.dnaindia.com/sites/default/files/styles/full/public/2018/09/08/728883-donkey-thinkstock.jpg"); */
+/* https://resources.stuff.co.nz/content/dam/images/1/d/j/n/y/n/image.related.StuffLandscapeSixteenByNine.710x400.1dv0jr.png/1472616897810.jpg */
+/* https://miro.medium.com/max/3200/1*bghxE43xMrnkqmaD2dK77A.jpeg */
+/* https://smartwatermagazine.com/sites/default/files/styles/thumbnail-1180x647/public/margaret-kenya-brooke-donkeys.jpg?itok=TGh199YB */
+.draggable.dragging{
+    opacity: .99;
+}
+
+#free-response-text-box{
+    color: white;
+    font-size: 16pt;
+    font-weight: 400;
+}
+
+#scroll-response-box{
+    color:white;
+}
+
 .radio-label{
     margin-left: 10px;
 }
@@ -25,7 +45,28 @@
 
 #back-to-top{
     position: sticky;
-    top:4em;
+    top:16em;
+    width: 170px;
+    margin-left: 10px;
+}
+
+#publish-survey-form{
+    position: sticky;
+    top:13em;
+}
+
+#save-survey{
+    width: 170px;
+    position: sticky;
+    margin-left: 10px;
+    top:10em;
+}
+
+#side-buttons{
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 4em
 }
 
 #title-and-button-box{
@@ -48,10 +89,6 @@
     margin-left:10px;
 }
 
-#publish-survey{
-    margin-left:10px;
-}
-
 #question-type{
     margin-left: 10px;
     margin-right: 10px;
@@ -64,15 +101,14 @@ input{
 #survey-form{
     width: 900px;
     height: auto;
+    transition-delay: .1s;
+    transition-duration: .1s;
+    transition-property: height;
 }
 
 /* html{
     background-color:#C8C8C8;
 } */
-
-#clear-question{
-    margin-left: 11px;
-}
 
 #main-content{
     display: flex;
@@ -139,6 +175,14 @@ input{
 
 .survey-preview-question-container {
     margin-bottom: 20px;
+    transition-delay: 0s;
+    transition-duration: .1s;
+    transition-property: background-color;
+    cursor: grab;
+}
+
+.dragging{
+    cursor: grabbing;
 }
 
 .survey-preview-question-option {

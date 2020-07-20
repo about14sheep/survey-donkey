@@ -322,6 +322,8 @@ document.addEventListener('DOMContentLoaded', async ()=> {
     const createPreviewQuestionContainer = question => {
         console.log(question)
         let newQuestionContainer = document.createElement("div");
+        newQuestionContainer.classList.add("draggable")
+        newQuestionContainer.draggable = true
         newQuestionContainer.classList.add("survey-preview-question-container")
         newQuestionContainer.setAttribute("id", `container-for-question-${question.id}`)
         let newQuestionText = document.createElement("div");
@@ -641,6 +643,10 @@ document.addEventListener('DOMContentLoaded', async ()=> {
     let elmnt = document.getElementById("bottom-buffer");
     elmnt.scrollIntoView()
 
+    document.getElementById("back-to-top").addEventListener("click",()=>{
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    })
     const allEditRemoveButtons=(toggle)=>{
         if (toggle === "disable") {
             editButtons.forEach(button=>button.disabled = true)
@@ -650,6 +656,55 @@ document.addEventListener('DOMContentLoaded', async ()=> {
             removeButtons.forEach(button => button.disabled = false)
         }
     }
+    const backToTop = document.getElementById("back-to-top")
+    window.onscroll = function () { detectScroll() };
+    const detectScroll=()=>{
+        if (document.body.scrollTop > 600|| document.documentElement.scrollTop > 600) {
+            backToTop.style.display = "block";
+        } else {
+            backToTop.style.display = "none";
+        }
+    }
 
+    const draggables = document.querySelectorAll(".draggable")
+    const containers = document.querySelectorAll(".container")
+    draggables.forEach(draggable => {
+        console.log("i'm gettin dragged")
+        draggable.addEventListener("dragstart", () => {
+            draggable.classList.add("dragging")
+            console.log("i'm gettin dragged")
+        })
+    })
+    draggables.forEach(draggable=>{
+        draggable.addEventListener("dragend",()=>{
+            draggable.classList.remove("dragging")
+        })
+    })
+    containers.forEach(container=>{addEventListener("dragover",(e)=>{
+        e.preventDefault()
+        const afterElement = getDragAfterElement(container,e.clientY)
+        const draggable = document.querySelector(".dragging")
+        console.log(afterElement)
+        if (afterElement === null) {
+            container.appendChild(draggable)
+        } else {
+            container.insertBefore(draggable,afterElement)
+        }
+        })
+    })
+    const getDragAfterElement=(container,y)=>{
+        const draggableElements = [...container.querySelectorAll(".draggable:not(.dragging)")]
+
+        return draggableElements.reduce((closest,child)=>{
+            const box = child.getBoundingClientRect()
+            const offset = y - box.top - box.height / 2 
+            console.log(offset)
+            if(offset < 0 && offset > closest.offset) {
+                return {offset: offset, element: child}
+                } else {
+                return closest
+                }
+            },{offset: Number.NEGATIVE_INFINITY}).element
+    }
 })
 
