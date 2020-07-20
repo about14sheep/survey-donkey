@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async ()=> {
-
+    document.querySelector('body').style.backgroundImage = "url('https://www.freepik.com/free-vector/vector-illustration-mountain-landscape_1215613.htm#page=1&query=hills&position=16')"
     const optionsContainer = document.getElementById('options-container')
     const typeInput = document.getElementById("question-type")
     const promptInput = document.getElementById("question-text")
@@ -14,10 +14,12 @@ document.addEventListener('DOMContentLoaded', async ()=> {
     const freeResponseOptions = document.getElementById('free-response-text-box')
     const radioButtonHolder = document.getElementById('radio-button-holder')
     const scrollResponseBox = document.getElementById('scroll-response-box')
-    const publishSurvey = document.getElementById('publish-survey')
-    //global variables
+    const continueButton = document.getElementById("new-question-options")
+    const sideAdd = document.getElementById("side-save-question")
+    const bottomRightAdd = document.getElementById("save-question")
     let specs;
-    //f()s
+    let editButtons = []
+    let removeButtons = []
 
     const createQuestion = async () => {
         hideAllQuestionTypeOptions()
@@ -69,17 +71,18 @@ document.addEventListener('DOMContentLoaded', async ()=> {
         cancelDeleteButton.setAttribute('id', `cancel-delete-for-${questionId}`)
         addEventListenerToCancelDeleteButton(cancelDeleteButton)
         const deleteButton = document.createElement('button')
+        removeButtons.push(deleteButton)
         deleteButton.classList.add("button", "is-dark", "is-danger", "delete-button")
         if (color === "yellow") {
             deleteButton.classList.remove("is-danger")
             deleteButton.classList.add("is-warning")
         }
         addEventListenerToDeleteButton(deleteButton)
-        deleteButton.setAttribute("id",`${questionId}`)
+        addButtonIcon("remove",deleteButton,questionId)
+        deleteButton.setAttribute("id",`delete-for-${questionId}`)
         cancelDeleteButton.classList.add("button","is-dark","is-warning","cancel-delete-button","is-hidden")
         confirmDeleteButton.innerHTML = "confirm remove"
         addEventListenerToDeleteConfirmButton(confirmDeleteButton)
-        deleteButton.innerHTML = "remove"
         cancelDeleteButton.innerHTML = "cancel"
         confirmDeleteDiv.appendChild(confirmDeleteButton)
         confirmDeleteDiv.appendChild(cancelDeleteButton)
@@ -87,11 +90,19 @@ document.addEventListener('DOMContentLoaded', async ()=> {
         return confirmDeleteDiv
     }
 
+    document.getElementById('clear-question').addEventListener('click',(e)=>{
+        promptInput.value = "";
+        clearInputValues()
+    })
+
     const addEventListenerToDeleteButton = button => {
             button.addEventListener('click',(e)=>{
-                e.target.classList.add("is-hidden")
-                let confirm = document.getElementById(`confirm-delete-for-${e.target.id}`)
-                let cancel = document.getElementById(`cancel-delete-for-${e.target.id}`)
+                console.log(e.target)
+                console.log(e.target.value)
+                const deleteButton = document.getElementById(`delete-for-${e.currentTarget.value}`)
+                deleteButton.classList.add("is-hidden")
+                let confirm = document.getElementById(`confirm-delete-for-${e.currentTarget.value}`)
+                let cancel = document.getElementById(`cancel-delete-for-${e.currentTarget.value}`)
                 confirm.classList.remove("is-hidden")
                 cancel.classList.remove("is-hidden")
             })
@@ -106,6 +117,11 @@ document.addEventListener('DOMContentLoaded', async ()=> {
             })
     }
 
+    promptInput.addEventListener("input",(e)=>{
+        let elmnt = document.getElementById("bottom-buffer");
+        elmnt.scrollIntoView()
+    })
+
     const addEventListenerToCancelDeleteButton = button => {
             button.addEventListener('click', (e) => {
                 e.target.classList.add("is-hidden")
@@ -113,7 +129,7 @@ document.addEventListener('DOMContentLoaded', async ()=> {
                 id = id.split("-")[3]
                 let confirm = document.getElementById(`confirm-delete-for-${id}`)
                 confirm.classList.add("is-hidden");
-                let dbutton = document.getElementById(`${id}`);
+                let dbutton = document.getElementById(`delete-for-${id}`);
                 dbutton.classList.remove("is-hidden")
             })
     }
@@ -133,6 +149,7 @@ document.addEventListener('DOMContentLoaded', async ()=> {
         })
         const questionContainer = document.getElementById(`container-for-question-${questionId}`)
         questionContainer.remove()
+        allEditRemoveButtons("enable")
     }
 
 
@@ -163,12 +180,28 @@ document.addEventListener('DOMContentLoaded', async ()=> {
         if (typeInput.value === "free-response") {
             clearInputValues()
             displayFreeResponseOptions()
+            sideAdd.classList.remove("is-hidden")
+            continueButton.classList.add("is-hidden")
+            bottomRightAdd.classList.add("is-hidden")
         } else if (typeInput.value === "multiple-choice") {
             displayMultipleChoiceOptions()
+            sideAdd.classList.add("is-hidden")
+            continueButton.classList.remove("is-hidden")
+            bottomRightAdd.classList.remove("is-hidden")
         } else if (typeInput.value === "scroll") {
             clearInputValues()
             displayScrollOptions()
+            sideAdd.classList.remove("is-hidden")
+            continueButton.classList.add("is-hidden")
+            bottomRightAdd.classList.add("is-hidden")
         }
+    })
+
+    document.getElementById("side-save-question").addEventListener("click",()=>{
+        compileQuestionInfo()
+        sideAdd.classList.add("is-hidden")
+        continueButton.classList.remove("is-hidden")
+        bottomRightAdd.classList.remove("is-hidden")
     })
 
     const gatherQuestionSpecs = () => {
@@ -254,10 +287,13 @@ document.addEventListener('DOMContentLoaded', async ()=> {
 
     document.getElementById('save-question').addEventListener('click',(e)=>{
         console.log(specs)
-        if(!specs.prompt) {
-            specs.prompt = promptInput.value
-            specs.type = typeInput.value
-        }
+        compileQuestionInfo();
+    })
+
+    const compileQuestionInfo=()=>{
+        console.log(specs)
+        specs.prompt = promptInput.value
+        specs.type = typeInput.value
         reApplyAutoSelectMultipleChoice()
         if (specs.type === "scroll") {
             specs.opOne = "Strongly Disagree"
@@ -276,7 +312,7 @@ document.addEventListener('DOMContentLoaded', async ()=> {
         newQuestionButton.classList.remove("is-hidden")
         clearInputValues()
         createQuestion();
-    })
+    }
 
     const reApplyAutoSelectMultipleChoice=()=>{
         const questionType = document.getElementById("question-type")
@@ -296,10 +332,10 @@ document.addEventListener('DOMContentLoaded', async ()=> {
         newQuestionText.innerHTML = question.questionText;
         let editButton = document.createElement("button")
         editButton.classList.add("button", "is-dark", "is-info", "edit-button")
-        editButton.innerHTML = "edit"
-        editButton.value = question.id;
+        addButtonIcon("edit",editButton,question.id)
         addEventListenerToEditButton(editButton);
         editButton.style.marginRight = '10px'
+        editButtons.push(editButton)
         let deleteButton = createDeleteButton(question.id,"yellow")
         let editButtonHolder = document.createElement("div")
         editButtonHolder.classList.add("edit-button-holder")
@@ -332,6 +368,38 @@ document.addEventListener('DOMContentLoaded', async ()=> {
         return newQuestionContainer
     }
 
+    const addButtonIcon=(type,button,id)=>{
+        let span = document.createElement('span')
+        span.setAttribute("value",`${id}`);
+        let buttonText = document.createElement('span')
+        buttonText.value = id;
+        let icon = document.createElement('i')
+        icon.setAttribute("value", `${id}`);
+        span.classList.add("icon", "is-small")
+        if (type === "edit") {
+            icon.classList.add("fas", "fa-pen")
+            buttonText.innerHTML = "edit"
+        } else if (type === "remove") {
+            icon.classList.add("fas","fa-times")
+            buttonText.innerHTML = "remove"
+            button.appendChild(buttonText)
+            span.appendChild(icon)
+            button.appendChild(span)
+            button.value = id
+            return
+        } else if (type === "accept") {
+            icon.classList.add("fas","fa-check")
+            buttonText.innerHTML = "accept changes"
+        } else if (type === "option") {
+            icon.classList.add("fas","fa-plus")
+            buttonText.innerHTML = "option"
+        }
+        span.appendChild(icon)
+        button.appendChild(span)
+        button.appendChild(buttonText)
+        button.value = id
+    }
+
     const createSurveyPreviewElements = (questions) => {
         surveyPreview.innerHTML = ""
         surveyPreview.appendChild(surveyPreviewTitle)
@@ -343,8 +411,11 @@ document.addEventListener('DOMContentLoaded', async ()=> {
 
     const addEventListenerToEditButton = button => {
         button.addEventListener("click", async (e) => {
+            console.log("targetttt: ",e.target)
+            console.log("val: ", e.currentTarget.value)
             specs = ""
-            const questionInfo = await fetch(`/surveys/questions/${e.target.value}`)
+            allEditRemoveButtons("disable")
+            const questionInfo = await fetch(`/surveys/questions/${e.currentTarget.value}`)
             const formattedQuestionInfo = await questionInfo.json();
             container = document.getElementById(`container-for-question-${formattedQuestionInfo.id}`)
             editWindow = createEditWindow(formattedQuestionInfo)
@@ -377,9 +448,9 @@ document.addEventListener('DOMContentLoaded', async ()=> {
     const addEventListenerToAccept =(accept)=>{
         console.log("hey")
         accept.addEventListener('click',async (e)=>{
-            console.log("asdfjklajsdfkjasdfkljasdlkfj:    ",e.target.id)
+            console.log("asdfjklajsdfkjasdfkljasdlkfj:    ",e.currentTarget.value)
             console.log("ADSFASDFASDFASD QWOOOOOOOOOOO ME")
-            let questionDetails = {id: e.target.id}
+            let questionDetails = {id: e.currentTarget.value}
             console.log("questionId:  ",questionDetails.id)
             questionDetails.questionText = document.getElementById("edit-prompt-input").value
             questionDetails.opOne = document.getElementById("option-one-edit") ? document.getElementById("option-one-edit").value : null
@@ -389,6 +460,7 @@ document.addEventListener('DOMContentLoaded', async ()=> {
             questionDetails.opFive = document.getElementById("option-five-edit") ? document.getElementById("option-five-edit").value : null
             const updatedQuestionInfo = await updateQuestion(questionDetails)
             updateSurveyPreview(updatedQuestionInfo)
+            allEditRemoveButtons("enable")
         })
     }
 
@@ -414,14 +486,6 @@ document.addEventListener('DOMContentLoaded', async ()=> {
         return updatedQuestion
     }
 
-    const allEditButtons = (toggle) => {
-        const editButtons = document.querySelectorAll("edit-button")
-        if (toggle === "disable") {
-            editButtons.forEach(button=>{button.disabled = true})
-        } else if (toggle === "enable")
-            editButtons.forEach(button=>{button.disabled = false})
-    }
-
     const updateSurveyPreview=(question)=>{
         console.log(question)
         const container = document.getElementById(`container-for-question-${question.id}`)
@@ -436,9 +500,8 @@ document.addEventListener('DOMContentLoaded', async ()=> {
         buttonHolder.style.marginLeft = "10px"
         const acceptButton = document.createElement('button')
         acceptButton.classList.add("button","is-dark","is-primary")
-        acceptButton.setAttribute("id",`${question.id}`)
         buttonHolder.appendChild(acceptButton)
-        acceptButton.innerHTML = "accept";
+        addButtonIcon("accept",acceptButton,question.id)
         addEventListenerToAccept(acceptButton)
         const removeButton = createDeleteButton(question.id,"yellow")
         removeButton.style.marginLeft = "10px"
@@ -453,9 +516,8 @@ document.addEventListener('DOMContentLoaded', async ()=> {
     const createAddOptionButton=(question)=>{
         const addOption = document.createElement("button")
         addOption.classList.add("button","is-dark")
-        addOption.innerHTML = "+ option"
         addOption.style.marginLeft = "10px"
-        addOption.setAttribute("id",`${question.id}`)
+        addButtonIcon("option",addOption,question.id)
         addOption.addEventListener('click',(e)=>{
             const editOptionsContainer = document.getElementById("edit-options-container")
             const children = editOptionsContainer.childNodes
@@ -576,7 +638,18 @@ document.addEventListener('DOMContentLoaded', async ()=> {
         let container = createPreviewQuestionContainer(question)
         surveyPreview.appendChild(container)
     })
+    let elmnt = document.getElementById("bottom-buffer");
+    elmnt.scrollIntoView()
 
-    
+    const allEditRemoveButtons=(toggle)=>{
+        if (toggle === "disable") {
+            editButtons.forEach(button=>button.disabled = true)
+            removeButtons.forEach(button=>button.disabled = true)
+        } else if (toggle === "enable") {
+            editButtons.forEach(button=>button.disabled = false)
+            removeButtons.forEach(button => button.disabled = false)
+        }
+    }
+
 })
 

@@ -3,14 +3,29 @@ extends layout.pug
 block append head
     link(rel="stylesheet" type="text/css" href="/styles/create-survey.css")
     script(src="/scripts/survey-editor.js" type="application/javascript")
+    script(defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js")
 
 block content
-    div(class="has-background-light")
+    div(id="content")
         input(type="hidden" value=surveyId id="surveyId")
         input(type="hidden" value=token name="_csrf" id="csrfToken")
         div(id="main-content" class="py-4")
             div(id="survey-form" class="box")
-                h1(id="survey-preview-title" class="title green has-text-centered")= name
+                div(id="publish-attempt" class="notification is-info is-hidden") Please add at least one qustion to "#{name}" before publishing. Remember you will be unable to make changes to "#{name}" once it's published.
+                    button(class="delete")
+                div(id="title-and-button-box")
+                    h1(id="survey-preview-title" class="title green has-text-centered")= name
+                    div(id="publish-delete-buttons")
+                        form(action=`publish/${surveyId}` method="post" class="mx-3")
+                            button(class='button is-primary' type='submit' onclick="return confirm('Are you sure you want to publish?');")
+                                span(class="icon is-small")
+                                    i(class="fas fa-check")
+                                span pubslish survey
+                        form(action=`surveys/delete/${surveyId}` method="post")
+                            button(id="delete-survey-top" class='button is-danger' type='submit' onclick="return confirm('Are you sure you want to delete this survey?');")
+                                span(class="icon is-small")
+                                    i(class="fas fa-trash")
+                                span delete survey
             div(id="options-container" class="option-container box")
                 form(id="question-main-prompt-form")
                         input(name="question-text" id="question-text" type="text" placeholder="Enter the text for the new question" class="question-input")
@@ -19,7 +34,14 @@ block content
                             option(value="multiple-choice" selected= true id="multiple-choice") multiple choice
                             option(value="scroll") scroll
                             option(value="free-response") free response
-                        button(type="submit" id="new-question-options" class="button is-dark is-success") continue
+                        button(type="submit" id="new-question-options" class="button is-dark is-success")
+                            span(class="icon is-small")
+                                i(class="fas fa-thumbs-up")
+                            span continue
+                        button(id="side-save-question" class="button is-dark is-success question-button is-hidden save-question")
+                            span(class="icon is-small")
+                                    i(class="fas fa-plus")
+                            span add question
                 div(id="multiple-choice-container" class="is-hidden")
                     div(id="free-response-text-box" class="is-hidden")
                         p(id="free-response-p") Users will enter their responses for this question into a free response box.
@@ -48,13 +70,35 @@ block content
                         input(id="option-four" class="new-option-text is-hidden" type="text" placeholder=" Enter answer text here...")
                         input(id="option-five" class="new-option-text is-hidden" type="text" placeholder=" Enter answer text here...")
                     div(id="button-holder")
-                        button(id="accept-changes-button" class="button is-dark is-primary question-button is-hidden") accept Changes
-                        button(id="save-question" class="button is-dark is-success question-button") add question
-                        button(id="save-survey" class="button is-dark is-warning question-button") save survey
-                        form(action=`/publish/${surveyId}` method="post" class="")
-                            button(id="publish-survey" type="submit" class="button is-dark is-primary question-button") publish survey
-                        button(id="clear-question" class="button is-dark is-info question-button") clear question
-                        button(id="delete-survey" class="button is-dark is-danger question-button") delete survey
+                        button(id="save-question" class="button is-dark is-success question-button save-question")
+                            span(class="icon is-small")
+                                    i(class="fas fa-plus")
+                            span add question
+                        button(id="clear-question" class="button is-dark is-info question-button")
+                            span(class="icon is-small")
+                                i(class="fas fa-eraser")
+                            span clear question
+                        form(action=`surveys/delete/${surveyId}` method="post")
+                            button(id="delete-survey" class='button is-danger' type='submit' onclick="return confirm('Are you sure you want to delete this survey?');")
+                                span(class="icon is-small")
+                                    i(class="fas fa-trash")
+                                span delete survey
             div
                 button(class="new-question" id="new-question-button" class="is-hidden button is-dark is-success") + question
             div(id="bottom-buffer")
+        //- div(id="side-buttons")
+        //-     button(id="back-to-top" class="button is-primary")
+        //-         span(class="icon is-small")
+        //-             i(class="fas fa-arrow-up")
+        //-         span back to top
+
+        //-     button(id="save-survey" class="button is-dark is-warning question-button")
+        //-         span(class="icon is-small")
+        //-             i(class="fas fa-save")
+        //-         span save survey
+        //-     form(action=`publish/${surveyId}` method="post" class="mx-3")
+        //-         button(id="publish-survey" class='button is-primary' type='submit' onclick="return confirm('Are you sure you want to publish?');")
+        //-             span(class="icon is-small")
+        //-                 i(class="fas fa-check")
+        //-             span pubslish survey
+
