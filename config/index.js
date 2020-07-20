@@ -7,6 +7,8 @@ module.exports = {
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       host: process.env.DB_HOST,
+      // gitClient: process.env.CLIENTID,
+      // gitSecret: process.env.GITSECRET
     },
     production: {
       use_env_variable: 'DATABASE_URL' ,
