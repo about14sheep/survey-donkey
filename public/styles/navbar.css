@@ -72,9 +72,11 @@ background-color: white;
 }
 
 .surveyDonkey_signup_container{
+    display: flex;
     color: #333E48;
     border-color: #fff;
     background-color: #fff;
+    flex-grow: .5;
 
 }
 
@@ -84,6 +86,8 @@ background-color: white;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
+    line-height: 3;
+    
 }
 .myName{
     color: white;
@@ -114,7 +118,8 @@ background-color: white;
 
 .meLogout {
 display: flex;
-width: 30%
+
+flex-grow: .5;
 }
 
 .ifMySurveys{
