@@ -45,10 +45,13 @@ Friday:
 
 weekend:
 24. made publish/share feature
+25. sort by upvotes on feed working
+26. took edit option away from published surveys
+
 
 
 ToDo/ questions for group:
-- SHARE??
+- sort by upvote
 - login with github?
 - already upvoted alert
 - I think we need to make a 2nd sign up form for just email for users that just want to anonymously fill out a survey (guest user)

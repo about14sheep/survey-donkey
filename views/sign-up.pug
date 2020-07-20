@@ -17,6 +17,7 @@ block content
                 div(class='py-4 has-text-centered')
                     button(type='submit' class='button is-success') Create Account
                 div(class="has-text-centered")
+                    //- a(href=`https://github.com/login/oauth/authorize?client_id=${process.env.CLIENTID}` class="button") sign in with github
                     p: a(href='/login') Already have an account?
 
         div(class="column")

@@ -6,14 +6,6 @@
     background-color: #f8f8ff
 }
 
-/* body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color:	#F0F0F0;
-    margin: 1em
-} */
-
 .option-container:not(.hidden){
     display:flex;
     width: 900px;
@@ -23,6 +15,37 @@
 }
 .radio-label{
     margin-left: 10px;
+}
+
+#content{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#back-to-top{
+    position: sticky;
+    top:4em;
+}
+
+#title-and-button-box{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#publish-delete-buttons{
+    display: flex;
+    display: flex;
+    flex-direction: row;
+}
+
+#delete-survey-top{
+    margin-left:10px;
+}
+
+#publish-survey-top{
+    margin-left:10px;
 }
 
 #publish-survey{
@@ -119,8 +142,15 @@ input{
 }
 
 .survey-preview-question-option {
+    width: 600px;
     justify-self: center;
     margin-left: 35px;
+    overflow: scroll;
+}
+
+.survey-preview-question-text {
+    width: 510px;
+    overflow: scroll;
 }
 
 #multiple-choice-container {

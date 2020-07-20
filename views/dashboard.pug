@@ -49,7 +49,6 @@ block content
                                             button(id="optionsButton" class="button has-text-info" aria-haspopup="true" aria-controls="dropdown-menu") Options
                                         div(class="dropdown-menu" id="dropdown-menu" role="menu" aria-hidden="true")
                                             div(class="dropdown-content")
-                                                a(href=`surveys/create/${survey.id}` class="dropdown-item") Edit
                                                 a(href=`surveys/${survey.id}` class="dropdown-item" id=`link${survey.id}`) See Results
                                                 a(href=`share/${survey.id}` class="dropdown-item" id='share') Share
                                                 form(action=`surveys/delete/${survey.id}` method="post" class="dropdown-item")
@@ -70,7 +69,7 @@ block content
 
             div(class="container is-fluid level")
                 a(href="surveys/create" class="button is-success level-right") Create
-                a(href="/feed" class="button is-warning level-left") Survey Feed
+                a(href="/feed/upvotes" class="button is-warning level-left") Survey Feed
 
 
         div(class="column")

@@ -8,11 +8,11 @@
 }
 .sOwnerDiv{
   display: flex;
-  flex-grow: 1.5;
+  flex-grow: 1.4;
 }
 .sNameDiv{
   display: flex;
-  flex-grow: 1.35;
+  flex-grow: 1.3;
 }
 .sCreatedDiv{
   display: flex;
@@ -28,7 +28,7 @@
 }
 .upVotesDiv{
   display: flex;
-  flex-grow: 3.2;
+  flex-grow: 3.5;
 } 
 
 

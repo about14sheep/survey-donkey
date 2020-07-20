@@ -10,7 +10,7 @@ block content
         section(class="section")
             div(class="box has-text-centered")
                 h2(class="title") #{questionText}
-                a(class="button is-primary is-light is-medium" href=`/surveys/${survey.id}`) see survey: #{survey.name}
+                a(class="button is-primary is-light is-medium" href=`/surveys/${survey.id}`) back to #{survey.name}
             input(id="_csrfToken" type="hidden" value=token)
             each shortans in resShortans
                 div(class="columns")

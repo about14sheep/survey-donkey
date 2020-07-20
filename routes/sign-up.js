@@ -2,6 +2,7 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const { loginUser } = require('../auth');
+const request = require('superagent')
 
 const db = require('../models');
 const { csrfProtection, asyncHandler } = require('./utils');
@@ -21,8 +22,8 @@ router.get('/sign-up', csrfProtection, (req, res) => {
 
 const userValidators = [
     check('firstName')
-      .exists({ checkFalsy: true })
-      .withMessage('Please provide a value for First Name')
+    .exists({ checkFalsy: true })
+    .withMessage('Please provide a value for First Name')
       .isLength({ max: 50 })
       .withMessage('First Name must not be more than 50 characters long'),
     check('lastName')
@@ -30,7 +31,7 @@ const userValidators = [
       .withMessage('Please provide a value for Last Name')
       .isLength({ max: 50 })
       .withMessage('Last Name must not be more than 50 characters long'),
-    check('email')
+      check('email')
       .exists({ checkFalsy: true })
       .withMessage('Please provide a value for Email Address')
       .isLength({ max: 255 })
@@ -44,9 +45,9 @@ const userValidators = [
               return Promise.reject('The provided Email Address is already in use.');
             }
           });
-      }),
+        }),
     check('password')
-      .exists({ checkFalsy: true })
+    .exists({ checkFalsy: true })
       .withMessage('Please provide a value for Password')
       .isLength({ max: 50 })
       .withMessage('Password must not be more than 50 characters long')
@@ -65,7 +66,7 @@ const userValidators = [
       }),
   ];
 
-router.post('/users', csrfProtection, userValidators,
+  router.post('/users', csrfProtection, userValidators,
   asyncHandler(async (req, res) => {
     const {
       email,
@@ -102,5 +103,32 @@ router.post('/users', csrfProtection, userValidators,
       });
     }
   }));
+
+  // router.get('/sign-up/github', csrfProtection, (req, res) => {
+  //   const {query} = req;
+  //   const{code}= query
+  //   if(!code){
+  //     return res.send({
+  //       success: false,
+  //       message: 'Authentication with github failed'
+  //     })
+  //   }
+  //   request
+  //     .post('https:github.com/login/oauth/access_token')
+  //     .send({
+  //       client_id: process.env.CLIENTID,
+  //       client_secret: process.env.GITSECRET,
+  //       code: code
+  //     })
+  //     .set('Accept', 'application/json')
+  //     .then(function(result) {
+  //       const data= result.body;
+
+  //       res.send(data)
+  //     })
+  //     .catch(error => console.error('Error:', error))
+
+
+  // });
 
 module.exports = router;
