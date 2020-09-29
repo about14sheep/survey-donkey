@@ -17,12 +17,14 @@ const logoutRouter = require('./routes/logout')
 const { restoreUser } = require('./auth');
 const feedRouter = require('./routes/feed')
 const shareRouter = require('./routes/sharePublish')
+const favicon = require('serve-favicon');
 
 app.use(express.static('public'))
 app.use(cookieParser(sessionSecret))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(morgan('dev'));
+app.use(favicon(__dirname + '/public/icons/favicon.ico'));
 app.set('view engine', 'pug')
 
 

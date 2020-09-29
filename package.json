@@ -28,6 +28,7 @@
     "pug": "^3.0.0",
     "sequelize": "^5.22.3",
     "sequelize-cli": "^5.5.1",
+    "serve-favicon": "^2.5.0",
     "superagent": "^5.3.1"
   },
   "devDependencies": {
