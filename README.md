@@ -29,14 +29,23 @@ SurveyDonkey allows users to:
 - Bulma CSS
 
 ## Main Views:
-**User Authentication**
+**User dashboard**
 
-Users can create an account and log in securely thanks to BCrypt for password hashing and storage. Harmony also uses json web tokens when communicating between the back end and front end to make sure requests are coming from the right place and are only doing what they are allowed to do.
+When logged in, users are greeted with their dashboard. This is the command center for the app that allows users to see all of their created surveys along with general statistics. From here they can create new surveys, edit old drafts, see results of a survey, share or delete a survey.
+![](https://github.com/about14sheep/survey-donkey/blob/master/sdDashboard.png)
 
-**Servers and Channels**
-A key part of Harmony's structure are its servers. Users can create their own server that houses as many separate chat channels as they want. Each server and channel can be customized by name, and users can create private servers and invite their friends.
+**Survey creation and editing**
 
-**Live chat**
-The core feature of harmony is live chat. The app uses websockets to keep a constant connection between the user and the server, allowing the server to push new updates to the client without waiting for a refresh or request.
+Users can create surveys by first choosing a name, then working on what questions they want to include. Each question can be multiple choice, free response, or scroll. Users can save the survey as a draft and come back later to edit or finish questions. Once published, the survey will not be editable and will show up on the main public feed for all users to see and fill out.
+![](https://github.com/about14sheep/survey-donkey/blob/master/sdSurveyCreate.png)
 
+**Survey Results**
+
+The results of a survey are shown using charts for multiple choice questions or a list of anonymous responses for free response questions. If a user has already taken the survey in question, their response will be highlighted. 
+![](https://github.com/about14sheep/survey-donkey/blob/master/sdResults.png)
+
+**Public Survey Feed**
+
+The public feed shows all of the published surveys, as well as their creator and relative stats. Users can take a survey, upvote a survey, and sort surveys by owner, name, creation date, questions, and upvotes. 
+![](https://github.com/about14sheep/survey-donkey/blob/master/sdFeed.png)
 
