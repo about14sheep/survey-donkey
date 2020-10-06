@@ -25,3 +25,15 @@ font-weight: 'bold'
   height:'43px';
   width: '43px';
 }
+
+.LinkedInIcon {
+  height: '37px';
+  width: '40px'
+}
+
+.Footer__name {
+  display: 'flex'; 
+  flex-direction: 'column';
+   align-items: 'center';
+  font-weight: 'bold'
+}
