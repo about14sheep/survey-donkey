@@ -3,6 +3,7 @@ extends layout.pug
 include utils.pug
 
 block content
+  link(rel="stylesheet" type="text/css" href="/styles/login.css")
   div(class="columns")
     div(class="column")
     div(class="column has-background-light my-6")
@@ -23,3 +24,5 @@ block content
         +demofield('Email Address: ', 'email', 'demo@surveydonkey.com')
         +demofield('Password: ', 'password', 'P4ssword!', 'password')
         button(type='submit' class="button is-success is-light") Demo User Login
+        
+  include footer.pug

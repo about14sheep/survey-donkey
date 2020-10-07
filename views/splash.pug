@@ -12,6 +12,7 @@ block content
     br
     br
     br
+    include footer.pug
     if !locals.authenticated
         a(href='/sign-up' class="button is-success") GET STARTED
         +validationErrorSummary(errors)

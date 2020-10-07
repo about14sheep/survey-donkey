@@ -3,6 +3,7 @@ extends layout.pug
 block append head
         script(src="/scripts/shortans.js" type="application/javascript")
 block content
+    link(rel="stylesheet" type="text/css" href="/styles/shortans.css")
     div(class="has-background-light")
         div(class="notification is-danger is-medium mt-2 box")
             button(class="delete")
@@ -20,3 +21,4 @@ block content
                             h2(class="title has-text-centered my-4 has-text-left is-italic has-text-weight-light") "#{shortans.questionResponseValue}" - Anon User
                             p(class="has-text-left") #{JSON.stringify(shortans.createdAt).slice(1,11)}
                     div(class="column is-one-fifth")
+        include footer.pug
