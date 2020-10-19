@@ -17,3 +17,7 @@
     flex-grow: .05
 }
 
+.has-navbar-fixed-top {
+    height: 100vh;
+}
+

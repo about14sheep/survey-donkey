@@ -7,7 +7,34 @@ body {
 }
 
 .typingAnimation_container {
-    margin: 20% 20px auto;
-    min-height: 100px;
+  margin-bottom: 20px;
+    
 }
 
+
+
+.splash__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100vh
+    
+}
+
+
+.demo__container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   height: 80vh
+}
+
+.secondDemo__container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    
+}
