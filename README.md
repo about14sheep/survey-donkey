@@ -49,3 +49,99 @@ The results of a survey are shown using charts for multiple choice questions or 
 The public feed shows all of the published surveys, as well as their creator and relative stats. Users can take a survey, upvote a survey, and sort surveys by owner, name, creation date, questions, and upvotes. 
 ![](https://github.com/about14sheep/survey-donkey/blob/master/sdFeed.png)
 
+## The Front End
+For the front End we used PUG for the multi-page application because it was very light weight and had great dynamic programming opportunities due to its uese of mixins and its ability to reuse components. 
+
+```
+extends layout.pug
+
+include utils.pug
+
+block content
+  link(rel="stylesheet" type="text/css" href="/styles/login.css")
+  div(class="columns")
+    div(class="column")
+    div(class="column has-background-light my-6")
+      +validationErrorSummary(errors)
+      form(action='/login' method='post' class="")
+        input(type='hidden' name='_csrf' value=csrfToken)
+        +field('Email Address: ', 'email', email)
+        +field('Password: ', 'password', null, 'password')
+        div(class='py-4 has-text-centered')
+          button(type='submit' class='button is-success') Login
+        div(class="has-text-centered")
+          p: a(href='/sign-up') Don't have an account?
+
+    div(class="column")
+  div(class='py-4 has-text-centered')
+      form(action='/login' method='post')
+        input(type='hidden' name='_csrf' value=csrfToken)
+        +demofield('Email Address: ', 'email', 'demo@surveydonkey.com')
+        +demofield('Password: ', 'password', 'P4ssword!', 'password')
+        button(type='submit' class="button is-success is-light") Demo User Login
+        
+  include footer.pug
+  ```
+For the CSS we used the Bulma library as it allowed us to quickly and efficiently replicate the look of Survey Monkey.
+
+## The Back End
+The backend server was ran with Node.js' Express framework for the server and Sequelize ORM for the database. Using SQL queries and some clevel manipulation of data structures we were able to serve API calls from the front end so it could display the surveys by several different options.
+
+```
+router.get('/feed/upvotes', asyncHandler(async (req, res) => {
+
+    const upvoteFeedSurveys = await db.Survey.findAll({ include: [db.Question, db.User, db.Upvote]
+    });
+
+    function merge(leftArray, rightArray) {
+        const sorted = [];
+        while (leftArray.length > 0 && rightArray.length > 0) {
+          const leftItem = leftArray[0];
+          const rightItem = rightArray[0];
+
+          if (leftItem.Upvotes.length > rightItem.Upvotes.length) {
+            sorted.push(rightItem);
+            rightArray.shift();
+          } else {
+            sorted.push(leftItem);
+            leftArray.shift();
+          }
+        }
+
+        while (leftArray.length !== 0) {
+          const value = leftArray.shift();
+          sorted.push(value);
+        }
+
+        while (rightArray.length !== 0) {
+          const value = rightArray.shift();
+          sorted.push(value);
+        }
+
+        return sorted
+      }
+
+      function mergeSort(array) {
+        const length = array.length;
+
+        if (array.length < 2){
+          return array;
+        }
+
+        const middleIndex = Math.ceil(length / 2);
+        let leftArray = array.slice(0, middleIndex);
+        let rightArray = array.slice(middleIndex, length);
+
+        leftArray = mergeSort(leftArray);
+        rightArray = mergeSort(rightArray);
+
+        return merge(leftArray, rightArray);
+      }
+
+    let upvoteSorted = mergeSort(upvoteFeedSurveys).reverse();
+    res.render('feed', {
+        title: "SurveyDonkey Feed",
+        upvoteSorted
+    })
+}))
+```
