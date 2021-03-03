@@ -25,7 +25,7 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
     "pg": "^8.3.0",
-    "pug": "^3.0.0",
+    "pug": "^3.0.1",
     "sequelize": "^5.22.3",
     "sequelize-cli": "^5.5.1",
     "serve-favicon": "^2.5.0",
