@@ -1,5 +1,5 @@
 # SurveyDonkey
-SurveyDoneky is an interactive survey creation and participation site inspired by SurveyMonkey. Designed using PUG templates for HTML and Bulma for CSS on the front end, with express and sequelize to handle the back end.
+SurveyDonkey is an interactive survey creation and participation site inspired by SurveyMonkey. Designed using PUG templates for HTML and Bulma for CSS on the front end, with express and sequelize to handle the back end.
 
 [SurveyDonkey Live](https://thesurveydonkey.herokuapp.com/)
 
