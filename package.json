@@ -23,7 +23,7 @@
     "express-session": "^1.17.1",
     "express-validator": "^6.6.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.20",
     "pg": "^8.3.0",
     "pug": "^3.0.0",
     "sequelize": "^5.22.3",
